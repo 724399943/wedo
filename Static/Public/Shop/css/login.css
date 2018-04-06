@@ -1,0 +1,71 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors xu (565657400@qq.com)
+ * @date    2015-12-16 14:50:38
+ * @version $登陆$
+ */
+.login-box{ width: 1000px; margin:0 auto;}
+.login-box .l-top{ overflow: hidden; margin: 20px 0}
+.login-box .l-top .logo{ float: left;}
+.login-box .box{ padding-bottom: 20px;}
+.login-box .box .pic{ float: left;}
+.login-input-b{ float: left;}
+
+.fotget-box{}
+.fotget-box .f-top{ height: 30px; border-bottom: 1px solid #ddd; background: #fff;}
+.fotget-box .f-top .main{ width: 1000px; margin:0 auto; height: 30px;}
+.fotget-box .f-top .f-t-l{ float: right;}
+.f-top .f-t-l a{ color: #484848; line-height: 30px; font-size: 12px; padding-left:10px;}
+.f-top .f-t-l a.help{ border-left: 1px solid #ddd; margin-left: 4px;}
+.f-top .f-t-l a:hover{ color: #967bdc;}
+.fg-main{ width: 1000px;  margin:  0 auto;}
+.fg-main .fg-logo{ padding-top: 20px;}
+.fg-buzhou{ overflow: hidden; border:1px solid #ddd; border-top: 2px solid #967bdc; height: 480px; box-shadow: 0 4px 10px #aaa; background: #fff; margin-top: 20px; padding: 20px;}
+.fg-buzhou .line{ height: 4px; background: #e5e5e5; border-radius: 4px; margin-top: 40px;}
+.fg-buzhou .line .item{ display: block; width: 25%; text-align: center; position: relative; float: left; height: 4px; text-align: center; color: #666;}
+.fg-buzhou .line .item .ico{ height: 36px; width: 36px; display: block; position: absolute; top: -15px; left: 50%; margin-left: -18px; background: #e5e5e5; line-height: 36px; border-radius: 50%; overflow: hidden; font-size: 20px; color: #fff;}
+.fg-buzhou .line .item.on{ background: #967bdc; color: #967bdc; }
+.fg-buzhou .line .item.on .ico{ background: #967bdc;}
+.fg-buzhou .line .item span{ line-height: 85px;}
+.fg-in{ width: 345px;height: 210px; margin:140px auto 0 auto;}
+.fg-in .in-box{ height: 40px; line-height: 40px; border: 1px solid #ddd; border-radius: 2px; position: relative;}
+.fg-in .in-box .text{ border:none; height: 40px; line-height: 40px; margin-left: 42px; font-size: 14px; color: #484848;}
+.fg-in .in-box .ico{width: 24px; height: 32px; position: absolute;display: block; top: 4px; left: 10px; background-position: -65px -323px;}
+.fg-in .in-box .ico.pas{ background-position: -92px -323px;}
+.in-yan{ overflow: hidden; margin-top: 20px; position: relative;}
+.in-yan .text{  width: 175px;  height: 40px; line-height: 40px; padding: 0 8px 0 33px; border: 1px solid #ddd; border-radius: 2px;}
+.in-yan .text.style1{padding-left: 8px;width: 120px}
+.in-yan .text.blur-box{ border-color: #967bdc;}
+.in-yan .key{ display: block; width: 20px; height: 30px; display: block; position: absolute; top: 6px; left: 9px; background-position: -93px -379px;}
+.in-yan .yan{ min-width: 60px; height: 40px; line-height: 40px; float: left;}
+.in-yan .txt{ float: right; color: #967bdc; line-height: 40px; margin-left: 20px;}
+.fg-copy{ text-align: center; margin-top: 20px;}
+.fg-copy .line{ text-align: center; line-height: 30px; font-size: 14px; color: #484848}
+.fg-copy .line a{ color: #484848; font-size: 14px;}
+.fg-copy .line a:hover{ color: #967bdc;}
+.fg-copy .line em{ padding: 0 10px; font-size: 14px;}
+.in-new-pas{ margin-top: 20px;}
+.fg-in .in-txt{ font-size: 14px; color: #333;}
+.in-yan .btn{ height: 40px;line-height: 40px;border: 1px solid #ddd; border-radius: 2px; width: 128px; float: right; text-align: center; color: #484848;}
+.in-yan .btn:hover{ border-color: #967bdc; color: #967bdc;}
+.fg-buzhou .login-tab{ height: 40px; line-height: 40px; border-bottom: 1px solid #ddd; margin-top: 80px; border-left: 1px solid #ddd;}
+.fg-buzhou .login-tab a{ display: block; padding: 0 20px; height: 39px; border: 1px solid #ddd; border-bottom: none; margin-left: -1px; float: left; color: #484848;background: #fff;}
+.fg-buzhou .login-tab a.on{height: 40px; color: #967bdc; }
+.login-tab-data{ overflow: hidden;}
+.login-tab-data .fg-in{ margin-top: 60px; display: none;}
+.true-box{ width: 88px; height: 88px; margin:20px auto;}
+.true-box img{ width: 100%;}
+.succees-box{ font-size: 16px; text-align: center; font-size: 16px;}
+.succees-box a{margin-left: 20px; color: #967bdc;}
+.succees-box a:hover{text-decoration: underline;}
+.pass-power{ position: absolute; top: 42px; right: 0px; color: #a8a8a8; font-size: 12px; height: 20px; line-height: 18px; display: none;}
+.pass-power span{ background: #afafaf; color: #fff; padding: 0 4px; line-height: 18px; text-align: center;}
+.pass-power span.r.on{ background: #ff9616;}
+.pass-power span.m.on{ background: #967bdc;}
+.pass-power span.s.on{ background: #12d51f;}
+.tips{ position: absolute; height: 30px; line-height: 30px; background: #fff5f8; border-radius: 4px; width: 330px; padding:0 10px; border: 1px solid #227BD6; font-size: 12px; color: #967bdc; display: none;}
+.tips em{ position: absolute; width: 25px; height: 15px; left: 8px; bottom: -15px; background-position: -90px -368px; display: block;}
+.tips span.ico{display: inline-block; width: 20px; height: 20px; vertical-align: middle; background-position: -115px -346px;}
+
+

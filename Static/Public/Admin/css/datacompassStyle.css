@@ -1,0 +1,58 @@
+.border-bottom{border-bottom: 1px solid #ddd}
+/*经营报告*/
+.tabcontent-form{border-bottom: 1px solid #ddd;}
+.tabmenu {list-style: none;border-bottom: 1px solid #ccc; height: 41px;}
+.tabmenu .calendar-icon{position:absolute;left: 30px;top: 10px;width:20px;height:20px;background:url(../images/generalAnalyze/calendar.png) center center no-repeat;background-size:20px;}
+.tabmenu li {display: inline-block;float: left;margin-right: 5px;width: 90px;padding-left:20px;-moz-border-radius: 2px 2px 0 0;-webkit-border-radius: 2px 2px 0 0;border-radius: 2px 2px 0 0;border: 1px solid #ccc;height:20px;padding: 10px 20px 10px 30px;text-align: center;position: relative;}
+
+.tabmenu .current{border-bottom: none; height: 21px; z-index: 1; background: #fff;}
+/*.tabmenu li.current a {background: #fff; color: #FB9337; }
+.tabmenu li a {display: block;  background: #ccc; color: #fff; font-family: 'RobotoBoldCondensed', Arial, Helvetica, sans-serif; text-transform: uppercase; font-size: 14px;  border-bottom: 0; } */
+.generalAnalyze-detailitem{list-style-type:none;padding: 10px 80px;}
+.generalAnalyze-detailitem:after{visibility:hidden; display:block; font-size:0; content:'\20'; clear:both; height:0;}
+.generalAnalyze-detailitem .detail{float:left;margin-right:50px;height:20px;}
+.generalAnalyze-detailitem .help-icon{display:block;width:15px;height:15px;background:url(../images/generalAnalyze/help.png);background-size: 15px;float:left;margin-top: 3px;}
+.generalAnalyze-detailitem .detail em{color:red;}
+.title-tag .left-icon{display:block;width:15px;height:15px;background:url(../images/generalAnalyze/left.png);background-size: 15px;float:left;margin-top: 13px;}
+
+.tabcontent-box{border-left:1px solid #ddd;border-right:1px solid #ddd;border-bottom:1px solid #ddd;padding:10px;}
+.tabcontent-box .title-tag{height:40px;position:relative;line-height: 40px;margin-top:10px;}
+.title-tag p{display: block;padding:0;margin:0;font-weight:bold;font-size: 16px;}
+.title-tag .dotip{width: 50px; height: 30px; position: absolute; right: 0; top: 5px; border: 1px solid #ddd;padding:0 10px 0 20px; text-align: center;line-height:30px;}
+.title-tag .dotip i{width:15px;height:15px;position: absolute;right:60px;top:5px;}
+.title-tag .dotip .download{background: url(../images/generalAnalyze/download.png) center center no-repeat;background-size: contain; }
+
+.detail{position: relative;}
+.detail .hovertip-box{display: none;padding: 5px; text-align: center; background: #626060; position: absolute; left: 16px; top: 21px; color: #fff; z-index: 1;border-radius: 5px;word-break:keep-all;white-space:nowrap; }
+.top-part{position: absolute; left: 5px; top: -5px; width: 10px; height: 5px; display: block; background: url(../images/generalAnalyze/top-icon.png); z-index: 1; background-size: contain;}
+
+
+/*销售分析*/
+.com-list-box{border:1px solid #ddd;padding:10px;}
+.com-list-box .box-name{font-weight: bold;font-size:16px;line-height:30px;color:#000;margin:0;}
+.com-list-box .clist-content{border:1px solid #ddd;padding:10px;}
+.clist-option{    height: 40px; line-height: 40px;}
+.clist-option p{margin:0;display: block;float:left;width:90px;}
+.clist-option .option-btn {width: 60px; height: 25px; line-height: 25px; text-align: center; font-size: 14px; background: #eee; border: none; display: block; float: left; margin-left: 5px; margin-top: 7px; color: #000; font-weight: normal;}
+.clist-content .title-tag{height:40px;position:relative;line-height: 40px;}
+.title-tag .top15-option{float:left;margin-right:5px;padding:0 10px;border:1px solid #ddd;background: #fff;color:#000;font-weight:normal;}
+.title-tag .option-box{width: 600px;position:absolute;left: 139px; top: 5px;}
+.title-tag .option-box:after{visibility:hidden; display:block; font-size:0; content:'\20'; clear:both; height:0;}
+
+.top15box:after{visibility:hidden; display:block; font-size:0; content:'\20'; clear:both; height:0;}
+.top15box .top15-list{width:400px;float:left;overflow: hidden;}
+.top15box .top15-bar{width:610px;float:right;}
+.top15box .top15-option{background:#fff;color:#000;border:1px solid #ddd;font-weight: normal;margin-top: 5px;}
+
+
+
+
+.saledetail-option{position:relative;height:40px;line-height: 40px;margin-top:10px;padding-left: 10px;background:#e6e8e9}
+.saledetail-option .right-icon{width:50px;height:40px;position: absolute;top:0;}
+.saledetail-option .right-icon1{right:0;background: url(../images/generalAnalyze/download.png) center center no-repeat;background-size: 20px; }
+.saledetail-option .right-icon2{right:50px;background: url(../images/generalAnalyze/print.png) center center no-repeat;background-size: 20px;border-right:1px solid #ddd; border-left:1px solid #ddd;}
+
+.top5-table{text-align: center;border: 1px solid #ddd;}
+.top5-table tr ,.top5-table td{vertical-align: middle;}
+.top5-table .first-tr,.top5-table .first-tr td,.top5-table .third-tr td{background:#eee;}
+.top5-table .noborder-tr,.top5-table .noborder-tr td{border:none;}

@@ -1,0 +1,54 @@
+[ 2018-01-09T14:38:02+08:00 ] 192.168.47.1 /
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Index' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-01-09T14:38:02+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0061s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0017s ]
+
+[ 2018-01-09T14:38:09+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0010s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-09T14:50:39+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-09T14:56:09+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0009s ]
+
+[ 2018-01-09T14:56:25+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0025s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2018-01-09T14:59:29+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0025s ]
+
+[ 2018-01-09T15:00:16+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0011s ]
+
+[ 2018-01-09T15:01:24+08:00 ] 192.168.47.1 /Login/forgetPassword.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0043s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'forgetPassword' LIMIT 1   [ RunTime:0.0011s ]
+

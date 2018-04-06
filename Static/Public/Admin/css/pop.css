@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors xu (565657400@qq.com)
+ * @date    2016-09-19 11:09:19
+ * @version $Id$
+ */
+.pop_win{ position: fixed; box-shadow: 0 0 8px #aaa; border: 1px solid #ddd; border-radius: 2px; overflow: hidden; left: 50%; top: 50%; z-index: 30; background: #fff;  min-width: 200px; min-height: 100px;}
+.pop_win .title{ height: 40px; line-height: 40px; border-bottom: 1px solid #ddd; padding: 0 20px; font-size: 16px; color: #666; background: #f4f4f4; position: relative; }
+.pop_win .popclose{ width: 30px; height: 30px; position: absolute; top: 4px; right: 5px; background: url(../images/popclose.png) no-repeat center center; background-size: 18px; cursor: pointer; }
+.pop_win .popmain{ padding: 10px; overflow: hidden; }

@@ -1,0 +1,24 @@
+[ 2017-08-29T16:36:13+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0284s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0417s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0465s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2017-08-29T16:38:23+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2017-08-29T16:38:43+08:00 ] 192.168.47.1 /Bidding/biddingBanner
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Bidding' AND `controller_function` = 'biddingBanner' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0005s ]
+

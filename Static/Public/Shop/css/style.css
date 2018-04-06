@@ -1,0 +1,52 @@
+@charset "UTF-8"; 
+
+.top-m .t-nav a em, .top-m .t-nav a.tel em, .tab-m-lf .item em, .rt-link-box a .ico, .floor-ctr span, .pop-rt .admin, .pop-rt .shopingcar em, .pop-rt .weima, .pop-rt .history, .pop-rt .collect, .slide-top, .item-l .warp-t .tit em, .g-goods-re .ico-re em, .g-mi .tit em, .g-mi .g-d-msg .cu, .g-mi .g-d-msg .jian, .g-box-line .adr em, .g-item-s .select-m em, .g-taoxi-warp .ico-add, .g-zeng-box .ico, .data .star-box .star, .has-select a i, .select-box-t .zong em, .g-d-ul li .box .pt .zp, .g-d-ul li .box .pt .mj, .g-d-ul li .box .name em, .g-d-ul li .coll .co em, .in-box .ico, .in-box .true, .fg-in .in-box .ico, .tips span.ico, .tips em, .vip-main-item .box em, .add-shopcar-txt em, .shoppcar-pop .close, .vip-goods-data li .name em, .dengji, .t-item .box .item em, .goods-detail .rt .name em, .integral-exchange-item .name em, .box-p .p-ctr .c, .pop-item .remove, .pop-bg-m .clo-ctr, .bdsharebuttonbox .ic-close, .in-yan .key, .infor .close, .login-pop .close-line .close-btn, .ico-share.popup_more em, .bdsharebuttonbox .close-btn, .service-box .tit .close{background-image:url(../images/ico.png); background-repeat:no-repeat}
+.service-ico li em, .g-baozhang .item em, .g-guarantee .item em, .l-friend .box a, .vip-zheng .item .ico em, .grow-zhi, .ctr-pre-next span, .tab-m-mi .t_ctr em, .g-slide-tab .ctr em, .inf-main .ico{background:url(../images/bico.png) no-repeat center center}
+.foot-item-box .item em{background:url(../images/renzheng.png) no-repeat}
+
+.login-data{border:1px solid #ddd; border-top:2px solid #967bdc; width:352px; padding:0px 15px 20px 15px; box-shadow:0 4px 10px #aaa}
+.login-data .tit{font-size:18px; color:#666; line-height:20px}
+.login-data .tit .fl{float:right; font-size:14px; color:#3d3d3d}
+.login-data .tit .fl a{color:#967bdc}
+.login-data .in-box{border:1px solid #ddd; height:40px; line-height:40px; position:relative; margin-top:20px; border-radius:2px}
+.login-data .in-box.blur-box{border-color:#967bdc}
+.login-data .in-box .ico{width:24px; height:24px; background-position:-36px -340px; top:8px; left:7px; display:block; position:absolute}
+.login-data .in-box .ico.ph{background-position:-64px -358px}
+.login-data .in-box .text{height:40px; line-height:40px; font-size:14px; color:#333; margin-left:40px; border:none; width:270px}
+.login-data .in-box .pas{background-position:-2px -367px}
+.login-data .in-box .true{display:none; width:20px; height:20px; position:absolute; right:8px; top:10px; background-position:-38px -370px}
+.login-data .in-txt{overflow:hidden; padding-top:5px}
+.login-data .in-txt .lab{float:left; line-height:30px; font-size:12px; color:#a8a8a8; cursor:pointer}
+.login-data .in-txt .lab input{vertical-align:middle}
+.login-data .in-txt .link{float:right; font-size:14px; color:#967bdc; line-height:30px}
+
+.login-data .in-txt .xy{color:#967bdc; font-size:12px; line-height:30px}
+.login-data .in-txt .xy:hover{text-decoration:underline}
+.conment-login{ height:42px; line-height:42px; cursor:pointer; border-radius:4px; background:#967bdc; color:#fff; text-align:center; font-size:18px; display:block; width:100%; margin-top:20px; border:none}
+.conment-login:hover{background:#967bdc}
+.conment-login.login-submit{width:100%; border:none}
+
+.page-box{text-align:center; padding:60px 0}
+.page-box a{height:34px; line-height:34px; margin:0 5px; padding:0 14px; border:1px solid #ddd; border-radius:2px; font-size:14px; color:#666; display:inline-block; zoom:1; *display:inline; background:#fff}
+.page-box a:hover{border-color:#967bdc; color:#967bdc}
+.page-box a.cur{color:#fff; border-color:#04DD98}
+.page-box .txt{color:#666; font-size:14px; padding:0 5px}
+.page-box .text{height:32px; padding:0 5px; border:1px solid #ddd; border-radius:2px; width:40px}
+.page-box .btn{display:inline-block; zoom:1; *display:inline; width:50px; height:32px; border:1px solid #ddd; border-radius:2px; line-height:32px; text-align:center; font-size:14px; cursor:pointer}
+.page-box .em-a{height:34px; line-height:34px; margin:0 5px; padding:0 14px; border:1px solid #bfbfbf; border-radius:2px; font-size:14px; color:#666; display:inline-block; zoom:1; background:#ddd}
+
+.login-pop{position:fixed; top:0; left:0; width:100%; height:100%; z-index:222; background:rgba(0,0,0,0.8); display:none}
+.login-pop .l-main{width:390px; position:absolute; top:50%; left:50%; margin-left:-195px; margin-top:-223px}
+.login-pop .close-line{height:30px}
+.login-pop .close-line .close-btn{float:right; margin-top:5px; width:20px; height:20px; background-position:-38px -272px}
+.login-pop .l-main .login-data{background:#fff; box-shadow:0 0 10px #aaa}
+.flyer-img{width:40px; width:40px; border-radius:50%; position:absolute}
+
+.baiyang-agreement{position:fixed; top:0; left:0px; z-index:222; overflow:hidden; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none}
+.baiyang-agreement .ag-main{width:1000px; height:580px; position:absolute; left:50%; margin-left:-505px; top:50%; margin-top:-285px; padding:5px; background:rgba(0,0,0,0.2); border-radius:4px}
+.ag-main .a-box{background:#fff; height:100%}
+.ag-main .a-box .tit{height:38px; border-bottom:1px solid #ddd; background:#f4f4f4; line-height:38px; color:#000; font-size:16px; padding:0 20px; font-weight:bold}
+.ag-main .a-box .data{height:460px; overflow-y:auto; padding:0px 20px}
+.ag-main .a-box .data .p-tit{font-size:16px; color:#000; line-height:24px; margin-top:20px}
+.ag-main .a-box .data p{line-height:24px; font-size:14px; font-size:14px; color:#666}
+.com-btn-ture{display:block; margin:20px auto; height:40px; line-height:40px; border-radius:4px; background:#967bdc; color:#fff; font-size:16px; text-align:center; width:160px}

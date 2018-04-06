@@ -1,0 +1,1997 @@
+[ 2018-01-05T16:49:52+08:00 ] 192.168.47.1 /
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0023s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Index' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:49:52+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:49:54+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-01-05T16:49:57+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:50:01+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_user` WHERE `phone` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' AND `method` = 1 LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_user` WHERE `username` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0011s ]
+SQL: UPDATE `wd_user` SET `session_id`='tf2rteuaprkh7pqjoe758tqgi4',`last_login_time`='1515142201' WHERE `id` = '35' [ RunTime:0.0852s ]
+
+[ 2018-01-05T16:50:03+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:03+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0020s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0018s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0017s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T16:50:03+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0010s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0018s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0020s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0005s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:12+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0025s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0011s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0009s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:12+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0046s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0018s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0019s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0009s ]
+
+[ 2018-01-05T16:50:12+08:00 ] 192.168.47.1 /Chat/chatHistory.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0028s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Chat' AND `controller_function` = 'chatHistory' LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0021s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0014s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_friends` [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_user_chat` [ RunTime:0.0009s ]
+SQL: SELECT `u`.`id`, `u`.`nickname`, `u`.`headimgurl` 
+				FROM `wd_friends` AS `f` 
+				LEFT JOIN `wd_user` AS `u` ON `f`.`to_id` = `u`.`id` 
+				WHERE `f`.`from_id` = '35' 
+				LIMIT 0 , 10 [ RunTime:0.0007s ]
+SQL: SELECT `content`,`add_time` FROM `wd_user_chat` WHERE (  (`from_id` = '35' AND `to_id` = '34') OR (`from_id` = '34' AND `to_id` = '35')  ) ORDER BY `id` DESC LIMIT 1   [ RunTime:0.0036s ]
+SQL: SELECT `content`,`add_time` FROM `wd_user_chat` WHERE (  (`from_id` = '35' AND `to_id` = '35') OR (`from_id` = '35' AND `to_id` = '35')  ) ORDER BY `id` DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:12+08:00 ] 192.168.47.1 /Message/systemMessage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0008s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0007s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'systemMessage' LIMIT 1   [ RunTime:0.0005s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0006s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0004s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0015s ]
+SQL: SELECT `m`.`id`, `m`.`agent_id`, `m`.`order_sn`, `m`.`goods_id`, `m`.`title`, `m`.`image`, `m`.`type`, `m`.`content`, `m`.`message_type`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`id` DESC  
+                LIMIT 0 , 10 [ RunTime:0.0072s ]
+SQL: SHOW COLUMNS FROM `wd_goods` [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0019s ]
+
+[ 2018-01-05T16:50:12+08:00 ] 192.168.47.1 /Static/Uploads/User/2017-03-18/58cce8a073e6a.jpeg
+ERR: 无法加载控制器:Static
+
+[ 2018-01-05T16:50:13+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:13+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0044s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0018s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0023s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0025s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0020s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:50:13+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0040s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0007s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0007s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0008s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0004s ]
+
+[ 2018-01-05T16:50:15+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:18+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0020s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0029s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0026s ]
+SQL: UPDATE `wd_user` SET `language`='en-us' WHERE `id` = '35' [ RunTime:0.0979s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0021s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0009s ]
+
+[ 2018-01-05T16:50:18+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:19+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0025s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0010s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:19+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0011s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:19+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0017s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0009s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0005s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0005s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0017s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0022s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0016s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T16:50:20+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0025s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:20+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0040s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0023s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0040s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0016s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0024s ]
+
+[ 2018-01-05T16:50:45+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:45+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0029s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0028s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0016s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0038s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0027s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0016s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0021s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0013s ]
+
+[ 2018-01-05T16:50:45+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0022s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0017s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0029s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0028s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0032s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0023s ]
+
+[ 2018-01-05T16:50:47+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0015s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0020s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:50:47+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0040s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0024s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:53+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:50:53+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0033s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0026s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0014s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0018s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0010s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0021s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0022s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-01-05T16:50:53+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0019s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0030s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0030s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0015s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0005s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0009s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T16:50:56+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:50:58+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: UPDATE `wd_user` SET `language`='zh-cn' WHERE `id` = '35' [ RunTime:0.0953s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0013s ]
+
+[ 2018-01-05T16:50:58+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0026s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0017s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0020s ]
+
+[ 2018-01-05T16:51:00+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0018s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:51:00+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0024s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0018s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0024s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0040s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0016s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0015s ]
+
+[ 2018-01-05T16:51:00+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0019s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0024s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0021s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0036s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0036s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0010s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:51:05+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:51:06+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0018s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0038s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0034s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0015s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0023s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:51:30+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0011s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:51:30+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0016s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0034s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0029s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0030s ]
+
+[ 2018-01-05T16:51:30+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0031s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0025s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0007s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0007s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0021s ]
+
+[ 2018-01-05T16:51:31+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0029s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0011s ]
+
+[ 2018-01-05T16:51:31+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0023s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0018s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0020s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0009s ]
+
+[ 2018-01-05T16:52:07+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0017s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:52:07+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0020s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0028s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0026s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0012s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0045s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0027s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0027s ]
+
+[ 2018-01-05T16:52:07+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0021s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0026s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0020s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0014s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0015s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0014s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0011s ]
+
+[ 2018-01-05T16:52:25+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:52:27+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0011s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0019s ]
+SQL: UPDATE `wd_user` SET `language`='en-us' WHERE `id` = '35' [ RunTime:0.0935s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:52:27+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0030s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0014s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:52:28+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0018s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0018s ]
+
+[ 2018-01-05T16:52:28+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0029s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0037s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0020s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T16:52:28+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0033s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0031s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0021s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0028s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0015s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0025s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0010s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T16:55:52+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T16:55:53+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0051s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2018-01-05T17:03:45+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:03:45+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0042s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0025s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0025s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0030s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0013s ]
+
+[ 2018-01-05T17:07:52+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0012s ]
+
+[ 2018-01-05T17:07:52+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0057s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0026s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:10:33+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0028s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:10:34+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0024s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0039s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0029s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:10:36+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:10:36+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0026s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0028s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0017s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0017s ]
+
+[ 2018-01-05T17:10:36+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0017s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0021s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0015s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0016s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0016s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0022s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0016s ]
+
+[ 2018-01-05T17:10:38+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0018s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:10:40+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0037s ]
+SQL: UPDATE `wd_user` SET `language`='zh-cn' WHERE `id` = '35' [ RunTime:0.0795s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0017s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:10:40+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0026s ]
+
+[ 2018-01-05T17:10:41+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0058s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:10:41+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0010s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0011s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0011s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:10:41+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0024s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0028s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0011s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0017s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0031s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0016s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0015s ]
+
+[ 2018-01-05T17:10:42+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0039s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0020s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0017s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+
+[ 2018-01-05T17:10:42+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0022s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0022s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0043s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0014s ]
+
+[ 2018-01-05T17:11:21+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:11:22+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0021s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0024s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0062s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0159s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0018s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0036s ]
+
+[ 2018-01-05T17:11:22+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0056s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0018s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0026s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0016s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0024s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2018-01-05T17:11:24+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0022s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:11:26+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0018s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: UPDATE `wd_user` SET `language`='en-us' WHERE `id` = '35' [ RunTime:0.1087s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0022s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:11:26+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0023s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:11:27+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0018s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0015s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:11:28+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0031s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0035s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0029s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0036s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:11:28+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0020s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0035s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0010s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0022s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0010s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0009s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T17:11:29+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0025s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:11:29+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0036s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0027s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:11:52+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0024s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0028s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:11:52+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0017s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0033s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0023s ]
+
+[ 2018-01-05T17:12:22+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:12:22+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0011s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0045s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0015s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0019s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0010s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0009s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0019s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:12:22+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0031s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0016s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0026s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0022s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0032s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0027s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0013s ]
+
+[ 2018-01-05T17:12:24+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T17:12:24+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0040s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0031s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0009s ]
+
+[ 2018-01-05T17:13:40+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0022s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:13:41+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0025s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0011s ]
+
+[ 2018-01-05T17:15:06+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0019s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:06+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0018s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0018s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0023s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0059s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0016s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2018-01-05T17:15:08+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0027s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0018s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0015s ]
+
+[ 2018-01-05T17:15:08+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0019s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0011s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0009s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:08+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0019s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0017s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0034s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0030s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0042s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0010s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T17:15:10+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:12+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0033s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0021s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0020s ]
+SQL: UPDATE `wd_user` SET `language`='zh-cn' WHERE `id` = '35' [ RunTime:0.1005s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:12+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0011s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0005s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0005s ]
+
+[ 2018-01-05T17:15:14+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0027s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0022s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:14+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0016s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0033s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0025s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0017s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:15:14+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0053s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0026s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0046s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0038s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:16+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0022s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:16+08:00 ] 192.168.47.1 /Agent/settlementManagement.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0021s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'settlementManagement' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0022s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:28+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0011s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:28+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0033s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0023s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0044s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0019s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0032s ]
+
+[ 2018-01-05T17:15:28+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0047s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0034s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0011s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0008s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0008s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0010s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T17:15:29+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0029s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0017s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2018-01-05T17:15:29+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0016s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0009s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2018-01-05T17:15:44+08:00 ] 192.168.47.1 /Point/pointGoods.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0024s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'pointGoods' LIMIT 1   [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:44+08:00 ] 192.168.47.1 /Point/pointGoods.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0028s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0034s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'pointGoods' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0032s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0016s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_goods` [ RunTime:0.0036s ]
+SQL: SELECT `agent_id`,`category_id`,`agent_category_id`,`is_recommend`,`is_auth`,`id`,`goods_name`,`introduction`,`goods_image`,`goods_number`,`goods_price`,`sale_number`,`is_on_sale`,`is_favorable`,`favorable_start_time`,`favorable_end_time`,`favorable_price`,`add_time`,`comment_number` FROM `wd_goods` WHERE `goods_type` = 1 AND `is_delete` = 0 AND `is_lock` = 0 AND `goods_main_id` = '0' AND `is_on_sale` = 1 ORDER BY is_recommend DESC, is_auth DESC, `bidding_money` DESC, `id` DESC LIMIT 0,10   [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_user_collect` [ RunTime:0.0027s ]
+SQL: SELECT `id` AS `collect_id` FROM `wd_user_collect` WHERE `user_id` = '35' AND `goods_id` = '8' AND `type` = 0 LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT `id` AS `collect_id` FROM `wd_user_collect` WHERE `user_id` = '35' AND `goods_id` = '7' AND `type` = 0 LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0028s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:45+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0017s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0019s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0017s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:45+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0022s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0058s ]
+
+[ 2018-01-05T17:15:46+08:00 ] 192.168.47.1 /Point/pointLog.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'pointLog' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:46+08:00 ] 192.168.47.1 /Point/pointLog.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0021s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'pointLog' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0016s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_point_log` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_point_log` WHERE `to_id` = '35' ORDER BY `id` DESC LIMIT 0,10   [ RunTime:0.0041s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0036s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0024s ]
+
+[ 2018-01-05T17:15:47+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:47+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0037s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0022s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0033s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0017s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:48+08:00 ] 192.168.47.1 /Agent/myPointGoods.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0023s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'myPointGoods' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:48+08:00 ] 192.168.47.1 /Agent/myPointGoods.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0018s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'myPointGoods' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0022s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0015s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_goods` [ RunTime:0.0030s ]
+SQL: SHOW COLUMNS FROM `wd_goods_to_point` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_goods_to_point` WHERE `agent_id` = '' AND `status` = 0  [ RunTime:0.0010s ]
+SQL: SELECT `id` AS `goods_id`,`goods_name`,`introduction`,`goods_image`,`goods_number`,`sale_number`,`goods_price` FROM `wd_goods` WHERE `agent_id` = '' AND `goods_type` = 0 AND `goods_main_id` = '0' AND `is_delete` = 0 ORDER BY `id` DESC LIMIT 0,1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2018-01-05T17:15:50+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0012s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0017s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0026s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0027s ]
+
+[ 2018-01-05T17:15:50+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0030s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0008s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0021s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0017s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0012s ]
+
+[ 2018-01-05T17:15:51+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0047s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0028s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:51+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0042s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0022s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0023s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0017s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0016s ]
+
+[ 2018-01-05T17:15:51+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0020s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0019s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0021s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0019s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0039s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0025s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `memo` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0010s ]
+
+[ 2018-01-05T17:15:54+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0038s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0015s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:56+08:00 ] 192.168.47.1 /User/chooseLanguage.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'User' AND `controller_function` = 'chooseLanguage' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0020s ]
+SQL: UPDATE `wd_user` SET `language`='en-us' WHERE `id` = '35' [ RunTime:0.1008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:56+08:00 ] 192.168.47.1 /Agent/setting.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0021s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'setting' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0009s ]
+
+[ 2018-01-05T17:15:57+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0039s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0007s ]
+
+[ 2018-01-05T17:15:58+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0019s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0014s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0016s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0038s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0022s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0023s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0018s ]
+
+[ 2018-01-05T17:15:58+08:00 ] 192.168.47.1 /Message/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0027s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Message' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0023s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0018s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0014s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0015s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(0,1) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0024s ]
+SQL: SELECT `m`.`id`, `m`.`title`, `m`.`add_time`, `mr`.`is_read` 
+                FROM `wd_message_relevance` AS `mr` 
+                LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id` 
+                WHERE `m`.`message_type` IN(2) 
+                AND `mr`.`receiver_id` = '35' 
+                AND `m`.`is_delete` = '0' 
+                ORDER BY `mr`.`add_time` DESC 
+                LIMIT 1 [ RunTime:0.0040s ]
+SQL: SELECT COUNT(*) AS tp_count FROM wd_message_relevance `mr` LEFT JOIN `wd_message` AS `m` ON `mr`.`message_id` = `m`.`id`  WHERE mr.receiver_id = '35' AND mr.is_read = '0' AND m.message_type IN (0,1) LIMIT 1   [ RunTime:0.0027s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0022s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0019s ]
+
+[ 2018-01-05T17:15:59+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0013s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0022s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2018-01-05T17:15:59+08:00 ] 192.168.47.1 /Point/index.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0025s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Point' AND `controller_function` = 'index' LIMIT 1   [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '35' ORDER BY id DESC LIMIT 1   [ RunTime:0.0007s ]
+SQL: SELECT `id`,`message_type`,`condition`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1511771419'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0016s ]
+SQL: SELECT `point` FROM `wd_user` WHERE `id` = '35' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0010s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+

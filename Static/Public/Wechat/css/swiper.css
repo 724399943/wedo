@@ -1,0 +1,14 @@
+.swiper-container {/*height: 160px;*/margin: 0 auto; position: relative; overflow: hidden; z-index: 1; }
+.swiper-container-android .swiper-slide, .swiper-wrapper {-webkit-transform: translate3d(0,0,0); -moz-transform: translate3d(0,0,0); -o-transform: translate(0,0); -ms-transform: translate3d(0,0,0); transform: translate3d(0,0,0); }
+.swiper-wrapper { background: url(../images/icons/loading.gif) center center no-repeat; background-size: 40px; position: relative; width: 100%; height: 100%; z-index: 1; display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex; -webkit-transition-property: -webkit-transform; -moz-transition-property: -moz-transform; -o-transition-property: -o-transform; -ms-transition-property: -ms-transform; transition-property: transform; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; }
+.swiper-wrapper img {width: 100%; height: 100%;}
+.swiper-slide {-webkit-flex-shrink: 0; -ms-flex: 0 0 auto; flex-shrink: 0; width: 100%; height: 100%; position: relative; }
+.swiper-slide {text-align: center; font-size: 18px;}
+.swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {bottom: 23px; left: 0; width: 100%; }
+.swiper-pagination {position: absolute; text-align: center; -webkit-transition: .3s; -moz-transition: .3s; -o-transition: .3s; transition: .3s; -webkit-transform: translate3d(0,0,0); -ms-transform: translate3d(0,0,0); -o-transform: translate3d(0,0,0); transform: translate3d(0,0,0); z-index: 10; }
+.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {margin: 0 5px; }
+.swiper-pagination-clickable .swiper-pagination-bullet {cursor: pointer; }
+.swiper-pagination-bullet {width: 8px; height: 8px; display: inline-block; border-radius: 100%; background: #749883; opacity: 1; }
+.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {margin: 0 5px; }
+.swiper-pagination-clickable .swiper-pagination-bullet {cursor: pointer; }
+.swiper-pagination-bullet-active {opacity: 1; background: #005c32; }

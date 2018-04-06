@@ -1,0 +1,199 @@
+[ 2017-08-21T09:40:20+08:00 ] 192.168.47.1 /Agent/agentCenter
+ERR: SQLSTATE[HY000] [2002] Connection refused
+
+[ 2017-08-21T09:41:34+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0315s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0566s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0400s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2017-08-21T09:41:50+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2017-08-21T09:41:51+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2017-08-21T09:41:52+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0032s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2017-08-21T09:41:58+08:00 ] 192.168.47.1 /Login/login
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2017-08-21T09:42:12+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0026s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0024s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2017-08-21T09:42:20+08:00 ] 192.168.47.1 /Agent/goodsCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0012s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'goodsCenter' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2017-08-21T09:42:28+08:00 ] 192.168.47.1 /Bidding/biddingBanner
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0021s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Bidding' AND `controller_function` = 'biddingBanner' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2017-08-21T09:42:33+08:00 ] 192.168.47.1 /Login/login
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0019s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2017-08-21T09:42:37+08:00 ] 192.168.47.1 /Agent/agentCenter
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 100000 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2017-08-21T09:43:08+08:00 ] 192.168.47.1 /Login/login
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0029s ]
+
+[ 2017-08-21T09:43:19+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0017s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0582s ]
+SQL: SELECT * FROM `wd_user` WHERE `phone` = '13566666666' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SELECT * FROM `wd_user` WHERE `username` = '13566666666' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0009s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `wd_user` WHERE `phone` = '13566666666' LIMIT 1   [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0010s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 400022 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2017-08-21T09:44:24+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0032s ]
+SQL: SELECT * FROM `wd_user` WHERE `phone` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_user` WHERE `username` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0035s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `wd_user` WHERE `phone` = '13632488888' LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 400023 LIMIT 1   [ RunTime:0.0008s ]
+
+[ 2017-08-21T09:44:36+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0019s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0034s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_user` WHERE `phone` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SELECT * FROM `wd_user` WHERE `username` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `wd_user` WHERE `phone` = '13632488888' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0015s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 400023 LIMIT 1   [ RunTime:0.0007s ]
+
+[ 2017-08-21T09:44:41+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0015s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `wd_user` WHERE `phone` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT * FROM `wd_user` WHERE `username` = '13632488888' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SELECT COUNT(*) AS tp_count FROM `wd_user` WHERE `phone` = '13632488888' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0013s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 400023 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2017-08-21T09:46:54+08:00 ] 192.168.47.1 /Login/login.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0018s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0022s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0029s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Login' AND `controller_function` = 'login' LIMIT 1   [ RunTime:0.0014s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0021s ]
+SQL: SELECT * FROM `wd_user` WHERE `phone` = '13632486699' AND `password` = 'e10adc3949ba59abbe56e057f20f883e' LIMIT 1   [ RunTime:0.0012s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0011s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2017-08-21T09:46:57+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0009s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0026s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0027s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '36' ORDER BY id DESC LIMIT 1   [ RunTime:0.0015s ]
+SQL: SELECT `id`,`message_type`,`add_time` FROM `wd_message` WHERE `type` = 0  [ RunTime:0.0007s ]
+SQL: INSERT INTO `wd_message_relevance` (`message_id`,`receiver_id`,`is_read`,`type`,`add_time`) VALUES ('1','36','0','0','1499014990') [ RunTime:0.0792s ]
+SQL: INSERT INTO `wd_message_relevance` (`message_id`,`receiver_id`,`is_read`,`type`,`add_time`) VALUES ('2','36','0','0','1499014991') [ RunTime:0.0803s ]
+SQL: INSERT INTO `wd_message_relevance` (`message_id`,`receiver_id`,`is_read`,`type`,`add_time`) VALUES ('3','36','0','0','1499014992') [ RunTime:0.0836s ]
+
+[ 2017-08-21T09:46:57+08:00 ] 192.168.47.1 /Agent/agentCenter.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0016s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0011s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0017s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Agent' AND `controller_function` = 'agentCenter' LIMIT 1   [ RunTime:0.0017s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0018s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '36' ORDER BY id DESC LIMIT 1   [ RunTime:0.0012s ]
+SQL: SELECT `id`,`message_type`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1499014992'  [ RunTime:0.0063s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0030s ]
+SQL: SELECT `headimgurl`,`nickname`,`money` FROM `wd_user` WHERE `id` = '36' LIMIT 1   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_agent` [ RunTime:0.0025s ]
+SQL: SELECT `agent_name` FROM `wd_agent` WHERE `id` = null LIMIT 1   [ RunTime:0.0007s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0014s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+
+[ 2017-08-21T09:47:00+08:00 ] 192.168.47.1 /Order/orderList.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0013s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0013s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Order' AND `controller_function` = 'orderList' LIMIT 1   [ RunTime:0.0008s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0015s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '36' ORDER BY id DESC LIMIT 1   [ RunTime:0.0011s ]
+SQL: SELECT `id`,`message_type`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1499014992'  [ RunTime:0.0007s ]
+
+[ 2017-08-21T09:47:00+08:00 ] 192.168.47.1 /Order/orderList.html
+SQL: SHOW COLUMNS FROM `wd_config` [ RunTime:0.0014s ]
+SQL: SELECT `config_sign`,`config_value` FROM `wd_config`  [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_controller_power` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `wd_controller_power` WHERE `controller_name` = 'Order' AND `controller_function` = 'orderList' LIMIT 1   [ RunTime:0.0013s ]
+SQL: SHOW COLUMNS FROM `wd_message` [ RunTime:0.0016s ]
+SQL: SHOW COLUMNS FROM `wd_message_relevance` [ RunTime:0.0012s ]
+SQL: SELECT `add_time` FROM `wd_message_relevance` WHERE `type` = 0 AND `receiver_id` = '36' ORDER BY id DESC LIMIT 1   [ RunTime:0.0006s ]
+SQL: SELECT `id`,`message_type`,`add_time` FROM `wd_message` WHERE `type` = 0 AND `add_time` > '1499014992'  [ RunTime:0.0006s ]
+SQL: SHOW COLUMNS FROM `wd_order` [ RunTime:0.0036s ]
+SQL: SHOW COLUMNS FROM `wd_order` [ RunTime:0.0025s ]
+SQL: SHOW COLUMNS FROM `wd_user` [ RunTime:0.0018s ]
+SQL: SHOW COLUMNS FROM `wd_order_detail` [ RunTime:0.0016s ]
+SQL: SELECT `id`,`user_id`,`order_sn`,`total`,`carriage`,`status`,`express_type`,`buyer_message`,`add_time` FROM `wd_order` WHERE `is_out_date` = 0 AND `is_split` IN ('0','1') AND `is_pay` = 1 AND `supplier_id` = '' ORDER BY id DESC LIMIT 10,10   [ RunTime:0.0010s ]
+SQL: SHOW COLUMNS FROM `wd_errcode` [ RunTime:0.0012s ]
+SQL: SELECT `errMsg` FROM `wd_errcode` WHERE `errCode` = 200000 LIMIT 1   [ RunTime:0.0006s ]
+

@@ -1,0 +1,444 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html lang="en">
+<head>
+	<title><?php echo C('systemName');?></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="Keywords" content="" />
+	<meta name="Description" content="" />
+	<meta name="viewport" content="width = 320,initial-scale=1,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta content="telephone=no" name="format-detection" />
+	<!-- css -->
+	<link href="/Static/Public/Wechat/css/base.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="/Static/Public/Wechat/css/wedoStyle.css">
+	<link rel="stylesheet" type="text/css" href="/Static/Public/Wechat/css/swiper.css">
+	
+</head>
+
+<body>
+
+	<div class="content" id="content">
+		<div class="ident_nav">
+			<em class="back"></em>
+			<span class="on" @click="ontab(0)"><?php echo (L("_WAP_POINTORDER_NOTVERIFIED_")); ?></span>
+			<span @click="ontab(1)"><?php echo (L("_WAP_POINTORDER_VERIFIED_")); ?></span>
+		</div>
+		<div class="ident_search">
+			<em></em>
+			<input type="text" name="" placeholder="<?php echo (L("_WAP_POINTORDER_SEARCH_")); ?>" v-model="keyword" @change="searchGoods">
+		</div>
+		<div class="integral_goods" v-if="nothing == 0">
+			<!-- 未认证 -->
+			<div class="is_hgoods" v-if="is_auth == 0">
+				<div class="sel_goodsm">
+					<ul>
+						<li v-for="(item,index) in goodsList">
+							<div class="s_goods_wrap">
+								<div class="s_cbox">
+									<input type="checkbox" name="" :id="item.id" @change="selfun">
+									<label :for="item.id"></label>
+								</div>
+							</div>
+							<a :href="'/Goods/goodsDetail?goods_id='+item.id">
+								<div class="imgbox">
+									<img :src="item.goods_image">
+								</div>
+								<div class="se_ggg sexiao">
+									<h1>{{item.goods_name}}</h1>
+									<p class="db-overflow">{{item.introduction}}</p>
+									<span>RM{{item.goods_price}}</span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<a href="javascript:;" class="widup" @click="goodsToAuth"><?php echo (L("_WAP_POINTORDER_APPLY_")); ?></a>
+			</div>
+			<!-- 已认证 -->
+			<div class="is_hgoods" v-else>
+				<div class="sel_goodsm">
+					<ul>
+						<li v-for="(item,index) in goodsList">
+							<div class="is_hhh">
+								<a :href="'/Goods/goodsDetail?goods_id='+item.id">
+									<div class="imgbox">
+										<img :src="item.goods_image">
+									</div>
+									<div class="se_ggg">
+										<h1>{{item.goods_name}}</h1>
+										<p class="db-overflow">{{item.introduction}}</p>
+										<span>RM{{item.goods_price}}</span>
+									</div>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<!-- 没有内容 -->
+		<div class="no_igoods" v-else-if="nothing == 1 && is_auth == 0">
+			<p><?php echo (L("_WAP_POINTORDER_NOTHAVEUNVERIFIED_")); ?></p>
+		</div>
+		<div class="no_igoods" v-else-if="nothing == 1 && is_auth == 1">
+			<p><?php echo (L("_WAP_POINTORDER_NOTHAVEVERIFIED_")); ?></p>
+		</div>
+	</div>
+
+
+
+
+
+
+     <div class="loading" id="Jloading"><img src="/Static/Public/Wechat/images/loading.gif"></div>
+	<!-- 提示信息 -->
+	<div class="mengban">
+		<!-- 判断提示只有确定 -->
+		<div class="msg-main-box2 JmsgBox-confirm">
+			<div class="detail-wrap">
+				<p class="detail-txt"></p>
+			</div>
+			<div class="btn">
+				<a href="javascript:;" class="tips-btn1 JsureBtn">确定</a>
+			</div>
+
+		</div>
+
+		<!--    判断提示 -->
+		<div class="msg-main-box2 JmsgBox2">
+			<div class="detail-wrap">
+				<p class="detail-txt"></p>
+			</div>
+			<div class="btn">
+				<a href="javascript:;" class="tips-btn1 JsureBtn">确定</a>
+				<a href="javascript:;" class="tips-btn1 JcancelBtn">取消</a>
+			</div>
+
+		</div>
+
+		<!-- 自动消失 -->
+		<div class="automsg-main-box JmsgBox1" style="display: none;">
+			<div class="tit"><?php echo (L("_COMMON_NOTICE_TIPS_")); ?></div>
+			<p class="detail-txt">加入购物车成功</p>
+		</div>
+	</div>
+
+
+<!-- 正式版本vue -->
+<!-- <script type="text/javascript" src="/Static/Public/Wechat/js/vue.min.js"></script> -->
+<!-- 开发版本 -->
+<script type="text/javascript" src="/Static/Public/Wechat/js/vue.js"></script>
+<script type="text/javascript" src="/Static/Public/Wechat/js/common.js"></script>
+<script type="text/javascript" src="/Static/Public/Wechat/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	//判断是安卓还是IOS
+	var ua_phone = navigator.userAgent.toLowerCase();
+	var UA_phoneType = '';	
+	if (/iphone|ipad|ipod/.test(ua_phone)) {
+		//msgbox("iphone");	
+		UA_phoneType = 0;	
+	} else if (/android/.test(ua_phone)) {
+		UA_phoneType = 1;
+	}
+
+	/**              
+	 * 时间戳转换日期              
+	 * @param <int> unixTime    待时间戳(秒)            
+	 */
+	Vue.filter('time',function(value, type="yyyy-MM-dd hh:mm:ss") {
+		var newDate = new Date();
+		newDate.setTime(value * 1000);
+		Date.prototype.format = function(format) {
+			var date = {
+			    "M+": this.getMonth() + 1,
+			    "d+": this.getDate(),
+			    "h+": this.getHours(),
+			    "m+": this.getMinutes(),
+			    "s+": this.getSeconds(),
+			    "q+": Math.floor((this.getMonth() + 3) / 3),
+			    "S+": this.getMilliseconds()
+			};
+			if (/(y+)/i.test(format)) {
+			    format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+			}
+			for (var k in date) {
+			    if (new RegExp("(" + k + ")").test(format)) {
+			           format = format.replace(RegExp.$1, RegExp.$1.length == 1
+			                  ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+			    }
+			}
+			return format;
+		}
+		return newDate.format(type);
+	})
+</script>
+
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			goodsList : [],
+			page : 1,
+			goscroll : 1,
+			is_auth : 0,
+			nothing : 1,
+			keyword : '',
+			goods_id : ''
+		},
+		created(){
+			this.getGoodsList();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			getGoodsList : function(){
+				var that = this;
+				$.ajax({
+					url : "<?php echo U("Agent/agentGoods");?>",
+					type : "POST",
+					dataType : "json",
+					data : {
+						page : that.page,
+						is_auth : that.is_auth
+					}
+				})
+				.done(function(returnData){
+					if( returnData['data']['list'].length > 0 ){
+						if( that.goodsList.length == 0 ){
+							that.goodsList = returnData['data']['list'];
+						}else{
+							that.goodsList = that.goodsList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+						that.nothing = 0;
+					}else{
+						that.goscroll = 0;
+						if( that.goodsList.length == 0 ){
+							that.nothing = 1;
+						}
+					}
+				})
+			},
+			searchGoods : function(){
+				var that = this;
+				that.page = 1;
+				that.goodsList = [];
+				$.ajax({
+					url : "<?php echo U("Agent/agentGoods");?>",
+					type : "POST",
+					dataType : "json",
+					data : {
+						is_auth : that.is_auth,
+						page : that.page,
+						keyword : that.keyword
+					}
+				})
+				.done(function(returnData){
+					if( returnData['data']['list'].length > 0 ){
+						if( that.goodsList.length == 0 ){
+							that.goodsList = returnData['data']['list'];
+						}else{
+							that.goodsList = that.goodsList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+						that.nothing = 0;
+					}else{
+						that.goscroll = 0;
+						if( that.goodsList.length == 0 ){
+							that.nothing = 1;
+						}
+					}
+					console.log(that.nothing);
+				})
+			},
+			goodsToAuth : function(){
+				var that = this;
+				var start_time = new Date();
+				start_time.setTime(start_time.getTime() + 24*60*60*1000);
+				start_time = start_time.getFullYear()+"-" + (start_time.getMonth()+1) + "-" + start_time.getDate();
+				$.ajax({
+					url : "<?php echo U("GoodsCheck/goodsToAuth");?>",
+					type : "POST",
+					dataType : "json",
+					data : {
+						goods_id : that.goods_id,
+						start_time : start_time,
+						check_type : 0,
+					}
+				})
+				.done(function(data){
+					if (data.status == 200000) {
+						var url = "<?php echo U('GoodsCheck/payForCheck');?>?tab=1&order_sn=" + data['data']['order_sn'];
+                        window.location.href = url;
+					}else{
+						automsgbox(data.message);
+					}
+				})
+			},
+			ontab : function(index){
+				var that = this;
+				$(event.target).siblings('span').removeClass('on');
+				$(event.target).addClass("on");
+				that.is_auth = index;
+				that.goodsList = [];
+				that.getGoodsList();
+			},
+			selfun : function(){
+				var that = this;
+				$('input').attr('checked',false);
+				$(event.target).attr('checked',true);
+				that.goods_id = $(event.target).attr('id');
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.getGoodsList();
+						}
+					}
+				})
+			}
+		}
+	})
+</script>
+
+
+	<script type="text/javascript">
+		/*有确认按钮*/
+		function msgbox(txt, callback) {
+			var mengban = $('.mengban');
+			var tipBox2 = $('.JmsgBox-confirm');
+			$('.JmsgBox-confirm .detail-txt').html(txt);
+			mengban.show();
+			tipBox2.show();
+			$('.JmsgBox-confirm .JsureBtn').click(function() {
+				mengban.hide();
+				tipBox2.hide();
+				if (callback) {
+					callback();
+				}
+			});
+		}
+
+		/*有取消和确认按钮*/
+		function msgbox2(txt, callback) {
+			var mengban = $('.mengban');
+			var tipBox2 = $('.JmsgBox2');
+			$('.JmsgBox2 .detail-txt').html(txt);
+			mengban.show();
+			tipBox2.show();
+			var ctr = 1;
+			$('.JmsgBox2 .JsureBtn').click(function() {
+				mengban.hide();
+				tipBox2.hide();
+				if (callback && ctr == 1) {
+					ctr = 0;
+					callback();
+				}
+			});
+			$('.JcancelBtn').click(function() {
+				mengban.hide();
+				tipBox2.hide();
+				ctr = 0;
+			});
+		}
+
+		/*自动消失*/
+		function automsgbox(txt, callback) {
+			var mengban = $('.mengban');
+			var tipBox1 = $('.automsg-main-box');
+			$('.automsg-main-box .detail-txt').html(txt);
+			mengban.show();
+			tipBox1.show();
+			var t = setTimeout(function(){
+				mengban.hide();
+				tipBox1.hide();
+				if (callback) {
+					callback();
+				}
+			},2000);
+		}
+
+		function isScroll(bottomCall){
+			var startX = 0, startY = 0;
+		    function touchSatrtFunc(evt) {
+			      try
+			      {
+
+			          var touch = evt.touches[0]; //获取第一个触点  
+			          var x = Number(touch.clientX); //页面触点X坐标  
+			          var y = Number(touch.clientY); //页面触点Y坐标  
+			          //记录触点初始位置  
+			          startX = x;
+			          startY = y;
+
+			      } catch (e) {
+			          alert( e.message);
+			      }
+		    }
+	    	//touchstart事件  
+	        document.body.addEventListener('touchstart', touchSatrtFunc, false);
+	        document.body.addEventListener('touchmove',scrlllfunction,false);
+	        function scrlllfunction (ev){
+		        var _point = ev.touches[0];
+		         // window滚动
+		        var _top = document.body.scrollTop;
+		         // 什么时候到底部
+		        var bottomAdr = document.body.scrollHeight - window.innerHeight;
+		          //判断是否滚到底部加载更多
+		          if(_top >= bottomAdr-10 && _point.clientY < startY){
+		              if(bottomCall){
+		                bottomCall();
+		              }
+		          }
+		          // 到达顶端
+		          if (_top === 0) {
+		              // 阻止向下滑动
+		              if (_point.clientY > startY) {
+		                  ev.preventDefault();
+		              } else {
+		                  // 阻止冒泡
+		                  // 正常执行
+		                  ev.stopPropagation();
+		              }
+		          } else if (_top == bottomAdr) {
+		              // 到达底部
+		              // 阻止向上滑动
+		              if (_point.clientY < startY) {
+		                  ev.preventDefault();
+		              } else {
+		                  // 阻止冒泡
+		                  // 正常执行
+		                  ev.stopPropagation();
+		              }
+		          } else if (_top > 0 && _top < bottomAdr) {
+		              ev.stopPropagation();
+		          } else {
+		              ev.preventDefault();
+		          }
+	        }
+		}
+
+		var is_interface = '<?php echo session("isInterfase");?>';
+		$('.back').click(function() {
+			console.log(111);
+			if ( is_interface ) {
+				window.location.href="mitchell://back";
+			} else {
+				history.back();
+			}
+		});
+	</script>
+
+</body>
+</html>
