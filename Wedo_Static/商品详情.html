@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <title>wedo</title>
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width = 320,initial-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/wedoStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/swiper.css">
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+</head>
+<body>
+	<div class="content">
+		<div class="goods_detail_wrap">
+			<div class="goods_img_wrap swiper-container" id="Goods_img_cont">
+				<div class="goods_img_cont swiper-wrapper">
+					<div class="goods_img_box swiper-slide"><img src="http://placehold.it/350x150"></div>
+					<div class="goods_img_box swiper-slide"><img src="http://placehold.it/350x150"></div>
+					<div class="goods_img_box swiper-slide"><img src="http://placehold.it/350x150"></div>
+				</div>
+				<div class="slide_num">1/6</div>
+				<span class="back"></span>
+			</div>
+			<div class="goods_msg">
+				<p class="name db-overflow">B&O PLAY（Bang & Olufsen）BeoPlay A1全新便携式蓝牙音箱 绿色<em>平台认证</em></p>
+				<p class="msgtt">Cecilia Manz 2016心动力作！2*140瓦大功率扬声器 TRUE 360全向声音技术提供超乎想象的360°声音体验，创新的电流自适应控制技术精确地给与正好所需的能量提高电池续航，惊叹触觉 轻便携带 曼妙声音，珍爱如疯如狂 沉迷如痴如醉</p>
+				<div class="g_msg_tt">
+					<span>￥298.00</span>
+					<p>热销9877件, 82911人浏览过</p>
+				</div>
+				<div class="select_g_t">
+					<div class="s_g_t">
+						<span>选择</span>
+						<input type="text" name="" disabled="disabled" value="绿色">
+						<em></em>
+					</div>
+				</div>
+			</div>
+			<div class="goods_detail">
+				<div class="g_de_t">
+					<em class="lf"></em>
+					<span>商品详情</span>
+					<em class="rt"></em>
+				</div>
+				<ul>
+					<li>用户点击将此产品加入购物车</li>
+					<li>若有类型选项则弹出类型，选中后加入购物车</li>
+					<li>规格：黑色可选，灰色不可选，蓝色已选</li>
+					<li>若仅有一个规格，需要自动选择</li>
+					<li>数量，当用户选择了规格，若此款不足5件，需显示剩余X件，若大于5件则不显示剩余件数</li>
+				</ul>
+				<div class="imgbox">
+					<img src="http://placehold.it/350x150">
+				</div>
+			</div>
+			<div class="goods_assess">
+				<div class="tt">商品评价(98)</div>
+				<div class="g_assess_cont">
+					<div class="eva_list_box">
+						<div class="user_eva">
+							<div class="eva_top">
+								<div class="eva_user">
+									<img src="http://placehold.it/350x150">
+									<span>Emma Watson</span>
+								</div>
+								<div class="eva_star_cont">
+									<div class="eva_star_box on"></div>
+									<div class="eva_star_box on"></div>
+									<div class="eva_star_box on"></div>
+									<div class="eva_star_box on"></div>
+									<div class="eva_star_box"></div>
+								</div>
+							</div>
+							<p>质量非常好，包装也非常好，文件袋形式的包装，透气所以没有异味，非常棒！！还会光顾的！</p>
+							<div class="eva_goods_cont">
+								<span>2016.02.02</span>
+								<span>10:29:28</span>
+								<span>尺寸：M</span>
+								<span>颜色：牛仔蓝</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a href="javascript:;" class="seemore_eva">查看更多评论</a>
+			<!-- 编辑规格 -->
+			<div class="select_goods_box" style="display:block">
+				<div class="s_g_top">
+					<div class="s_g_img">
+						<img src="http://placehold.it/350x150">
+					</div>
+					<p class="s_g_name">原创法兰绒磨毛男士潮复古长袖加厚衬衣</p>
+					<span class="s_price">￥199.00</span>
+					<em class="close">x</em>
+				</div>
+				<div class="s_g_check_box">
+					<span>颜色</span>
+					<ul class="s_g_c_ul">
+						<li class="on">蓝色</li>
+						<li>绿色</li>
+						<li>咖啡色</li>
+						<li>黑色</li>
+						<li>黄色</li>
+						<li>米色</li>
+						<li>浅棕色</li>
+					</ul>
+				</div>
+				<div class="s_g_check_box">
+					<span>尺码</span>
+					<ul class="s_g_c_ul">
+						<li class="on">M</li>
+						<li>L</li>
+						<li>XL</li>
+					</ul>
+				</div>
+			</div>
+			<div class="eva_btnwrap">
+				<a href="javascript:;" class="eva_edi">编辑</a>
+				<a href="javascript:;" class="shelf">下架</a>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var mySwiper = new Swiper('#Goods_img_cont', {
+		autoplayDisableOnInteraction : false, 
+	})
+</script>
+</html>
