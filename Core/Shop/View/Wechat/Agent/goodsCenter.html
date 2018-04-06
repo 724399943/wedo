@@ -1,0 +1,105 @@
+<extend name="Public:base" />
+<block name="main">
+
+	<div class="content" id="content">
+		<header class="head">
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_PRODUCTSMANAGEMENT_}</h1>
+			<a href="{:U('Agent/searchAgentGoods')}"><em></em></a>
+		</header>
+		<div class="merch_control">
+			<ul>
+				<li>
+					<a href="{:U('Agent/agentGoodsCategory')}">
+						<span>{$Think.lang._WAP_AGENT_CATEGORIESMANAGEMENT_}</span>
+						<em></em>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('Agent/agentGoods')}">
+						<span>{$Think.lang._WAP_AGENT_EXISTINGPRODUCTS_}</span>
+						<em></em>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('Goods/addGoods')}">
+						<span>{$Think.lang._WAP_AGENT_ADDAPRODUCT_}</span>
+						<em></em>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('Agent/agentGoodsComment')}">
+						<span>{$Think.lang._WAP_AGENT_REVIEWMANAGEMENT_}</span>
+						<em></em>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</block>
+<block name="footer">
+	<include file="Public:footer" />
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				historyList : [],
+				count : 0,
+			},
+			created(){
+				$('#Jloading').fadeOut();
+				this.loadMessage();
+				window.initMessage = this.initMessage;
+			},
+			methods : {
+				loadMessage : function() {
+					var that = this;
+					$.ajax({
+						url: '{:U('Message/index')}',
+						type: 'POST',
+						dataType: 'json',
+						data: {}
+					})
+					.done(function(returnData) {
+						if( returnData['status'] == '200000' ){
+							that.count = parseInt(returnData['data']['count']);
+							that.$nextTick(function(){
+								that.initMessage();
+							});
+						}
+					});
+				},
+				//处理信息显示
+				initMessage(){
+					var messageList = localStorage.messageList;
+					if ( messageList ) {
+						var messageList = JSON.parse(messageList);
+						/****处理显示列表信息*****/
+						for(var i=0; i<this.historyList.length; i++){
+							for(var j=0; j<messageList.length; j++){
+								var list_from = 'wedo' + this.historyList[i].id,
+									messageData = messageList[j];
+								if( list_from == messageData.id ){
+									this.historyList[i].content = {type:messageData['type'],content:messageData['content']};
+									this.historyList[i].count = messageData.total;
+									this.historyList[i].add_time = messageData.time / 1000;
+									this.count += parseInt(messageData.total);
+									break;
+								}
+							}
+						}
+					}
+					this.labelCount();
+				},
+				labelCount(){
+					if ( this.count > 0 ) {
+						$('.reddot').text(this.count);
+					} else {
+						$('.reddot').remove();
+					}
+				}
+			}
+		})
+	</script>
+</block>

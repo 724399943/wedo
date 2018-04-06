@@ -1,0 +1,227 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_USER_WITHDRAW_}</h1>
+		</header>
+		<div class="main">
+			<div class="withdrawals">
+				<div class="wdraw_top">
+					<p>{$Think.lang._WAP_USER_WITHDRAWALAMOUNT_}</p>
+					<input type="text" placeholder="{$Think.lang._WAP_USER_PLEASEENTER_}({$Think.lang._WAP_USER_MINIMUMWITHDRAWAL_}{:C('minWithdrawMoney')}{$Think.lang._COMMON_GINGGIT_}，{$Think.lang._WAP_USER_MAXIMUMWITHDRAWAL_}{$maxWithdrawMoney}{$Think.lang._COMMON_GINGGIT_})" v-model="dataJson.money">
+				</div>
+				<div class="p_cen_m">
+					<ul class="sm_ul">
+						<li class="smli">
+							<a href="javascript:;" @click="onPayType">
+								<span class="s1">{$Think.lang._WAP_USER_PLEASESELECT_}</span>
+								<span class="s2">{$Think.lang._WAP_USER_PAYMENTGATEWAY_}</span>
+								<em class="ei"></em>
+							</a>
+						</li>
+						<li class="smli">
+							<a href="javascript:;">
+								<span class="s1">{$Think.lang._WAP_USER_ACCOUNT_}</span>
+								<input type="text" class="txi" v-model="dataJson.account">
+								<em class="ei"></em>
+							</a>
+						</li>
+					</ul>
+					<ul class="sm_ul">
+						<li class="smli">
+							<a href="javascript:;">
+								<span class="s1">{$Think.lang._WAP_USER_ACTUALNAME_}</span>
+								<input type="text" class="txi" v-model="dataJson.truename">
+								<em class="ei"></em>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+				<a href="javascript:;" class="widup" @click="goToVerify">{$Think.lang._WAP_USER_SUBMIT_}</a>
+		</div>
+		<!-- 弹窗 -->
+		<div class="mask"></div>
+		<div class="setPay_psw KeditPassword">
+			<p>{$Think.lang._PC_USER_WITHDRAWAL_PASSWORD_}</p>
+			<ul>
+				<li class="vertical-mi">{{set_password.substring(0,1)}}</li>
+				<li class="vertical-mi">{{set_password.substring(1,2)}}</li>
+				<li class="vertical-mi">{{set_password.substring(2,3)}}</li>
+				<li class="vertical-mi">{{set_password.substring(3,4)}}</li>
+				<li class="vertical-mi">{{set_password.substring(4,5)}}</li>
+				<li class="vertical-mi">{{set_password.substring(5,6)}}</li>
+				<div class="spinput">	
+					<input type="password" maxlength="6" v-model="set_password" @input="editing">
+				</div>
+			</ul>
+		</div>
+		<div class="setPay_psw KverifyPassword">
+			<p>{$Think.lang._PC_USER_ENTER_WITHDRAWAL_PASSWORD_}</p>
+			<ul>
+				<li class="vertical-mi">{{password.substring(0,1)}}</li>
+				<li class="vertical-mi">{{password.substring(1,2)}}</li>
+				<li class="vertical-mi">{{password.substring(2,3)}}</li>
+				<li class="vertical-mi">{{password.substring(3,4)}}</li>
+				<li class="vertical-mi">{{password.substring(4,5)}}</li>
+				<li class="vertical-mi">{{password.substring(5,6)}}</li>
+				<div class="spinput">	
+					<input type="password" maxlength="6" v-model="password" @input="changing">
+				</div>
+			</ul>
+		</div>
+		<div class="selpayType" id="selPay">
+			<ul>
+				<li @click="selpay(0)">{$Think.lang._COMMON_WECHAT_}</li>
+				<li @click="selpay(1)">{$Think.lang._COMMON_ALIPAY_}</li>
+				<li @click="selpay(2)">{$Think.lang._COMMON_CREDIT_CARD_}</li>
+			</ul>
+			<a href="javascript:;" @click="cancelPay">{$Think.lang._COMMON_CANCEL_}</a>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			dataJson : {},
+			set_password : '',
+			password : '',
+			withdraw_password : "{$userInfo['withdraw_password']}",
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			goToVerify() {
+				if ( !this.dataJson['money'] ) {
+					automsgbox("{$Think.lang.module_user_withdraw_amount}");
+					return;
+				}
+				if ( !this.dataJson['withdraw_type'] && this.dataJson['withdraw_type'] != 0 ) {
+					automsgbox('{$Think.lang.module_user_withdraw_methods}');
+					return;
+				}
+				if ( !this.dataJson['account'] ) {
+					automsgbox('{$Think.lang.module_user_account_number}');
+					return;
+				}
+				if ( !this.dataJson['truename'] ) {
+					automsgbox('{$Think.lang.module_user_actual_name}');
+					return;
+				}
+				this.showPasswordBox();
+			},
+			editing() {
+				var password = $(event.target).val(),
+					match = !!password.match(/^\d+$/);
+				if ( match == false ) {
+					this.set_password = '';
+					automsgbox('密码只能是数字');
+					return;
+				}
+				if ( password.length == 6 ) this.editWithdrawPassword();
+			},
+			changing() {
+				var password = $(event.target).val(),
+					match = !!password.match(/^\d+$/);
+				if ( match == false ) {
+					this.password = '';
+					automsgbox('密码只能是数字');
+					return;
+				}
+				if ( password.length == 6 ) this.verifyWithdrawPassword();
+			},
+			withdraw() {
+				var that = this;
+				$.ajax({
+					url : "{:U("User/withdraw")}",
+					type : "POST",
+					dataType : "json",
+					data : that.dataJson
+				})
+				.done(function(data){
+					if (data.status == 200000) {
+						automsgbox(data['message'], function(){
+							window.location.href = window.location.href;
+						});
+					}else{
+						automsgbox(data.message);
+						that.password = '';
+						that.hidePasswordBox();
+					}
+				})
+			},
+			editWithdrawPassword() {
+				var that = this;
+				if ( !that.set_password ) {
+					automsgbox('{$Think.lang._WAP_AGENT_NEWPASSWORD_}');
+					return;
+				}
+				$.ajax({
+					url: '{:U('User/editWithdrawPassword')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {password:that.set_password}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox(returnData['message'], function(){
+							$('.KverifyPassword').show();
+						});
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});			
+			},
+			verifyWithdrawPassword() {
+				var that = this;
+				$.ajax({
+					url: '{:U('User/verifyWithdrawPassword')}',
+					type: 'POST',
+					dataType: 'json',
+					async: false,
+					data: {password:that.password}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						that.withdraw();
+					} else {
+						automsgbox(returnData['message']);
+						that.password = '';
+						that.hidePasswordBox();
+					}
+				});
+			},
+			showPasswordBox() {
+				$('.mask').show();
+				( !this.withdraw_password ) ? $('.KeditPassword').show() : $('.KverifyPassword').show();
+			},
+			hidePasswordBox() {
+				$('.mask').hide();
+				$('.setPay_psw').hide();
+			},
+			onPayType : function(){
+				$("#selPay").slideDown(200);
+				$(".mask").show();	
+			},
+			selpay : function(withdraw_type){
+				var that = $(event.target),
+					text = that.text();
+				$('.s2').text(text);
+				this.dataJson.withdraw_type = withdraw_type;
+				that.siblings().removeClass('on');
+				that.addClass('on');
+				$("#selPay").slideUp(200);
+				$(".mask").hide();
+			},
+			cancelPay : function(){
+				$("#selPay").slideUp(200);
+				$(".mask").hide();
+			}
+		}
+	})
+</script>
+</block>

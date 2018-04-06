@@ -1,0 +1,18 @@
+<ul>
+	<li class="current">
+		<ul class="Jcon-ctr">
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Message')) && in_array(ACTION_NAME, array('index', 'messageDetail'))">on</if>">
+				<a href="{:U('Message/index')}">{$Think.lang._PC_MESSAGE_SYSTEM_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('MessageCheck')) && in_array(ACTION_NAME, array('issuedMessage', 'issuingDetail'))">on</if>">
+				<a href="{:U('MessageCheck/issuedMessage')}">{$Think.lang._PC_MESSAGE_MY_POST_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Message')) && in_array(ACTION_NAME, array('consultation'))">on</if>">
+				<a href="{:U('Message/consultation')}">{$Think.lang._PC_MESSAGE_CONTACT_USER_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('MessageCheck')) && in_array(ACTION_NAME, array('issuingMessage', 'payForIssuing'))">on</if>">
+				<a href="{:U('MessageCheck/issuingMessage')}">{$Think.lang._PC_MESSAGE_PUBLISH_}</a>
+			</li>
+		</ul>
+	</li>
+</ul>

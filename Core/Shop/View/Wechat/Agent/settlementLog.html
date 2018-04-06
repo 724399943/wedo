@@ -1,0 +1,175 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Wechat/css/LCalendar.css">
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_SUBTOTAL_} RM{{total}}</h1>
+		</header>
+		<div class="main">
+			<div class="settle_details">
+				<div class="order_nav">
+					<div class="o_nav on">
+						<span class="on" id="Jcalendar">{$Think.lang._WAP_AGENT_ALLDATES_}</span>
+						<input id="Jcalendar" type="text" name="" value="" v-model="start_time">
+						<input id="birthday" type="hidden" name="birthday" value="2007-11-08">
+						<em></em>
+					</div>
+					<div class="o_nav">
+						<span @click="change">{$Think.lang._WAP_AGENT_ALLSTATUS_}</span>
+						<i></i>
+						<ul class="onav_ul" id="orderul">
+							<li @click="selSate(1)">{$Think.lang._WAP_AGENT_HASBEENPAID_}</li>
+							<li @click="selSate(0)">{$Think.lang._WAP_AGENT_DUEPAYMENT_}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="set_d_list">
+					<ul>
+						<li v-for="(item,index) in list">
+							<div class="lf">
+								<p class="tt">{{item.event}}</p>
+								<p class="time">{{item.add_time | time}}</p>
+							</div>
+							<!-- <span v-if="item.type == 1">{$Think.lang._WAP_AGENT_HASBEENPAID_}</span>
+							<span v-else>{$Think.lang._WAP_AGENT_DUEPAYMENT_}</span> -->
+							<span>{$Think.lang._WAP_AGENT_HASBEENPAID_}</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="navmask"></div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<if condition="$_COOKIE['think_language'] eq 'zh-cn'">
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/LCalendar.js"></script>
+<else/>
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/LCalendar_en.js"></script>
+</if>
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			page :1,
+			goscroll :1,
+			list : [],
+			total : '',
+			start_time : '',
+			obol : true,
+			type : 1
+		},
+		created (){
+			this.getSettlementLog();
+		},	
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			getSettlementLog : function(){
+				var that = this;
+				$.ajax({
+					url : "{:U("Agent/settlementLog")}",
+					type : "POST",
+					dataType : "json",
+					data : {
+						page : that.page,
+						type : that.type
+					}
+				})
+				.done(function(data){
+					if(data.data.list.length>0){
+						that.total = data.data.total;
+			        	if(that.list.length == 0){
+			        		that.list = data.data.list;
+			        	}else{
+			        		that.list = that.list.concat(data.data.list);
+			        	}
+		        		vm.goscroll = 1;
+		        	}else{
+		        		vm.goscroll = 0;
+		        	}
+				})
+			},
+			change : function(){
+				var that = this;
+				$('#orderul').slideToggle(300);
+				if(that.obol){
+					$(".navmask").fadeIn();
+					that.obol = false;		
+				}else{
+					$(".navmask").fadeOut();
+					that.obol = true;
+				}
+			},
+			selSate : function(index){
+				var that = this;
+				$(event.target).siblings().removeClass('on');
+				$(event.target).addClass('on');
+				$("#orderul").slideUp(300);
+				$(".navmask").fadeOut();
+				that.obol = true;
+				that.type = index;
+				that.list = [];
+				vm.getSettlementLog();
+			},
+			loadMore(){
+		        document.addEventListener('scroll', function() {	
+		          	var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){      
+						if(vm.goscroll){
+							vm.page++;
+							vm.goscroll=0;
+							vm.getGoods();
+						}
+					}
+		        })
+		    }
+		}
+	})
+	//初始化选择日期
+	var calendar = new LCalendar();
+    calendar.init({
+        'trigger': '#Jcalendar', //标签id
+        'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+        'minDate': '2000-1-1', //最小日期
+        'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 5) + '-' + new Date().getDate(), //最大日期,
+        'callback': function() {
+        	var birthday = $('#Jcalendar').val();
+        	$('#birthday').val(birthday);
+            var time = birthday.split('-');
+            time = time.join('/');
+            vm.start_time = time;
+            vm.list = [];
+            $.ajax({
+				url: '{:U('Agent/settlementLog')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					date : vm.start_time,
+					page : vm.page
+				}
+			})
+			.done(function(data) {
+				if(data.data.list.length>0){
+		        	if(vm.list.length == 0){
+		        		vm.list = data.data.list;
+		        	}else{
+		        		vm.list = vm.list.concat(data.data.list);
+		        	}
+	        		vm.goscroll = 1;
+	        	}else{
+	        		vm.goscroll = 0;
+	        	}
+			});
+			vm.loadMore();
+        }
+    });
+</script>
+</block>

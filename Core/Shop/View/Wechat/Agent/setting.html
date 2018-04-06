@@ -1,0 +1,88 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_SETTING_}</h1>
+		</header>
+		<div class="main">
+			<div class="y-bindphone">
+				<ul>
+					<li @click="showSelLang">
+						<a href="javascript:;">
+							<span>{$Think.lang._WAP_SETTING_CHANGE_LANGUAGE_}</span>
+							<i></i>
+						</a>
+					</li>
+					<li>
+						<a href="{:U('Article/articleDetail', array('sign'=> 'aboutUs'))}">
+							<span>{$Think.lang._PC_SETTING_ABOUT_US_}</span>
+							<i></i>
+						</a>
+					</li>
+					<li class="editpsw">
+						<a href="{:U('Article/articleDetail', array('sign'=> 'agreement'))}">
+							<span>{$Think.lang._PC_SETTING_USER_AGREEMENT_}</span>
+							<i></i>
+						</a>
+					</li>
+					<li>
+						<a href="{:U('User/userFeedback')}">
+							<span>{$Think.lang._WAP_SETTING_FEEDBACK_}</span>
+							<i></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<a href="{:U('Login/logout')}" class="widup">{$Think.lang._PC_TOP_MENU_LOGOUT_}</a>
+
+			<!-- 选择语言 -->
+			<div class="mask"></div>
+			<div class="chooseLang">
+				<p :class="{on : is_sel == 0}" @click="chooseFun('0')">简体中文</p>
+				<p :class="{on : is_sel == 1}" @click="chooseFun('1')">English</p>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {show:true,is_sel:-1,language:''},
+			created(){
+				$('#Jloading').fadeOut();
+			},
+			methods : {
+				showSelLang : function(){
+					$('.mask').fadeIn();
+					$(".chooseLang").fadeIn();
+				},
+				changeFun(){
+					$.ajax({
+						url : '{:U('User/chooseLanguage')}',
+						type : 'POST',
+						dataType : 'json',
+						data : {language:this.language,jump:1}
+					})
+					.done(function(data){						
+						if( data.status == 200000 ){
+							window.location.href = window.location.href;
+						}
+					})
+				},
+				chooseFun : function(type){
+					this.is_sel = type;
+					if( type == 0 ){
+						this.language = 'zh-cn';
+					}else{
+						this.language = 'en-us';
+					}
+					this.changeFun();
+					$('.mask').fadeOut();
+					$(".chooseLang").fadeOut();	
+				}
+			}
+		})
+	</script>
+</block>

@@ -1,0 +1,114 @@
+<layout name="default_layout" />
+
+<div class="mainbar">
+    <!-- Page heading -->
+    <div class="page-head">
+        <h2 class="pull-left"><i class="icon-home"></i>后台权限管理</h2>
+        <div class="clearfix"></div>
+        <input type="button" value="添加后台权限" id="jumpToAdd">
+    </div>
+    <!-- Page heading ends -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget">
+                <div class="widget-head">
+                    <div class="pull-left">后台权限管理</div>
+                    <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>             
+                <div class="widget-content">
+                    <div class="padd">
+                        <form class="form-horizontal" action="{:U('Ar/index')}" method="GET">
+                            <div class="form-group">
+                                <label class="control-label col-lg-3" for="title">name：</label>
+                                <div class="col-lg-6"> 
+                                    <input type="text" name="name" placeholder="输入name进行搜索" class="form-control"><br>
+                                    <input type="submit" value="搜索">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="padd overfl-x-s">
+                        <form class="form-horizontal" id="saveControllerPowerForm">
+                            <table class="new-table-border">
+                                <thead>
+                                <tr class="text-c">
+                                    <th width="120" title=""><span class="c-red">*</span> name</th>
+                                    <th width="120" title=""><span class="c-red">*</span> title</th>
+                                    <th width="120" title=""><span class="c-red">*</span> status</th>
+                                    <th width="120" title=""><span class="c-red">*</span> direct_jump</th>
+                                    <th width="120" title=""><span class="c-red">*</span> sort</th>
+                                    <th width="120" title=""><span class="c-red">*</span> condition</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody-form">
+                                	<volist name="list" id="vo">
+									    <tr>
+									        <td>
+									            <input type="text" class="form-control" name="form[{$vo['id']}][name]" value="{$vo['name']}">
+									        </td>
+									        <td>
+									            <input type="text" class="form-control" name="form[{$vo['id']}][title]" value="{$vo['title']}"">
+									        </td>
+									        <td class="text-c">
+									            <div class="radio-box">
+									                <input type="text" class="form-control" name="form[{$vo['id']}][status]" value="{$vo['status']}">
+									            </div>
+									        <td class="text-c">
+									            <div class="radio-box">
+									                <input type="text" class="form-control" name="form[{$vo['id']}][direct_jump]" value="{$vo['direct_jump']}">
+									            </div>
+									        </td>
+									        <td class="text-c">
+									            <div class="radio-box">
+									                <input type="text" class="form-control" name="form[{$vo['id']}][sort]" value="{$vo['sort']}">
+									            </div>
+									        </td>
+									        <td class="text-c">
+									            <input type="text" class="form-control" name="form[{$vo['id']}][condition]" value="{$vo['condition']}">
+									        </td>
+									    </tr>
+                                        <input type="hidden" name="form[{$vo['id']}][id]" value="{$vo['id']}">
+									</volist>
+                                </tbody>
+                            </table>
+                        </form>
+                        <!-- Widget footer -->
+                        <div class="widget-foot">
+                            <button type="button" id="saveButton" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                    {$show}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	saveControllerPowerUrl = '{:U('Ar/edit')}';
+    jumpToAddUrl = '{:U('Ar/add')}';
+
+    $(function(){
+    	$(document).on('click', '#saveButton', function(){
+	    	$.ajax({
+	            url: saveControllerPowerUrl,
+	            type: 'POST',
+	            dataType: 'json',
+	            data: $('#saveControllerPowerForm').serialize()
+	        })
+	        .done(function(data) {
+	            if (data['status'] == '200000') {
+	                alert(data['message']);
+	            } else {
+	            	alert(data['message']);
+	            }
+	        });
+    	}).on('click', '#jumpToAdd', function(){
+            window.location.href = jumpToAddUrl;
+        });
+    })
+</script>

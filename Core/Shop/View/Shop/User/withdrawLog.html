@@ -1,0 +1,92 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_USER_WITHDRAW_HISTORY_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_WITHDRAW_HISTORY_}
+	    	<a href="{:U('Agent/settlementLog')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="withdrawLog_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._PC_USER_WITHDRAWAL_AMOUNT_}</th>
+	<th>{$Think.lang._PC_USER_WITHDRAWAL_TIME_}</th>
+	<th>{$Think.lang._PC_USER_WITHDRAWAL_STATUS_}</th>
+	<th>{$Think.lang._PC_USER_DATE_OF_RECEIVE_PAYMENT_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			add_time = parseInt(data['add_time']),
+			date = new Date(add_time * 1000),
+			endDate = new Date((add_time + 172800) * 1000);
+	%>
+	<tr>
+		<td><%=data['id']%></td>
+		<td><%=data['money']%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td>
+			<%switch( data['status'] ) {
+				case '0' :%>
+					<%=pending%>
+				<%break;
+				case '1' :%>
+					<%=published%>
+				<%break;
+				case '2' :%>
+					<%=pendingFailed%>
+				<%break;%>
+			<%}%>
+		</td>
+		<td><%=endDate.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+	</tr>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('User/withdrawLog')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				type : '1'
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['pending'] = "{$Think.lang._COMMON_PENDING_}";
+				returnData['data']['published'] = "{$Think.lang._COMMON_PUBLISHED_}";
+				returnData['data']['pendingFailed'] = "{$Think.lang._COMMON_PENDING_FAILED_}";
+				var html = bt('withdrawLog_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+</script>
+</block>

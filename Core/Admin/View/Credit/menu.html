@@ -1,0 +1,19 @@
+<ul>
+	<if condition="checkActionAuth(array('Money-customerRechargeLog', 'Money-moneyLog', 'Money-moneyList', 'Money-agentBalanceList'))">
+		<li <if condition="checkActionAuth(array('Credit-creditSetting', 'Credit-userCredit'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('Credit-creditSetting', 'Credit-userCredit'))}" class="addons">信用管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('Credit-creditSetting')">
+					<li class="<if condition="in_array(ACTION_NAME, array('creditSetting'))">on</if>">
+						<a href="{:U('Credit/creditSetting')}">扣减/增加信用规则设置</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Credit-userCredit')">
+					<li <if condition="in_array(ACTION_NAME, array('userCredit'))">{:chr(32)}class="on"</if>>
+						<a href="{:U('Credit/userCredit')}">用户信用</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

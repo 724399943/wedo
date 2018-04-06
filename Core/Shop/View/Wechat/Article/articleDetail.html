@@ -1,0 +1,42 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{{article['title']}}</h1>
+		</header>
+		<div class="main" v-html="article['content']"></div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			article : {},
+		},
+		created(){
+			this.loadArticle();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadArticle : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Article/articleDetail')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {sign:"{$sign}"}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.article = returnData['data']['list'];
+					}
+				});
+			}
+		}
+	})
+</script>
+</block>

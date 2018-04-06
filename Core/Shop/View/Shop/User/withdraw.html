@@ -1,0 +1,185 @@
+<extend name="Public:base" />
+
+<block name="style">
+	<style type="text/css">
+		.givepop-box{ width: 400px; min-height: 180px; background: #fff; overflow: hidden; }
+		.givepop-box .g-line{ line-height: 32px; margin-top: 10px; padding-left: 40px; }
+		.g-line input{ width: 200px; }
+		.g-btn{ overflow: hidden; margin-top: 20px; padding-left: 90px;}
+		input.fall{ margin-left: 20px; }
+		.givepop-box .stdbtn{ margin-left: 100px; }
+		.caiji-box{ max-height: 500px; overflow: auto; }
+	</style>
+</block>
+
+<block name="title">{$Think.lang._PC_USER_WITHDRAW_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_WITHDRAW_}
+	    	<a href="{:U('Agent/settlementLog')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="stdform stdform2" id="Jform">
+			<div class="line-dete">
+				<label>{$Think.lang._PC_USER_WITHDRAWAL_AMOUNT_}</label>
+                <span class="field">
+                	<input type="text" name="money" class="smallinput" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}({$Think.lang.module_user_min_withdraw}{:C('minWithdrawMoney')}{$Think.lang._COMMON_GINGGIT_}，{$Think.lang.module_user_max_withdraw}{$maxWithdrawMoney}{$Think.lang._COMMON_GINGGIT_})">
+                </span>
+            </div>
+            <div class="line-dete">
+				<label>{$Think.lang._PC_USER_WITHDRAWAL_METHODS_}</label>
+                <span class="field">
+                	<select name="withdraw_type">
+                		<option value="0">{$Think.lang._COMMON_WECHAT_}</option>
+                		<option value="1">{$Think.lang._COMMON_ALIPAY_}</option>
+                		<option value="2">{$Think.lang._COMMON_CREDIT_CARD_}</option>
+                	</select>
+                	<input type="text" name="account" class="smallinput" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_LOGIN_ID_}">
+                </span>
+            </div>
+            <div class="line-dete">
+				<label>{$Think.lang._PC_USER_ACTUAL_NAME_}</label>
+                <span class="field">
+                	<input type="text" name="truename" class="smallinput" placeholder="{$Think.lang._PC_USER_ENTER_ACTUAL_NAME_}">
+                </span>
+            </div>
+            <div class="line-dete">
+				<label></label>
+                <span class="field">
+                	<input type="button" id="Jcommit" class="stdbtn" value="{$Think.lang._COMMON_SUBMIT_}">
+                </span>
+            </div>
+		</form>
+	</div>
+</block>
+<block name="script">
+<script id="password_tpl" type="text/html">
+	<div class="givepop-box">
+		<div class="g-line">
+			{$Think.lang._WAP_AGENT_ENTER_WITHDRAW_PASSWORD_}：<input type="password" id="Jpassword">
+		</div>
+		<div class="g-line">
+			<span class="stdbtn Jpassword-commit">{$Think.lang._COMMON_CONFIRM_}</span>
+		</div>
+	</div>
+</script>
+<script id="set_password_tpl" type="text/html">
+	<div class="givepop-box"> 
+		<div class="g-line">
+			{$Think.lang._PC_USER_WITHDRAWAL_PASSWORD_}：<input type="password" id="JchangingPassword">
+		</div>
+		<div class="g-line">
+			{$Think.lang._PC_USER_REENTER_WITHDRAWAL_PASSWORD_}：<input type="password" id="JreChangingPassword">
+		</div>
+		<div class="g-line">
+			<span class="stdbtn JchangingPassword-commit">{$Think.lang._COMMON_CONFIRM_}</span>
+		</div>
+	</div>
+</script>
+<script type="text/javascript">
+	// 验证提现密码
+	function verifyWithdrawPassword(password) {
+		$.ajax({
+			url: '{:U('User/verifyWithdrawPassword')}',
+			type: 'POST',
+			dataType: 'json',
+			async: false,
+			data: {password:password}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				withdraw();
+			} else {
+				alert(returnData['message']);
+				popclose();
+			}
+		});
+	}
+
+	// 提现
+	function withdraw() {
+		$.ajax({
+			url : "{:U("User/withdraw")}",
+			type : "POST",
+			dataType : "json",
+			data : $('#Jform').serialize()
+		})
+		.done(function(data){
+			if (data.status == 200000) {
+				window.location.href = "{:U('User/withdrawSuccess')}";
+			}else{
+				alert(data.message);
+				popclose();
+			}
+		})
+	}
+
+	var bt = baidu.template;
+	$('#Jcommit').click(function() {
+		if ( !$('input[name="money"]').val() ) {
+			alert('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._PC_USER_WITHDRAWAL_AMOUNT_}');
+			return;
+		}
+		if ( !$('input[name="account"]').val() ) {
+			alert('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_LOGIN_ID_}');
+			return;
+		}
+		if ( !$('input[name="truename"]').val() ) {
+			alert('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._PC_USER_ACTUAL_NAME_}');
+			return;
+		}
+		var withdraw_password = "{$userInfo['withdraw_password']}";
+		if ( !withdraw_password ) {
+			var html = bt('set_password_tpl', []);
+			popwin('{$Think.lang._PC_USER_MODIFY_WITHDRAW_PASSWORD_}', html);
+		} else {
+			var html = bt('password_tpl', []);
+			popwin('{$Think.lang._WAP_AGENT_WITHDRAWPASSWORD_}', html);
+		}
+	});
+
+	$(document).on('click', '.Jpassword-commit', function(){
+		var password = $('#Jpassword').val();
+		verifyWithdrawPassword(password);
+	});
+
+	$(document).on('click','.JchangingPassword-commit',function(){
+		var password = $('#JchangingPassword').val(),
+			repassword = $('#JreChangingPassword').val(),
+			match = !!password.match(/^\d+$/);
+		if ( match == false ) {
+			alert('{$Think.lang._PC_USER_PASSWORD_ONLY_NUMBERS_}');
+			return;
+		}
+		if ( password != repassword ) {
+			alert('{$Think.lang._PC_LOGIN_PASSWORD_DID_NOT_MATCH_}');
+			return;
+		}
+		$.ajax({
+			url: '{:U('User/editWithdrawPassword')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {password:password}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				alert(returnData['message']);
+				var html = bt('password_tpl', []);
+				popwin('{$Think.lang._WAP_AGENT_WITHDRAWPASSWORD_}', html);
+			} else {
+				alert(returnData['message']);
+			}
+		});
+	});
+</script>
+</block>

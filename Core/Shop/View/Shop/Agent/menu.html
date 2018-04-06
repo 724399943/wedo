@@ -1,0 +1,30 @@
+<ul>
+	<li class="current">
+		<ul class="Jcon-ctr">
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent')) && in_array(ACTION_NAME, array('basicData', 'editBasicData'))">on</if>">
+				<a href="{:U('Agent/basicData')}">{$Think.lang._PC_USER_MERCHANT_INFORMATION_SETTING_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent', 'User')) && in_array(ACTION_NAME, array('settlementLog', 'withdraw', 'withdrawSuccess', 'withdrawLog'))">on</if>">
+				<a href="{:U('Agent/settlementLog')}">{$Think.lang._PC_USER_SETTLEMENT_MANAGEMENT_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('GoodsCheck')) && in_array(ACTION_NAME, array('goodsToAuth')) || (in_array(ACTION_NAME, array('payForCheck')) && $_GET['tab'] eq '0')">on</if>">
+				<a href="{:U('GoodsCheck/goodsToAuth')}">{$Think.lang._PC_USER_PRODUCT_VERIFICATION_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('GoodsCheck')) && in_array(ACTION_NAME, array('goodsToTop')) || (in_array(ACTION_NAME, array('payForCheck')) && $_GET['tab'] eq '1')">on</if>">
+				<a href="{:U('GoodsCheck/goodsToTop')}">{$Think.lang._PC_USER_PRODUCT_BUMP_TO_TOP_}</a>
+			</li>
+			<li class="<if condition="(in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingIndexGoods', 'toBiddingIndexGoods'))) || (in_array(ACTION_NAME, array('biddingRecord', 'platformBiddingRecord')) && $_GET['bidding_type'] eq '0') || (in_array(ACTION_NAME, array('payForBidding')) && $_GET['tab'] eq '0')">on</if>">
+				<a href="{:U('Bidding/biddingIndexGoods')}">{$Think.lang._PC_USER_HOME_PRODUCT_BIDDING_}</a>
+			</li>
+			<li class="<if condition="(in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingFavorableGoods', 'toBiddingFavorableGoods'))) || (in_array(ACTION_NAME, array('biddingRecord', 'platformBiddingRecord')) && $_GET['bidding_type'] eq '1') || (in_array(ACTION_NAME, array('payForBidding')) && $_GET['tab'] eq '1')">on</if>">
+				<a href="{:U('Bidding/biddingFavorableGoods')}">{$Think.lang._PC_USER_PROMOTIONAL_PRODUCT_BIDDING_}</a>
+			</li>
+			<li class="<if condition="(in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingAgent', 'toBiddingAgent'))) || (in_array(ACTION_NAME, array('biddingRecord', 'platformBiddingRecord')) && $_GET['bidding_type'] eq '2') || (in_array(ACTION_NAME, array('payForBidding')) && $_GET['tab'] eq '2')">on</if>">
+				<a href="{:U('Bidding/biddingAgent')}">{$Think.lang._PC_USER_HOME_MERCHANT_BIDDING_}</a>
+			</li>
+			<li class="<if condition="(in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingBanner', 'toBiddingBanner'))) || (in_array(ACTION_NAME, array('biddingRecord', 'platformBiddingRecord')) && $_GET['bidding_type'] eq '3') || (in_array(ACTION_NAME, array('payForBidding')) && $_GET['tab'] eq '3')">on</if>">
+				<a href="{:U('Bidding/biddingBanner')}">{$Think.lang._PC_USER_ADVERTISING_SPACE_BIDDING_}</a>
+			</li>
+		</ul>
+	</li>
+</ul>

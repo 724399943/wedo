@@ -1,0 +1,102 @@
+<extend name="Common:base" />
+<block name="title">意见反馈管理</block>
+
+<block name="menu">
+	<include file="Admin:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">意见反馈管理</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<div>
+     		<a href="javascript:;" class="btn btn_link" style="float:left;margin-right:15px;">
+     			<span style="font-size:14px;" id="Jdel">删除</span>
+     		</a>
+        </div>
+        <pre>
+        	
+        </pre>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th>全选<input type="checkbox" id="ids"></th>
+				<th>编号</th>
+				<th>反馈用户</th>
+				<th>内容</th>
+				<th>反馈时间</th>
+			</tr>
+			<if condition="empty($list)">
+				<tr>
+					<td colspan="8">暂无相关数据</td>
+				</tr>
+			<else />
+				<volist name="list" id="data">
+					<tr>
+						<td><input type="checkbox" class="ids" value="{$data['id']}"/></td>
+						<td>{$data['id']}</td>
+						<td>{$data['nickname']}</td>
+						<td>{$data['text']}</td>
+						<td>{:time_format($data['add_time'])}</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="13">
+						<if condition="$counting lt 25">
+						<else />
+						   <div class="page-box">{$show}</div>
+					    </if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript">
+	var ids = "",
+		idsData = [];
+	$(function(){
+		// 全选
+		$("#contentwrapper").on("change", "#ids", function(){
+			if( !$(this).attr("checked") ){
+				$(".ids").attr("checked", false);
+				ids = "";
+				idsData = [];
+			} else {
+				$(".ids").attr("checked", true);
+				$(".ids").each(function(){
+					idsData.push($(this).val());
+				})
+				ids = idsData.join(",");
+			}
+		});
+
+		// 单选
+		$("#contentwrapper").on("change", ".ids", function(){
+			if( !$(this).attr("checked") ){
+				$(this).attr("checked", false);
+				for(var i = 0; i<idsData.length; i++) {
+					if ($(this).val() == idsData[i]) {
+						idsData.splice(i,1);
+					}
+				}
+			} else {
+				$(this).attr("checked", true);
+				idsData.push($(this).val());
+			}
+			ids = idsData.join(",");
+		});
+
+		// 删除
+		$('#Jdel').click(function(){
+			if ( !ids ) {
+				alert('请选择要删除的数据');
+				return;
+			}
+			window.location.href = "{:U('Feedback/delFeedback')}" + '?ids=' + ids;
+		});
+	})
+</script>
+</block>

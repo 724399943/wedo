@@ -1,0 +1,86 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_POINT_POINTSSTATEMENT_}</h1>
+		</header>
+		<div class="main">
+			<div class="settle_details">
+				<div class="set_d_list">
+					<ul>
+						<li v-for="(item,index) in pointLog">
+							<div class="lf">
+								<p class="tt">{{item.event}}</p>
+								<p class="time">{{item.add_time | time}}</p>
+							</div>
+							<a :href="'{:U('Point/orderDetail')}?order_sn='+item.order_sn" v-if="item.event_type == 7">{$Think.lang._WAP_POINTORDER_REDEEMDETAILS_}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 遮罩层 -->
+			<!-- <div class="omask"></div> -->
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				pointLog : [],
+				page : 1,
+				goscroll : 1
+			},
+			created(){
+				this.getPointLog();
+				this.loadmore();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getPointLog : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Point/pointLog")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							page : that.page
+						}
+					})
+					.done(function(returnData){
+						if(returnData.data.list.length > 0){
+							if(that.pointLog.length == 0){
+								that.pointLog = returnData.data.list;
+							}else{
+								that.pointLog = that.pointLog.concat(returnData.data.list);
+							}
+							vm.goscroll = 1;
+						}else{
+							vm.goscroll = 0;
+						}
+					})
+				},
+				loadmore(){
+					var that = this;
+					document.addEventListener("scroll",function(){
+						var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+						if(scrollTop + window.innerHeight >= document.body.clientHeight){
+							if(vm.goscroll){
+								vm.page++;
+								vm.goscroll = 0;
+								vm.getPointLog();
+							}
+						}
+					})
+				}
+			}
+		})
+	</script>
+</block>

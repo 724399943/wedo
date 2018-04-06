@@ -1,0 +1,85 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._PC_MESSAGE_CONTACTS_}</h1>
+		</header>
+		<div class="main">
+			<div class="contact_wrap">
+				<ul>
+					<li v-for="(item, index) in addressList">
+						<a :href="'{:U('Message/consultation')}?id='+item['id']">
+							<div class="imgbox">
+								<img :src="item['headimgurl']">
+							</div>
+							<span>{{item['nickname']}}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			addressList : [],
+			page : 1,
+			goscroll:1,
+			nothing : 1,
+		},
+		created(){
+			this.getAddressList();
+			this.loadMore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			getAddressList : function(){
+				var that = this;
+				$.ajax({
+					url : "{:U("Chat/addressList")}",
+					type : "POST",
+					dataType : "json",
+					data : {page:that.page}
+				})
+				.done(function(returnData){
+					if(returnData['data']['list'].length>0){
+			        	if(that.addressList.length == 0){
+			        		that.addressList = returnData['data']['list'];
+			        	}else{
+			        		that.addressList = that.addressList.concat(returnData['data']['list']);
+			        	}
+		        		vm.goscroll = 1;
+		        		vm.nothing = 0;
+		        	}else{
+		        		vm.goscroll = 0;
+		        		if(that.addressList.length == 0){
+		        			vm.nothing = 1;
+			        	}
+		        	}
+				})
+			},
+			loadMore(){
+		        document.addEventListener('scroll', function() {	
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){	
+						if(vm.goscroll){
+							vm.page++;
+							vm.goscroll=0;
+							vm.getAddressList();
+						}
+					}
+		        })
+		    }
+		}
+	})
+</script>
+</block>

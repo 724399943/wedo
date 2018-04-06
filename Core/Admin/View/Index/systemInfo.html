@@ -1,0 +1,30 @@
+<extend name="Common:base" />
+
+<block name="title">控制台</block>
+
+<block name="menu">
+	<include file="Index:menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+	<h1 class="pagetitle">系统信息</h1>
+	<span class="pagedesc"></span>
+</div>
+
+<!-- <div id="contentwrapper" class="contentwrapper" style="padding: 0;">
+	<iframe src="http://192.168.47.112/p.php" id="JsystemInfo" scrolling="auto" frameborder="0" width="100%" onload="changeFrameHeight()"></iframe>
+</div> -->
+</block>
+<block name="script">
+<script type="text/javascript">
+	function changeFrameHeight() {
+	    var ifm = document.getElementById("JsystemInfo"); 
+	    ifm.height = document.documentElement.clientHeight-200;
+	}
+
+	// window.onresize = function() {  
+	//      changeFrameHeight();
+	// } 
+</script>
+</block>

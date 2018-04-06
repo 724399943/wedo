@@ -1,0 +1,29 @@
+<ul>
+	<if condition="checkActionAuth(array('Message-messageCheckList', 'System-setting'))">
+		<li <if condition="checkActionAuth(array('Message-messageCheckList', 'System-setting'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('System-setting', 'Message-messageCheckList'))}" class="addons">系统设置</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('System-setting')">
+					<li class="<if condition="in_array(ACTION_NAME, array('setting'))">on</if>">
+						<a href="{:U('System/setting')}">系统设置</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Message-messageCheckList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('messageCheckList'))">on</if>">
+						<a href="{:U('Message/messageCheckList')}">商家消息推送审核</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Message-messageList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('messageList', 'sendMessage', 'messageDetail'))">on</if>">
+						<a href="{:U('Message/messageList')}">消息推送集成</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('System-checkSetting')">
+					<li class="<if condition="in_array(ACTION_NAME, array('checkSetting'))">on</if>">
+						<a href="{:U('System/checkSetting')}">认证/置顶审核期限设置</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

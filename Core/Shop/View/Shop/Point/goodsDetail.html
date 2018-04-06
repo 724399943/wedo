@@ -1,0 +1,245 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._COMMON_POINT_WEDO_MALL}</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="style">
+	<style type="text/css">
+		.goods-detail-m {width: 100%;}
+		.g-goods-data {background: #fff;min-height: 460px;margin: 0 auto;overflow: hidden;padding-bottom: 30px;}
+		.g-goods-data .g-lf {float: left;width: 400px;position:relative;}
+		.g-lf .g-pic {width: 100%;height: 100%;position: relative;margin: 0 auto;}
+		.g-lf .g-pic img {width: 100%;height: 100%;cursor: crosshair;}
+		.g-slide-tab {position: relative;margin: 20px auto;width: 310px;}
+		.g-slide-tab .prev {width: 20px;height: 60px;display: block;position: absolute;top: 0;left: -30px;z-index: 22;background: url(__PUBLIC__/Shop/images/back.png) no-repeat center center;background-size:75%;}
+		.g-slide-tab .ctr em {position: absolute;width: 20px;height: 34px;top: 50%;margin-top: -17px;left: 0px;display: block;}
+		.g-slide-tab .next {width: 20px;height: 60px;display: block;position: absolute;top: 0;right: -30px;z-index: 22;background: url(__PUBLIC__/Shop/images/back.png) no-repeat center center;transform:rotateZ(180deg);background-size:75%;}
+		.tempWrap {overflow: hidden;position: relative;width: 310px;}
+		.g-lf .g-pic-tab {overflow: hidden;margin: 0px;padding: 0px;position: relative;left: 0px;width: 350px;transition: all 0.5s;-webkit-transition: all 0.5s;}
+		.g-lf .g-pic-tab li {width: 60px;height: 60px;padding: 1px;display: block;float: left;text-align: center;line-height: 58px;}
+		.g-lf .g-pic-tab li.on {border: 1px solid #967bdc;padding: 0;width: 60px;height: 60px;}
+		.g-lf .g-pic-tab li img {width: 55px;height: 55px;display: inline-block;vertical-align: middle;}
+		.g-goods-data .g-mi {width: 505px;float: left;margin-left: 10px;}
+		.g-goods-data .g-mi .tit {margin-top: 20px;overflow: hidden;color: #333;font-size: 18px;position: relative;}
+		.g-goods-data .g-mi .tit h1{font-size:25px;line-height:30px;}
+		.g-goods-data .g-mi .tit span{line-height:30px;text-align:center;color:#fff;background:rgba(255,0,0,.7);padding:5px 10px;font-size:16px;margin-left:15px;}
+		.g-goods-data .g-mi .txt {font-size: 16px;color: #999;padding:17px 0;margin:0;border-bottom:1px solid #e4e4e4;}
+		.btn-panel {position: relative;margin-top: 20px;}
+		.g-fix-num-b {float: left;height: 40px;width: 160px;background: rgba(0,0,0,.3);text-align: center;line-height: 40px;border-radius: 4px;font-size: 16px;color: #fff;display: block;}
+		.g-fix-num-b:hover{background:#967bdc;}
+		.btn-panel:after {clear: both;content: "";width: 80%;display: block;}
+		.g-goods-data .g-mi .mip{overflow:hidden;line-height:45px;margin:0;}
+		.g-goods-data .g-mi .mip span{margin-right:15px;font-size:16px;color:#999;}
+		.g-goods-data .g-mi .mip span i{font-size:18px;font-weight:bold;color:rgba(255, 0, 0, 1);}
+		.g-dt-com {margin-top: 10px;}
+		.g-dt-com:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+		.g-dt-com .rt .g-tab {height: 46px;line-height: 46px;border-bottom: 1px solid #ddd;background: #fff;}
+		.g-dt-com .rt .g-tab a {padding: 0 20px;border-top: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;text-align: center;height: 44px;display: block;float: left;font-size: 16px;color: #333;background: #fff;line-height: 44px;margin-right: -1px;}
+		.g-dt-com .rt .g-tab a.on {height: 45px;color: #967bdc;border-top: 2px solid #967bdc;margin-top: -1px;border-bottom: 1px solid #fff;}
+		.g-dt-com .rt .g-wrap-m {min-height: 450px;background: #fff;}
+		.slide_num {width: 35px;height: 35px;line-height: 35px;background: rgba(0,0,0,.5);border-radius: 50%;text-align: center;color: #fff;position: absolute;bottom: 110px;right: 10px;z-index: 99;}
+		div.zoomDiv{z-index:999;position:absolute;top:0px;left:0px;width:400px;height:400px;background:#ffffff;border:1px solid #ddd;display:none;text-align:center;overflow:hidden;}
+        div.zoomMask{position:absolute;background:url("__PUBLIC__/Shop/images/mask.png") repeat scroll 0 0 transparent;cursor:move;z-index:1; width: 100px; height: 100px;}
+	</style>
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._COMMON_PRODUCTS_DETAILS_}
+	    	<a href="{:U('Point/pointGoods')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+        
+	</div>
+</block>
+<block name="script">
+<script type="text/html" id="goodsInfo_tpl">
+ <div class="goods-detail-m">
+	<div class="g-goods-data">
+		<div class="g-lf" id="Goods_img_cont">
+			<div class="g-pic">
+			<div class="imgbox">
+				<img src="<%=goodsImages[0]%>" rel="<%=goodsImages[0]%>" class="jqzoom">
+			</div>
+			</div>
+				<div class="slide_num"><i id="num">1</i>/<%=goodsImages.length%></div>
+			<div class="g-slide-tab">
+				<a href="javascript:;" class="ctr prev"> 
+				    <em></em>
+	            </a>
+	            <a href="javascript:;" class="ctr next">
+	            	<em></em>
+	            </a>
+	            <div class="tempWrap">
+	            	<ul class="g-pic-tab">
+						<%for(var i = 0; i < goodsImages.length;i++){%>
+		            		<li <%if(i==0){%>class="on"<%}%>>
+		            			<img src="<%=goodsImages[i]%>" mid="<%=goodsImages[i]%>" big="<%=goodsImages[i]%>">
+		            		</li>
+						<%}%>
+	            	</ul>
+	            </div>
+			</div>
+		</div>
+		<div class="g-mi">
+			<div class="tit"><h1><%=goodsInfo["goods_name"]%><span>{$Think.lang._PC_POINT_VERIFIED_BY_WEDO_TEAM_}</span></h1></div>
+			<p class="txt"><%=goodsInfo["introduction"]%></p>
+			<p class="mip">
+				<span>{$Think.lang._COMMON_PRODUCTS_PRICE_}：<i><%=goodsInfo["goods_price"]%>积分</i></span>
+				<span>{$Think.lang._PC_POINT_SELLING_}：<%=goodsInfo["sale_number"]%>件</span>
+				<span>浏览量：<%=goodsInfo["browsing_number"]%></span>
+			</p>
+			<div class="stype" style="overflow:hidden;font-size:16px;color:#999;line-height:40px;">
+				<span style="float:left;margin-right:30px;">{$Think.lang._COMMON_DELIVERY_METHOD_}：</span>
+				<div class="it" style="float:left;margin-right:20px;">
+					<input type="radio" <%if(goodsInfo['express_type'].indexOf('1') != '-1'){%>checked<%}%> disabled>
+					<i>{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}</i>
+				</div>
+				<div class="it" style="float:left;margin-right:20px;">
+					<input type="radio"  <%if(goodsInfo['express_type'].indexOf('0') != '-1'){%>checked<%}%> disabled>
+					<i>{$Think.lang._COMMON_BY_DELIVERY_}</i>
+				</div>
+			</div>
+			<div class="btn-panel">
+				<a href="{:U('Point/pointInfo')}?goods_id=<%=goodsInfo['id']%>" class="g-fix-num-b">{$Think.lang._PC_POINT_REDEEM_NOW_}</a>
+			</div>
+		</div>
+	</div>
+	<div class="g-dt-com">
+		<div class="rt">
+			<div class="g-tab">
+				<a href="javascript:;" class="J-tag on">{$Think.lang._COMMON_PRODUCTS_DETAILS_}</a>
+			</div>
+			<div class="g-wrap-m">
+				<div class="g-warp-item" id="content">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+ </div>
+ <div class="page-box" id="pageBox"></div>
+</script>
+<script type="text/javascript" src="__PUBLIC__/Shop/js/jquery.imagezoom.min.js"></script>
+<script type="text/javascript">
+	var slideNum = '' //当前页
+	var slideLen = '' //图片数量
+
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    function loadData() {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Point/goodsDetail')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				goods_id : {$_GET["goods_id"]},
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == "200000" ) {
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				var html = bt('goodsInfo_tpl', returnData['data']);
+				$('#contentwrapper').html(html);
+				var goodsDesc = returnData.data.goodsDesc;
+				$("#content").html(goodsDesc);
+				 // 动态设置.g-pic-tab的宽度
+                var lw = $('.g-pic-tab').find('li').outerWidth();
+                var leng = $('.g-pic-tab').find('li').length;
+                $('.g-pic-tab').css('width',lw*leng);
+                $('.jqzoom').imagezoom();// 商品图放大
+                slideLen = returnData.data.goodsImages.length;
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData();
+
+    // 商品缩略图
+    var index = 0;//当前下标
+    var shift = 0;//位移
+    $('#contentwrapper').on('mouseenter','.g-pic-tab li',function(){
+        if(!$(this).hasClass('on')){
+            $('.g-pic-tab').children('li').removeClass('on');
+        }
+        $(this).addClass('on');
+        index = $(this).index();
+        slideNum = index + 1;
+        if(index == slideLen){
+        	slideNum = 1;
+        }
+        $("#num").text(slideNum);
+        // var pic = $(this).find('img').attr('src');
+        // $('.g-pic').find('img').attr('src',pic);
+        $(".jqzoom").attr('src', $(this).find("img").attr("mid"));
+        $(".jqzoom").attr('rel', $(this).find("img").attr("big"));
+    })
+    $('#contentwrapper').on('click','.prev',function(){
+        var pic = $('.g-pic-tab').children('li').find('img');
+        var leng = $('.g-pic-tab').find('li').length;
+        var lw = $('.g-pic-tab').find('li').outerWidth();
+        var tw = $('.tempWrap').outerWidth();
+        var gw = $('.g-pic-tab').width();
+        var cw = gw-tw;
+        shift += lw;
+        index -= 1;
+        slideNum = index + 1;
+        if(index == -1){
+        	slideNum = slideLen;
+        }
+        $("#num").text(slideNum);
+        $('.g-pic-tab').find('li').removeClass('on') ;          
+        $('.g-pic-tab').find('li').eq(index).addClass('on');
+        if(shift <= 0){
+            $('.g-pic-tab').css("webkitTransform","translateX("+shift+"px)");
+        }           
+        if(index < 0){
+            shift = -cw;
+            index = leng-1;
+            $('.g-pic-tab').find('li').eq(index).addClass('on');
+            $('.g-pic-tab').css("webkitTransform","translateX("+shift+"px)");
+        }
+        $(".jqzoom").attr('src', pic.eq(index).attr("mid"));
+        $(".jqzoom").attr('rel', pic.eq(index).attr("big"));
+    })
+    $('#contentwrapper').on('click','.next',function(){
+        var pic = $('.g-pic-tab').children('li').find('img');
+        var leng = $('.g-pic-tab').find('li').length;
+        var lw = $('.g-pic-tab').find('li').outerWidth();
+        var tw = $('.tempWrap').outerWidth(); 
+        var gw = $('.g-pic-tab').width();
+        var cw = gw - tw + lw;
+        shift -= lw;  
+        index += 1;
+        slideNum = index + 1;
+        if(index == slideLen){
+        	slideNum = 1;
+        }
+        $("#num").text(slideNum);
+        $('.g-pic-tab').find('li').removeClass('on') ;          
+        $('.g-pic-tab').find('li').eq(index).addClass('on');
+        if(shift >= -tw && index>4){
+            $('.g-pic-tab').css("webkitTransform","translateX("+shift+"px)");                
+        }
+        if(index == leng){
+            shift = 0;
+            index = 0;
+            $('.g-pic-tab').find('li').eq(index).addClass('on');
+            $('.g-pic-tab').css("webkitTransform","translateX("+shift+"px)");
+        }
+        $(".jqzoom").attr('src', pic.eq(index).attr("mid"));
+        $(".jqzoom").attr('rel', pic.eq(index).attr("big"));
+    })
+</script>
+</block>

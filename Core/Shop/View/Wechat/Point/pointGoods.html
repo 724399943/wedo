@@ -1,0 +1,86 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_MALL_}</h1>
+		</header>
+		<div class="main">
+			<div class="integral_store">
+				<div class="search_result">
+					<ul>
+						<li v-for="(item,index) in goodsList">
+							<a :href="'goodsDetail?goods_id='+item.id">
+								<div class="imgbox">
+									<img :src="item.goods_image">
+								</div>
+								<p><span class="name">{{item.goods_name}}</span><span class="num">{$Think.lang._COMMON_SALES_NUMBER_}{{item.sale_number}}</span></p>
+								<i>{{item.goods_price}}{$Think.lang._WAP_POINTORDER_POINTS_}</i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsList : [],
+				page : 1,
+				goscroll:1,
+				goods_id : ''
+			},
+			created(){
+				this.getGoods();
+				this.loadmore();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getGoods : function(){
+					var that = this;
+					$.ajax({
+						url: "{:U("Point/pointGoods")}",
+						type: "POST",
+						dataType: "json",
+						data: {
+							page : that.page
+						}
+					})
+					.done(function(data) {
+						if(data.data.list.length > 0){
+							if(that.goodsList.length == 0){
+								that.goodsList = data.data.list;
+							}else{
+								that.goodsList = that.goodsList.concat(data.data.list);
+							}
+							vm.goscroll = 1;
+						}else{
+							vm.goscroll = 0;
+						}
+					})
+				},
+				loadmore(){
+					document.addEventListener("scroll",function(){
+						var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+						if(scrollTop + window.innerHeight >= document.body.clientHeight){
+							if(vm.goscroll){
+								vm.page ++;
+								vm.goscroll = 0;
+								vm.getGoods();
+							}
+						}
+					})
+				}
+			}
+		})
+	</script>
+</block>

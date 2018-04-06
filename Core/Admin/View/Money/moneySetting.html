@@ -1,0 +1,47 @@
+<extend name="Common:base" />
+
+<block name="menu">
+	<include file="Money:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	<if condition="$_GET['type'] eq '0'">
+	    		设置最低提现金额
+	    	<else/>
+	    		设置最低保留金额
+	    	</if>
+	    	<a href="{:U('Money/moneyList')}" class="btn btn_link" style="float: right"><span style="font-size:14px">返回</span></a>
+	    </h1>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+        <form class="stdform stdform2" action="{:U(Money/moneySetting)}" method="post">
+        	<div id="updates" class="subcontent" style="display: block;">
+				<volist name="configList" id="vo">
+					<if condition="($vo['config_sign'] eq 'minWithdrawMoney' && $_GET['type'] eq '0') || ($vo['config_sign'] eq 'minRetainMoney' && $_GET['type'] eq '1')">
+						<div class="line-dete">
+							<label>{$vo['config_name']}</label>
+			                <span class="field">
+			                	<input type="hidden" name="config[{$key}][config_sign]" value="{$vo['config_sign']}">
+			                	<input type="hidden" name="config[{$key}][config_name]" value="{$vo['config_name']}">
+			                	<input type="text" name="config[{$key}][config_value]"  class="smallinput" value="{$vo['config_value']}">&nbsp;&nbsp;元
+			                	<input type="hidden" name="config[{$key}][explain]" value="{$vo['explain']}">
+			                	<small class="desc">{$vo['explain']}</small>
+			                </span>
+			            </div>
+		            </if>
+	        	</volist>
+	        	<input type="submit" class="big-btn stdbtn" value="保存	">
+            </div>
+        </form>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</block>

@@ -1,0 +1,92 @@
+<extend name="Common:base" />
+
+<block name="title">控制台</block>
+
+<block name="menu">
+	<include file="Index:menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+	<h1 class="pagetitle">业绩统计</h1>
+	<span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+		<tr>
+			<th colspan="2">
+				基本信息
+			</th>
+		</tr>
+
+		<tr>
+			<th>会员数量:</th>
+			<td></td>
+		</tr>
+		<tr>
+			<th width="100px">订单总数:</th>
+			<td></td>
+		</tr>
+	</table>
+
+
+	<br />
+	<br />
+
+	<table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+		<tr>
+			<th colspan="3">
+				订单信息
+			</th>
+		</tr>
+
+		<tr>
+			<th rowspan="2" width="100px">本日</th>
+			<th width="100px">已发货订单:</th>
+			<td></td>
+		</tr>
+		<tr>
+			<th>已完成订单:</th>
+			<td></td>
+		</tr>
+
+		<tr>
+			<th rowspan="2">本月</th>
+			<th>已发货订单:</th>
+			<td></td>
+		</tr>
+		<tr>
+			<th>已完成订单:</th>
+			<td></td>
+		</tr>
+
+		<tr>
+			<th rowspan="2">本季</th>
+			<th>已发货订单:</th>
+			<td></td>
+		</tr>
+		<tr>
+			<th>已完成订单:</th>
+			<td></td>
+		</tr>
+
+		<tr>
+			<th rowspan="2">本年</th>
+			<th>已发货订单:</th>
+			<td></td>
+		</tr>
+		<tr>
+			<th>已完成订单:</th>
+			<td></td>
+		</tr>
+
+
+		<tr>
+			<td colspan="3">
+				<input type="button" onclick="window.location.reload()" value="刷新" class="stdbtn"/>
+			</td>
+		</tr>
+	</table>
+</div>
+</block>

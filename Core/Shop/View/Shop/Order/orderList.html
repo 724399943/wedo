@@ -1,0 +1,298 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_ORDER_LIST_}</block>
+
+<block name="style">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+	<link rel="stylesheet" href="__PUBLIC__/Shop/css/messagebox.css" type="text/css" />
+	<style type="text/css">
+		.stdtable th, .stdtable td{text-align:center;}
+		.txtEdit{display:inline-block;width:35px;height:35px;background:url(__PUBLIC__/Shop/images/edit_ico.png) center center no-repeat;background-size:25px;vertical-align:middle;cursor:pointer;}
+		.txtEdit.on{background:url(__PUBLIC__/Shop/images/finish_ico.png) center center no-repeat;background-size:25px;}
+		.intxt.on{border:1px solid #ccc;box-shadow: inset 0 1px 3px #ddd;-webkit-box-shadow: inset 0 1px 3px #ddd;-moz-box-shadow: inset 0 1px 3px #ddd;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Order:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_ORDER_LIST_}</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<p>
+				<label>{$Think.lang._COMMON_ORDER_NUMBER_}：</label>
+				<input type="text" name="order_sn" value="{$return['order_sn']}" placeholder="{$Think.lang._COMMON_PLEASE_SEARCH_}{$Think.lang._COMMON_ORDER_NUMBER_}">
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_ORDER_STATUS_}：</label>
+				<select name="order_type">
+					<option value="all" <if condition="$return['order_type'] eq 'all'">selected</if>>{$Think.lang._COMMON_ALL_}</option>
+					<option value="toBePaid" <if condition="$return['order_type'] eq 'toBePaid'">selected</if>>{$Think.lang._PC_POINT_PENDING_PAYMENT_}</option>
+					<option value="toBeShipped" <if condition="$return['order_type'] eq 'toBeShipped'">selected</if>>{$Think.lang._PC_POINT_TO_BE_DELIVERED_}</option>
+					<option value="toBeReceived" <if condition="$return['order_type'] eq 'toBeReceived'">selected</if>>{$Think.lang._PC_POINT_TO_BE_RECEIVED_}</option>
+					<option value="toBeComment" <if condition="$return['order_type'] eq 'toBeComment'">selected</if>>{$Think.lang._PC_POINT_TO_BE_REVIEW_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_DELIVERY_METHOD_}：</label>
+				<select name="express_type">
+					<option value="-1">{$Think.lang._COMMON_ALL_}</option>
+					<option value="0" <if condition="$return['express_type'] eq '0'">selected</if>>{$Think.lang._COMMON_BY_DELIVERY_}</option>
+					<option value="1" <if condition="$return['express_type'] eq '1'">selected</if>>{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_ORDER_TIME_}：</label>
+				<input type="text" name="" id="staDatartTime" date-time="{$return['startTime']}">
+				<input type="hidden" name="startTime" id="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" name="" id="endDataTime" date-time="{$return['endTime']}">
+				<input type="hidden" name="endTime" id="endTime" value="{$return['endTime']}">
+				&nbsp;&nbsp;
+				<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+			</p>
+		</form>
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+        <div class="mask"></div>
+	    <div class="replay_m">
+	        <p id="Ktitle"></p>
+	        <textarea placeholder="" id="Kcontent"></textarea>
+	        <div class="rbtn">
+	            <span class="Kcancel" style="margin-right:15px;">{$Think.lang._COMMON_BUTTON_NO_}</span>
+	            <span class="Ksure">{$Think.lang._COMMON_BUTTON_YES_}</span>
+	        </div>
+	    </div>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script id="orderList_tpl" type="text/html">
+<tr>
+	<!-- <th>{$Think.lang._COMMON_NO_}</th> -->
+	<th>{$Think.lang._COMMON_ORDER_NUMBER_}</th>
+	<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+	<th>{$Think.lang._PC_ORDER_PRODUCT_MODEL_}</th>
+	<th>{$Think.lang._COMMON_QUANTITY_}</th>
+	<th>{$Think.lang._COMMON_PRICE_PER_UNIT_}</th>
+	<th>{$Think.lang._COMMON_SUBTOTAL_}</th>
+	<th>{$Think.lang._COMMON_ORDER_TIME_}</th>
+	<th>{$Think.lang._COMMON_UESR_NAME_}</th>
+	<th><%=delivery%></th>
+	<th>{$Think.lang._COMMON_ORDER_STATUS_}</th>
+	<th>{$Think.lang._PC_ORDER_REMARKS_}</th>
+	<th width="10%">{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			date = new Date(data['add_time'] * 1000),
+			goodsList = data['goodsList'],
+			rowspan = goodsList.length;
+		for ( var j = 0; j < rowspan; j ++ ) {
+			var goodsData = goodsList[j];
+	%>
+		<tr>
+			<!-- <td><%=data['id']%></td> -->
+			<%if(j==0){%>
+				<td rowspan="<%=rowspan%>"><%=data['order_sn']%></td>
+			<%}%>
+			<td><%=goodsData['goods_name']%></td>
+			<td><%=goodsData['attr_list']%></td>
+			<td>*<%=goodsData['goods_number']%></td>
+			<td><%=goodsData['unit_price']%></td>
+			<%if(j==0){%>
+				<td rowspan="<%=rowspan%>"><%=goodsData['price']%></td>
+				<td rowspan="<%=rowspan%>"><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+				<td rowspan="<%=rowspan%>"><%=data['nickname']%></td>
+				<td rowspan="<%=rowspan%>">
+					<%if( data['express_type'] == '1' ) {%>
+						<%=collectFromMerchant%>
+					<%}else{%>
+						<%=byDelivery%>
+					<%}%>
+				</td>
+				<td rowspan="<%=rowspan%>">
+					<%switch( data['status'] ) {
+						case '0' :%>
+							{$Think.lang._PC_POINT_PENDING_PAYMENT_}
+						<%break;
+						case '1' :%>
+							{$Think.lang._PC_POINT_TO_BE_DELIVERED_}
+						<%break;
+						case '2' :%>
+							{$Think.lang._PC_POINT_TO_BE_RECEIVED_}
+						<%break;
+						case '3' :%>
+							{$Think.lang._PC_POINT_TO_BE_REVIEW_}
+						<%break;
+						case '4' :%>
+							{$Think.lang._PC_POINT_IS_FINISHED_}
+						<%break;
+						case '5' :%>
+							{$Think.lang._PC_POINT_IS_CANCELED_}
+						<%break;%>
+					<%}%>
+				</td>
+				<td rowspan="<%=rowspan%>">
+					<input type="text" id="Korder_<%=data['order_sn']%>" value="<%=data['remark']%>" readonly="readonly" class="intxt" style="border:none;box-shadow:none;-webkit-box-shadow:none;-moz-box-shadow:none;text-align:center;">
+					<em class="txtEdit Kremark" data-sn="<%=data['order_sn']%>"></em>
+				</td>
+				<td rowspan="<%=rowspan%>" class="center">
+					<%if ( data['status'] == '1' ) {%>
+						<a class="stdbtn btn_lime Kdelivery" data-sn="<%=data['order_sn']%>" href="javascript:;"><%=toDelivery%></a>
+						<!-- <a class="stdbtn btn_lime Kcancel" data-sn="<%=data['order_sn']%>" href="javascript:;"><%=toCancel%></a> -->
+					<%}%>
+					<a class="stdbtn btn_lime" href="<%=jumpUrl%>?order_sn=<%=data['order_sn']%>">{$Think.lang._COMMON_ORDER_DETAILS_}</a>
+				</td>
+			<%}%>
+		</tr>
+	<%}%>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template,
+    	order_sn = "{$return['order_sn']}",
+    	express_type = "{$return['express_type']}",
+    	order_type = "{$return['order_type']}",
+    	startTime = "{$return['startTime']}",
+    	endTime = "{$return['endTime']}",order_sn,remark;
+    var editbol = true;//控制修改还是完成状态
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Order/orderList')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				type : 1,
+				user_type : 'saler',
+				order_sn : order_sn,
+				order_type : order_type,
+				express_type : express_type,
+				startTime : startTime,
+				endTime : endTime,
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['toDelivery'] = "{$Think.lang._WAP_ORDER_DELIVERED_}";
+				returnData['data']['toCancel'] = "{$Think.lang._WAP_ORDER_CANCEL_ORDER_}";
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				returnData['data']['collectFromMerchant'] = "{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}";
+				returnData['data']['delivery'] = "{$Think.lang._COMMON_DELIVERY_METHOD_}";
+				returnData['data']['jumpUrl'] = "{:U('Order/orderDetail')}";
+				var html = bt('orderList_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+    // 发货
+    $('#template').on('click', '.Kdelivery', function(){
+    	var title = $(this).text(),
+    		order_sn = $(this).data('sn')
+    	messageBox(title, '<p>{$Think.lang._COMMON_TO_DELIVERY_}</p>', function(){
+	    	$.ajax({
+				url: '{:U('Order/delivery')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn: order_sn}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData['message']);
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+    	},1);
+    });
+
+    function saveRemark() {
+    	$.ajax({
+			url: '{:U('Order/saveRemark')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {order_sn:order_sn,remark:remark}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				alert(returnData['message']);
+				window.location.href = window.location.href;
+			} else {
+				alert(returnData['message']);
+			}
+		});
+    }
+
+    // 编辑备注
+    $("#template").on('click','.Kremark',function(e){
+    	if(editbol){
+    		//进入编辑
+	    	$(this).addClass("on");
+	    	$(this).siblings("input").css({"border":"1px solid #ccc","box-shadow":"inset 0 1px 3px #ddd","-webkit-box-shadow":"inset 0 1px 3px #ddd","-moz-box-shadow":"inset 0 1px 3px #ddd"});
+	    	$(this).siblings("input").attr("readonly",false);
+	    	editbol = false;
+    	}else{
+    		//完成编辑
+    		order_sn = $(this).data('sn');
+    		remark = $('#Korder_' + order_sn).val();
+    		saveRemark();
+    		$(this).removeClass('on');
+    		$(this).siblings("input").css({"border":"none","box-shadow":"none","-webkit-box-shadow":"none","-moz-box-shadow":"none"});
+    		$(this).siblings("input").attr("readonly",true);
+    		editbol = true;
+    	}
+    })
+
+    // 取消订单
+    $('#template').on('click', '.Kcancel', function(){
+    	var title = $(this).text(),
+    		order_sn = $(this).data('sn')
+    	messageBox(title, '<p>{$Think.lang._COMMON_TO_CANCEL_}</p>', function(){
+	    	$.ajax({
+				url: '{:U('Order/merchantCancel')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn: order_sn}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData['message']);
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+    	},1);
+    });
+
+    $('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#staDatartTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('#startTime').val(moment($input.val()).unix().valueOf());
+		}
+	});
+	$('#endDataTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('#endTime').val(moment($input.val()).unix().valueOf());
+		}
+	});
+</script>
+</block>

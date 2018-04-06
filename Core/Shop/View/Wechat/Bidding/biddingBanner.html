@@ -1,0 +1,130 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_BIDDING_PROMOTIONALSPACE_}</h1>
+			<a :href="'{:U('Bidding/biddingRecord', array('bidding_type'=> '3', 'tab'=> '3'))}'" class="mail">{$Think.lang._WAP_BIDDING_BIDDINGRECORD_}</a>
+		</header>
+		<div class="main">
+			<div class="ex_w_top">
+				<div class="p_cen_m">
+					<ul class="sm_ul">
+						<li class="line">
+							<a :href="'{:U('Bidding/toBiddingBanner', array('goods_id'=> 'undefined', 'banner_type'=> '0'))}'">
+								<span class="s1">{$Think.lang._WAP_BIDDING_ADVERTISINGBIT_}</span>
+								<em class="ei"></em>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="integral_goods">
+				<div class="is_hgoods" v-if="nothing == 0">
+					<div class="sel_goodsm">
+						<ul>
+							<li v-for="(item,index) in goodsList">
+								<div class="s_goods_wrap">
+									<div class="s_cbox">
+										<input type="checkbox" name="" :id="item.id" @change="selfun">
+										<label :for="item.id"></label>
+									</div>
+								</div>
+								<a :href="'{:U('Goods/goodsDetail')}?goods_id='+item.id">
+									<div class="imgbox">
+										<img :src="item.goods_image">
+									</div>
+									<div class="se_ggg sexiao">
+										<h1>{{item.goods_name}}</h1>
+										<p class="db-overflow">{{item.introduction}}</p>
+										<span>RM{{item.goods_price}}</span>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<a :href="'{:U('Bidding/toBiddingBanner')}?goods_id='+goods_id+ '&banner_type=1'" class="widup">{$Think.lang._WAP_BIDDING_APPLYFORBIDDING_}</a>
+				</div>
+
+				<!-- 没有内容 -->
+				<div class="no_igoods" v-else>
+					<p>{$Think.lang._WAP_BIDDING_NOTHAVEUNBID_}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsList : [],
+				page : 1,
+				bidding_type : 3,
+				goscroll:1,
+				nothing : 0,
+				banner_type : '',
+				tab : 3,
+				goods_id : ''
+			},
+			created(){
+				this.getGoods();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getGoods : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Bidding/notBiddingGoods")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							page : that.page,
+							bidding_type : that.bidding_type
+						}
+					})
+					.done(function(data){
+						if(data.data.list.length>0){
+				        	if(that.goodsList.length == 0){
+				        		that.goodsList = data.data.list;
+				        	}else{
+				        		that.goodsList = that.goodsList.concat(data.data.list);
+				        	}
+			        		vm.goscroll = 1;
+			        		vm.nothing = 0;
+			        	}else{
+			        		vm.goscroll = 0;
+			        		if(that.goodsList.length == 0){
+				        		vm.nothing = 1;
+				        	}
+			        	}
+					})
+				},
+				selfun : function(){
+					var that = this;
+					$('input').attr('checked',false);
+					$(event.target).attr('checked',true);
+					that.goods_id = $(event.target).attr('id');
+				},
+				loadMore(){
+			        document.addEventListener('scroll', function() {	
+						var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+						if(scrollTop + window.innerHeight >= document.body.clientHeight){      
+							if(vm.goscroll){
+								vm.page++;
+								vm.goscroll=0;
+								vm.getGoods();
+							}
+						}
+			        })
+			    }
+			}
+		})
+	</script>
+</block>

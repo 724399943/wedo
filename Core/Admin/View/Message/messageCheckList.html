@@ -1,0 +1,172 @@
+<extend name="Common:base" />
+
+<block name="title">消息列表</block>
+
+<block name="cusStyle">
+	<style type="text/css">
+		.givepop-box{ width: 400px; min-height: 180px; background: #fff; overflow: hidden; }
+		.givepop-box .g-line{ line-height: 32px; margin-top: 20px; padding-left: 120px; }
+		
+		.givepop-box .stdbtn{ margin-left: 150px; margin-top: 30px}
+		.caiji-box{ max-height: 500px; overflow: auto; }
+	</style>
+</block>
+
+<block name="menu">
+	<include file="System:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">消息列表</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Message/messageCheckList')}" method="get" id="searchForm">
+            <p>
+            	<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+				&nbsp;&nbsp;
+            	<label>审核状态：</label>
+				<select name="status">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['status'] eq '0'">selected</if>>待审核</option>
+					<option value="1" <if condition="$return['status'] eq '1'">selected</if>>已发布</option>
+					<option value="2" <if condition="$return['status'] eq '2'">selected</if>>审核失败</option>
+				</select>
+				&nbsp;&nbsp;
+             	<input type="submit" value="筛选"/>
+             	<input type="button" id="JallPass" value="批量通过" />
+             	<input type="button" id="JallRefuse" value="批量拒绝" />
+            </p>
+        </form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th width="3%">全选<input type="checkbox" id="ids"></th>
+				<th>店铺名称</th>
+				<th>标题</th>
+				<th>封面图</th>
+				<th>推送商品</th>
+				<th>申请时间</th>
+				<th>状态</th>
+				<th width="13%">操作</th>
+			</tr>
+			<volist name="list" id="data">
+				<tr>
+					<td><input type="checkbox" class="ids" value="{$data['id']}"/></td>
+					<td>{$data['agent_name']}</td>
+					<td>{$data['content']}</td>
+					<td><img src="{$data['image']}" width="100px" height="100px"></td>
+					<td>{$data['goods_name']}</td>
+					<td>{:time_format($data['add_time'])}</td>
+					<td>
+						<switch name="data['status']">
+							<case value="0">待审核</case>
+							<case value="1">已发布</case>
+							<case value="2">审核失败</case>
+						</switch>
+					</td>
+					<td>
+						<if condition="checkActionAuth('Message-checkMessage')">
+							<if condition="$data['status'] eq '0'">
+								<a class="stdbtn btn_lime" href="javascript:checkMessage({$data['id']}, '1');">通过</a>
+								<a class="stdbtn btn_lime" href="javascript:checkMessage({$data['id']}, '2');">拒绝</a>
+							</if>
+						<else />
+							无此权限
+						</if> 
+					</td>
+				</tr>
+			</volist>
+			<tr>
+				<td colspan="13">
+					<if condition="$counting lt 25">
+					<else/>
+						<div class="page-box">{$show}</div>
+					</if>
+				</td>
+			</tr>
+		</table>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+	var ids = "",
+		idsData = [];
+	function checkMessage(id,status){
+		$.ajax({
+			url : '{:U('Message/checkMessage')}',
+			type : 'POST',
+			dataType : 'json',
+			data:{ids: id,status: status}
+		})
+		.done(function(returnData){
+			if(returnData['status'] == '200000') {
+				//出现弹窗
+				var pass = '<div class="givepop-box"><h1 class="g-line">审核已通过</h1><div class="g-line"><span class="stdbtn Jdelivery-commit" >确定</span></div></div>'
+				popwin('',pass);
+			} else {
+				alert(returnData['message']);
+			}
+		})
+	}
+	$(function(){
+		// 全选
+		$("#contentwrapper").on("change", "#ids", function(){
+			if( !$(this).attr("checked") ){
+				$(".ids").attr("checked", false);
+				ids = "";
+				idsData = [];
+			} else {
+				$(".ids").attr("checked", true);
+				$(".ids").each(function(){
+					idsData.push($(this).val());
+				})
+				ids = idsData.join(",");
+			}
+		});
+
+		// 单选
+		$("#contentwrapper").on("change", ".ids", function(){
+			if( !$(this).attr("checked") ){
+				$(this).attr("checked", false);
+				for(var i = 0; i<idsData.length; i++) {
+					if ($(this).val() == idsData[i]) {
+						idsData.splice(i,1);
+					}
+				}
+			} else {
+				$(this).attr("checked", true);
+				idsData.push($(this).val());
+			}
+			ids = idsData.join(",");
+		});
+
+		// 通过
+		$('#JallPass').click(function(){
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			checkMessage(ids, 1);
+		});
+
+		// 拒绝
+		$('#JallRefuse').click(function(){
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			checkMessage(ids, 2);
+		});
+
+		//关闭弹窗
+		$(document).on('click','.Jdelivery-commit',function(){
+			// 关闭弹窗
+			popclose();
+			window.location.href="{:U('Message/messageCheckList')}";
+		});
+	})
+</script>
+</block>

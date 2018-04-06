@@ -1,0 +1,217 @@
+<extend name="Common:base" />
+<block name="title">优惠商品竞价管理</block>
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+<block name="menu">
+	<include file="Goods:menu" />
+</block>
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	优惠商品竞价管理
+	    	<a href="{:U('Bidding/biddingFavorableGoods')}" class="btn btn_link" ><span style="font-size:14px">未审核</span></a>
+			<a href="{:U('Bidding/auditBiddingFavorableGoods')}" class="btn btn_link" ><span style="font-size:14px">已审核</span></a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Bidding/biddingFavorableGoods')}" method="get" id="searchForm">
+            <p>
+            	<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+				&nbsp;&nbsp;
+            	<label>商品名称：</label>
+                <input type="text" name="goods_name" placeholder="输入搜索商品名称" value="{$return['goods_name']}"/>
+				&nbsp;&nbsp;
+            	<label>平台分类：</label>
+				<select name="category_id">
+					<option value="">全部</option>
+					<volist name="categoryList" id="data">
+						<option value="{$data['id']}" <if condition="$return['category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+					</volist>
+				</select>
+				&nbsp;&nbsp;
+				<label>商品状态：</label>
+				<select name="status">
+					<option value="-1" <if condition="$return['status'] eq '-1'">selected</if>>全部</option>
+					<option value="1" <if condition="$return['status'] eq '1'">selected</if>>上架中</option>
+					<option value="3" <if condition="$return['status'] eq '3'">selected</if>>已下架</option>
+					<option value="2" <if condition="$return['status'] eq '2'">selected</if>>审核失败</option>
+				</select>
+            </p>
+            <p>
+           		<label>竞价期限：</label>
+				<input type="text" id="staDatartTime" date-time="{$return['startTime']}" style="margin-right: 0px">
+				<input type="hidden" name="start_time" id="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" id="endDataTime" date-time="{$return['endTime']}">
+				<input type="hidden" name="end_time" id="endTime" value="{$return['endTime']}">
+             	<input type="submit" value="筛选"/>
+             	<input type="button" class="KeditStatus" data-status="1" value="上架" />
+             	<input type="button" class="KeditStatus" data-status="3" value="下架" />
+            </p>
+        </form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th width="3%">全选<input type="checkbox" id="ids"></th>
+				<th>商品名称</th>
+				<th>商品介绍</th>
+				<th>平台分类</th>
+				<th>店铺名称</th>
+				<th>竞价日期</th>
+				<th>现价</th>
+				<th>优惠后价格</th>
+				<th>置顶排序</th>
+				<th>商品状态</th>
+				<th>操作</th>
+			</tr>
+			<if condition="empty($list)">
+				<tr>
+					<td colspan="11">暂无相关数据</td>
+				</tr>
+			<else />
+				<volist name="list" id="data">
+					<tr>
+						<td>
+							<if condition="$data['status'] eq '2' || $data['active_status'] eq '1'">
+								{$data['id']}
+							<else/>
+								<input type="checkbox" class="ids" value="{$data['id']}"/>
+							</if>
+						</td>
+						<td>{$data['goods_name']}</td>
+						<td>{$data['introduction']}</td>
+						<td>{$data['category_name']}</td>
+						<td>{$data['agent_name']}</td>
+						<td>{$data['start_time']|date="Y-m-d", ###}</td>
+						<td>{$data['goods_price']}</td>
+						<td>{$data['favorable_price']}</td>
+						<td>
+							<if condition="$data['active_status'] EQ '1'">
+								-
+							<else />
+								<input type="text" class="KeditSort" data-id="{$data['id']}" value="{$data['sort']}">
+							</if>
+						</td>
+						<td>
+							<if condition="$data['active_status'] eq '1'">
+								已下架
+							<else/>
+								<switch name="data['status']">
+									<case value="1">上架中</case>
+									<case value="2">审核失败</case>
+									<case value="3">已下架</case>
+								</switch>
+							</if>
+						</td>
+						<td class="center">
+							<if condition="checkActionAuth(array('Goods-goodsDetail'))">
+								<a class="stdbtn btn_lime" href="{:U('Goods/goodsDetail', array('id'=>$data['goods_id']))}">查看</a>&nbsp;&nbsp;
+								<if condition="$data['status'] eq '1' && $data['active_status'] eq '0'">
+									<a class="stdbtn btn_lime" href="{:U('Bidding/checkBidding', array('ids'=>$data['id'], 'bidding_type'=> '1', 'status'=> '3'))}">下架</a>&nbsp;&nbsp;
+								<elseif condition="$data['status'] eq '3' && $data['active_status'] eq '0'" />
+									<a class="stdbtn btn_lime" href="{:U('Bidding/checkBidding', array('ids'=>$data['id'], 'bidding_type'=> '1', 'status'=> '1'))}">上架</a>&nbsp;&nbsp;
+								</if>
+							<else />
+								无权限操作
+							</if>
+						</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="11">
+						<if condition="$counting lt 25">
+						<else />
+						   <div class="page-box">{$show}</div>
+					    </if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+	var ids = "",
+		idsData = [];
+	$(function(){
+		// 全选
+		$("#contentwrapper").on("change", "#ids", function(){
+			if( !$(this).attr("checked") ){
+				$(".ids").attr("checked", false);
+				ids = "";
+				idsData = [];
+			} else {
+				$(".ids").attr("checked", true);
+				$(".ids").each(function(){
+					idsData.push($(this).val());
+				})
+				ids = idsData.join(",");
+			}
+		});
+
+		// 单选
+		$("#contentwrapper").on("change", ".ids", function(){
+			if( !$(this).attr("checked") ){
+				$(this).attr("checked", false);
+				for(var i = 0; i<idsData.length; i++) {
+					if ($(this).val() == idsData[i]) {
+						idsData.splice(i,1);
+					}
+				}
+			} else {
+				$(this).attr("checked", true);
+				idsData.push($(this).val());
+			}
+			ids = idsData.join(",");
+		});
+
+		$('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#staDatartTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#startTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+		$('#endDataTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#endTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+
+		// 上下架
+		$('.KeditStatus').click(function(){
+			var status = $(this).data('status');
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			window.location.href = "{:U('Bidding/checkBidding')}?bidding_type=1&status="+status+'&ids='+ids;
+		});
+
+		// 修改排序
+		$('.KeditSort').change(function(){
+			var id = $(this).data('id');
+			$.ajax({
+				url: '{:U('Bidding/checkBidding')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {id:id,sort:$(this).val()}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData['message']);
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+		});
+	})
+</script>
+</block>

@@ -1,0 +1,108 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._COMMON_PAY_}</h1>
+		</header>
+		<div class="main">
+			<p class="order_num">{$Think.lang._COMMON_ORDER_NUMBER_}：{{order_sn}}</p>
+			<div class="paywrap">
+				<ul>
+					<!-- PayPal Logo -->
+	       			<li onclick="window.location.href='{:U('Paypal/h5pay', array('order_sn'=> $_GET['order_sn'], 'sign'=> 'edit'))}'">
+	       				<div class="o_pay">
+	       					<em class="paypal"></em> 
+	       					<span>Paypal</span> 
+	       				</div>
+	       			</li>
+					<!-- <li class="on";>
+						<div class="o_pay">
+							<em class="wechat"></em>
+							<span>微信支付</span>
+						</div>
+					</li>
+					<li>
+						<div class="o_pay">
+							<em class="alipay"></em>
+							<span>支付宝支付</span>
+						</div>
+					</li>
+					<li>
+						<div class="o_pay">
+							<em class="credit"></em>
+							<span>信用卡支付</span>
+						</div>
+					</li> -->
+					<li>
+						<div class="o_pay">
+							<em class="balance"></em>
+							<span>{$Think.lang._COMMON_BALANCE_PAID_}</span>
+							<i>{$Think.lang._COMMON_BALANCE_}：{$userInfo['money']}</i>
+						</div>
+					</li>
+				</ul>
+				<div class="topay">
+					<span>{$Think.lang._COMMON_AMOUNTS_PAYABLE_}</span>
+					<i>RM{$order['total']}</i>
+					<a href="javascript:;" class="pay_btn" @click="payForIssuing">{$Think.lang._COMMON_PAY_}</a>
+				</div>
+			</div>
+			<!-- 弹窗 -->
+			<div class="mask"></div>
+			<div class="payfinash">
+				<p>支付完成</p>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			order_sn : {$_GET["order_sn"]},
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			payForIssuing : function(){
+				var that = this;
+				$.ajax({
+					url : "{:U("GoodsForEdit/payForEdit")}",
+					type : "POST",
+					dataType : "json",
+					data : {
+						order_sn : that.order_sn
+					}
+				})
+				.done(function(returnData){
+					if ( returnData['status'] == '200000' ) {
+						automsgbox(returnData.message,function(){
+							window.history.back(-1);
+						})
+					} else {
+						automsgbox(returnData['message']);
+					}
+				})
+			}
+		}
+	})
+
+	function checkPayment() {
+		$.ajax({
+			url: '{:U('Public/checkPayment')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {order_sn:"{$_GET['order_sn']}",sign:"edit"}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['payment'] == 'paid' ) {
+				window.location.href = '{:U('Agent/agentGoods')}';
+			}
+		});
+	}
+	setInterval('checkPayment()', 2000);
+</script>
+</block>

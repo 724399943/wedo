@@ -1,0 +1,370 @@
+<extend name="Public:base" />
+
+<block name="style">
+	<style type="text/css">
+	.tspan{height:30px;display:inline-block;vertical-align:middle;}
+	.tspan i{display:block;width:20px;height:10px;background:url(__PUBLIC__/Admin/images/ico.png) center top no-repeat;background-size:50%;margin:4px 0;cursor: pointer;}
+	.tspan i.one{transform:rotate(180deg);--webkit-transform:rotate(180deg);margin-top:2px;}
+	</style>
+</block>
+
+<block name="title">{$Think.lang._PC_GOODS_LEFT_GOODS_MENU_}</block>
+
+<block name="menu">
+	<include file="Goods:menu" />
+</block>
+	
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_GOODS_LEFT_GOODS_MENU_}
+	    	<if condition="$type eq '0'">
+		    	<a href="{:U('Goods/addGoods')}" class="btn btn_link" style="float:right;">
+		    		<span style="font-size:14px;">{$Think.lang._COMMON_ADD_}</span>
+		    	</a>
+		    	<a href="{:U('Agent/agentGoods', array('type'=> '1'))}" class="btn btn_link" style="float:right;margin-right:15px;">
+		    		<span style="font-size:14px;">{$Think.lang._COMMON_EDIT_}</span>
+		    	</a>
+	    	</if>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list" id="KsearchForm" method="get" action="{:U('Agent/agentGoods')}">
+			<if condition="$type eq '0'">
+				<p>
+					<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+					<input type="text" name="goods_name" value="{$return['goods_name']}" placeholder="{$Think.lang._COMMON_SEARCH_GOODS_NAME_}">
+					&nbsp;&nbsp;
+					<label>{$Think.lang._COMMON_KEYWORD_}：</label>
+					<input type="text" name="keyword" value="{$return['keyword']}" placeholder="{$Think.lang._COMMON_SEARCH_KEYWORD_}">
+					&nbsp;&nbsp;
+					<label>{$Think.lang._PC_GOODS_PRODUCT_STATUS_}：</label>
+					<select name="is_on_sale">
+						<option value="-1" <if condition="$return['is_on_sale'] eq '-1'">selected</if>>{$Think.lang._COMMON_ALL_}</option>
+						<option value="0" <if condition="$return['is_on_sale'] eq '0'">selected</if>>{$Think.lang._PC_GOODS_OFF_SHELVE_}</option>
+						<option value="1" <if condition="$return['is_on_sale'] eq '1'">selected</if>>{$Think.lang._PC_GOODS_BEEN_SHELVED_}</option>
+					</select>
+					&nbsp;&nbsp;
+					<label>{$Think.lang._PC_GOODS_CATEGORY_}：</label>
+					<select name="agent_category_id">
+						<option value="">{$Think.lang._COMMON_ALL_}</option>
+						<volist name="categoryList" id="data">
+							<option value="{$data['id']}" <if condition="$data['id'] eq $return['agent_category_id']">selected</if>>{$data['category_name']}</option>
+						</volist>
+					</select>
+					&nbsp;&nbsp;
+					<label>{$Think.lang._PC_GOODS_PLATFORM_VERIFICATION_}：</label>
+					<select name="is_auth">
+						<option value="-1">{$Think.lang._COMMON_ALL_}</option>
+						<option value="0" <if condition="$return['is_auth'] eq 0">selected</if>>{$Think.lang._PC_GOODS_NO_}</option>
+						<option value="1" <if condition="$return['is_auth'] eq 1">selected</if>>{$Think.lang._PC_GOODS_YES_}</option>
+					</select>
+					&nbsp;&nbsp;
+					<input type="hidden" name="sale_sort" value="{$return['sale_sort']}" />
+					<input type="hidden" name="number_sort" value="{$return['number_sort']}" />
+					<input type="hidden" name="time_sort" value="{$return['time_sort']}" />
+					<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+				</p>
+			<else/>
+				<p>
+					<a href="javascript:;" class="btn btn_link Kdelete">
+			    		<span style="font-size:14px;">{$Think.lang._COMMON_DELETE_}</span>
+			    	</a>
+			    	<a href="javascript:;" class="btn btn_link KsetOnsale">
+			    		<span style="font-size:14px;">{$Think.lang._PC_GOODS_ON_SALE_}</span>
+			    	</a>
+			    	<a href="javascript:;" class="btn btn_link KsetOffsale">
+			    		<span style="font-size:14px;">{$Think.lang._PC_GOODS_OFF_SALE_}</span>
+			    	</a>
+					<a href="{:U('Agent/agentGoods', array('type'=> '0'))}" class="btn btn_link">
+			    		<span style="font-size:14px;">{$Think.lang._COMMON_CANCEL_}</span>
+			    	</a>
+				</p>
+			</if>
+		</form>
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="goodslist_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+	<th>{$Think.lang._COMMON_PLATFORM_CATEGORY_}</th>
+	<th>{$Think.lang._COMMON_MERCHANT_CATEGORY_}</th>
+	<th>
+		{$Think.lang._COMMON_SALES_NUMBER_}
+		<span class="tspan">
+			<i class="one KsaleNumber" data-sort="0"></i>
+			<i class="two KsaleNumber" data-sort="1"></i>
+		</span>
+	</th>
+	<th>
+		{$Think.lang._COMMON_GOODS_NUMBER_}
+		<span class="tspan">
+			<i class="one KgoodsNumber" data-sort="0"></i>
+			<i class="two KgoodsNumber" data-sort="1"></i>
+		</span>
+	</th>
+	<th>{$Think.lang._PC_GOODS_FAVOURITE_}</th>
+	<th>{$Think.lang._COMMON_PRODUCTS_PRICE_}</th>
+	<th>{$Think.lang._COMMON_STATUS_}</th>
+	<th>{$Think.lang._PC_GOODS_PLATFORM_VERIFICATION_}</th>
+	<th>
+		{$Think.lang._PC_GOODS_ADDED_TIME_}
+		<span class="tspan">
+			<i class="one KaddTime" data-sort="0"></i>
+			<i class="two KaddTime" data-sort="1"></i>
+		</span>
+	</th>
+	<th width="12%">{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			saleStatus = ( data['is_on_sale'] == '1' ) ? been_shelved : off_shelve,
+			authStatus = ( data['is_auth'] == '1' ) ? yes : no,
+			date = new Date(data['add_time'] * 1000);
+	%>
+	<tr>
+	    <td><%=data['id']%></td>
+		<td><%=data['goods_name']%></td>
+		<td><%=data['category_name']%></td>
+		<td><%=data['agent_category_name']%></td>
+		<td><%=data['sale_number']%></td>
+		<td><%=data['goods_number']%></td>
+		<td><%=data['collect_number']%></td>
+		<td><%=data['goods_price']%></td>
+		<td><%=saleStatus%></td>
+		<td><%=authStatus%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td class="center">
+			<a class="stdbtn btn_lime" href="<%=jumpToDetail%>?goods_id=<%=data['id']%>"><%=view%></a>&nbsp;&nbsp;
+			<a class="stdbtn btn_lime" href="<%=jumpToEdit%>?id=<%=data['id']%>"><%=edit%></a>
+		</td>
+	</tr>
+<%}%>
+</script>
+<script id="editGoods_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_ALL_SELECTED_}<input type="checkbox" id="ids"></th>
+	<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+	<th>{$Think.lang._COMMON_PLATFORM_CATEGORY_}</th>
+	<th>{$Think.lang._COMMON_MERCHANT_CATEGORY_}</th>
+	<th>{$Think.lang._COMMON_SALES_NUMBER_}</th>
+	<th>{$Think.lang._COMMON_GOODS_NUMBER_}</th>
+	<th>{$Think.lang._PC_GOODS_FAVOURITE_}</th>
+	<th>{$Think.lang._COMMON_PRODUCTS_PRICE_}</th>
+	<th>{$Think.lang._COMMON_STATUS_}</th>
+	<th>{$Think.lang._COMMON_PLATFORM_VERIFICATION_}</th>
+	<th>{$Think.lang._PC_GOODS_ADDED_TIME_}</th>
+	<th width="12%">{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			saleStatus = ( data['is_on_sale'] == '1' ) ? been_shelved : off_shelve,
+			authStatus = ( data['is_auth'] == '1' ) ? yes : no,
+			date = new Date(data['add_time'] * 1000);
+	%>
+	<tr>
+	    <td><input type="checkbox" class="ids" value="<%=data['id']%>"></td>
+		<td><%=data['goods_name']%></td>
+		<td><%=data['category_name']%></td>
+		<td><%=data['agent_category_name']%></td>
+		<td><%=data['sale_number']%></td>
+		<td><%=data['goods_number']%></td>
+		<td><%=data['collect_number']%></td>
+		<td><%=data['goods_price']%></td>
+		<td><%=saleStatus%></td>
+		<td><%=authStatus%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td class="center">
+			<a class="stdbtn btn_lime" href="<%=jumpToDetail%>?goods_id=<%=data['id']%>"><%=view%></a>&nbsp;&nbsp;
+			<a class="stdbtn btn_lime" href="<%=jumpToEdit%>?id=<%=data['id']%>"><%=edit%></a>
+		</td>
+	</tr>
+<%}%>
+</script>
+<script type="text/javascript">
+    $("#template").on('click','.KsaleNumber',function(e){
+    	var sort = $(this).data('sort');
+    	$('input[name="sale_sort"]').val(sort);
+    	$('input[name="number_sort"]').val('-1');
+    	$('input[name="time_sort"]').val('-1');
+    	$('#KsearchForm').submit();
+    });
+    $('#template').on('click','.KgoodsNumber',function(e){
+    	var sort = $(this).data('sort');
+    	$('input[name="number_sort"]').val(sort);
+    	$('input[name="sale_sort"]').val('-1');
+    	$('input[name="time_sort"]').val('-1');
+    	$('#KsearchForm').submit();
+    });
+    $('#template').on('click','.KaddTime',function(e){
+    	var sort = $(this).data('sort');
+    	$('input[name="time_sort"]').val(sort);
+    	$('input[name="sale_sort"]').val('-1');
+    	$('input[name="number_sort"]').val('-1');
+    	$('#KsearchForm').submit();
+    });
+
+	var ids = "",
+		idsData = [],
+		type = "{$type}";
+	/*使用模板引擎*/
+    var bt = baidu.template,
+    	page = 1,
+    	sale_sort = '{$return['sale_sort']}',
+    	number_sort = '{$return['number_sort']}',
+    	time_sort = '{$return['time_sort']}',
+    	goods_name = '{$return['goods_name']}',
+    	keyword = '{$return['keyword']}',
+		is_on_sale = '{$return['is_on_sale']}',
+		agent_category_id = '{$return['agent_category_id']}',
+		is_auth = '{$return['is_auth']}';
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Agent/agentGoods')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				goods_name : goods_name,
+				keyword : keyword,
+				is_on_sale : is_on_sale,
+				agent_category_id : agent_category_id,
+				is_auth : is_auth,
+				type : 1,
+				sale_sort : sale_sort,
+				number_sort: number_sort,
+				time_sort : time_sort,
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				console.log(returnData['data']);
+				returnData['data']['jumpToDetail'] = "{:U('Goods/goodsDetail')}";
+				returnData['data']['jumpToEdit'] = "{:U('Goods/editGoods')}";
+				returnData['data']['edit'] = "{$Think.lang._PC_GOODS_EDIT_}";
+				returnData['data']['view'] = "{$Think.lang._COMMON_VIEW_}";
+				returnData['data']['yes'] = "{$Think.lang._PC_GOODS_YES_}";
+				returnData['data']['no'] = "{$Think.lang._PC_GOODS_NO_}";
+				returnData['data']['off_shelve'] = "{$Think.lang._PC_GOODS_OFF_SHELVE_}";
+				returnData['data']['been_shelved'] = "{$Think.lang._PC_GOODS_BEEN_SHELVED_}";
+				var html = ( type == '0' ) ? bt('goodslist_tpl', returnData['data']) : bt('editGoods_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+    $(function(){
+    	// 全选
+		$("#contentwrapper").on("change", "#ids", function(){
+			if( !$(this).attr("checked") ){
+				$(".ids").attr("checked", false);
+				ids = "";
+				idsData = [];
+			} else {
+				$(".ids").attr("checked", true);
+				$(".ids").each(function(){
+					idsData.push($(this).val());
+				})
+				ids = idsData.join(",");
+			}
+		});
+
+		// 单选
+		$("#contentwrapper").on("change", ".ids", function(){
+			if( !$(this).attr("checked") ){
+				$(this).attr("checked", false);
+				for(var i = 0; i<idsData.length; i++) {
+					if ($(this).val() == idsData[i]) {
+						idsData.splice(i,1);
+					}
+				}
+			} else {
+				$(this).attr("checked", true);
+				idsData.push($(this).val());
+			}
+			ids = idsData.join(",");
+		});
+
+		// 删除
+		$('.Kdelete').click(function(){
+			if ( !ids ) {
+				alert('{$Think.lang._COMMON_ALL_}要编辑的商品');
+				return;
+			}
+			$.ajax({
+				url: '{:U('Goods/deleteGoods')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {goods_id:ids}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert('{$Think.lang._COMMON_SUCCESS_}');
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+		});
+		// 上架
+		$('.KsetOnsale').click(function(){
+			if ( !ids ) {
+				alert('{$Think.lang._COMMON_ALL_}要编辑的商品');
+				return;
+			}
+			$.ajax({
+				url: '{:U('Goods/setOnSale')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {goods_id:ids,is_on_sale:'1'}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert('{$Think.lang._COMMON_SUCCESS_}');
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+		});
+
+		// 下架
+		$('.KsetOffsale').click(function(){
+			if ( !ids ) {
+				alert('{$Think.lang._COMMON_ALL_}要编辑的商品');
+				return;
+			}
+			$.ajax({
+				url: '{:U('Goods/setOnSale')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {goods_id:ids,is_on_sale:0}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert('{$Think.lang._COMMON_SUCCESS_}');
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+		});
+
+
+    })
+</script>
+</block>

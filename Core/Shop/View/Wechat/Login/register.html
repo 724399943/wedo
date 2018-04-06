@@ -1,0 +1,184 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content enrollbg" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_REGISTER_BUSINESS_REGISTER_}</h1>
+		</header>
+		<div class="enroll_wrap">
+			<!-- <div class="nav" id="navTab">
+				<span class="lr on" @click="ontab(0)">{$Think.lang._WAP_REGISTER_BYPHONE_}</span>
+				<span class="sr" @click="ontab(1)">{$Think.lang._WAP_REGISTER_BYEMAIL_}</span>
+			</div> -->
+			<!-- <div class="enr_input" v-if="tab == 0">
+				<form>
+					<ul>
+						<li class="line">
+							<div class="einput">
+								<span>{$Think.lang._WAP_REGISTER_PHONENUMBER_}</span>
+								<input type="text" name="" value="+86" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_REGISTER_PHONENUMBER_}" id="Account" v-model="dataJson.phone">
+							</div>
+						</li>
+						<li class="line">
+							<div class="einput">
+								<span>{$Think.lang._WAP_REGISTER_PASSWORD_}</span>
+								<input type="password" name="" placeholder="{$Think.lang._WAP_REGISTER_LIMIT_}" v-model="dataJson.password">
+							</div>
+						</li>
+						<li class="line">
+							<div class="einput">
+								<input type="text" name="" placeholder="{$Think.lang._WAP_REGISTER_VERIFY_}" class="code" v-model="dataJson.verify">
+								<a href="javascript:;" class="getCode_btn" v-if="noget" @click="getCode">{$Think.lang._WAP_REGISTER_GETVERIFY_}</a>
+								<a href="javascript:;" class="getCode_btn grey" v-else>{$Think.lang._COMMON_ALL_REGAINVERIFY_}{{settimes}}</a>
+							</div>
+						</li>
+						<li>
+							<div class="einput">
+								<span class="res">{$Think.lang._WAP_REGISTER_REFERRER_}</span>
+								<input type="text" name="" class="rin" v-model="dataJson.referrer">
+							</div>
+						</li>
+						<li>
+							<div class="einput">
+								<span class="res">{$Think.lang._WAP_REGISTER_AGREE_}</span>
+								<a href="javascript:;" class="eag">{$Think.lang._WAP_REGISTER_AGREEMENT_}</a>
+							</div>
+						</li>
+					</ul>
+				</form>
+				<p class="ccust">{$Think.lang._WAP_LOGIN_LOGINTIPS_}{:C('telphone')}</p>
+				<a href="javascript:;" class="register_btn" @click="commitFun">{$Think.lang._WAP_REGISTER_REGISTER_}</a>
+			</div> -->
+			<div class="enr_input">
+				<form>
+					<ul>
+						<li class="line">
+							<div class="einput ei">
+								<span class="espan">{$Think.lang._WAP_REGISTER_EMAIL_}</span>
+								<input type="text" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_REGISTER_EMAILADDRESS_}" id="Account" v-model="dataJson.email">
+							</div>
+						</li>
+						<li class="line">
+							<div class="einput ei">
+								<span class="espan">{$Think.lang._WAP_REGISTER_PASSWORD_}</span>
+								<input type="password" name="" placeholder="{$Think.lang._WAP_REGISTER_LIMIT_}" v-model="dataJson.password">
+							</div>
+						</li>
+						<li class="line">
+							<div class="einput">
+								<input type="text" name="" placeholder="{$Think.lang._WAP_REGISTER_VERIFY_}" class="code" v-model="dataJson.verify">
+								<a href="javascript:;" class="getCode_btn" v-if="noget" @click="getCode">{$Think.lang._WAP_REGISTER_GETVERIFY_}</a>
+								<a href="javascript:;" class="getCode_btn grey" v-else>{$Think.lang._WAP_REGISTER_REGAINVERIFY_}{{settimes}}</a>
+							</div>
+						</li>
+						<li class="line">
+							<div class="einput phone">
+								<span class="espan">{$Think.lang._WAP_REGISTER_PHONENUMBER_}</span>
+								<input type="text" name="" value="+86" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_REGISTER_PHONENUMBER_}" v-model="dataJson.phone">
+							</div>
+						</li>
+						<li>
+							<div class="einput re">
+								<span class="espan res">{$Think.lang._WAP_REGISTER_REFERRER_}</span>
+								<input type="text" name="" v-model="dataJson.referrer">
+							</div>
+						</li>
+						<li>
+							<div class="einput">
+								<span class="res">{$Think.lang._WAP_REGISTER_AGREE_}</span>
+								<a href="javascript:;" class="eag">{$Think.lang._WAP_REGISTER_AGREEMENT_}</a>
+							</div>
+						</li>
+					</ul>
+				</form>
+				<p class="ccust">{$Think.lang._WAP_LOGIN_LOGINTIPS_}{:C('serviceTel')}</p>
+				<a href="javascript:;" class="register_btn" @click="commitFun">{$Think.lang._WAP_REGISTER_REGISTER_}</a>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				dataJson : {type:0},
+				tab : 0,
+				settimes : 60,
+				noget : 1,
+				account : '',
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				commitFun : function(){
+					var  that = this;
+					$.ajax({
+						url : "{:U("Login/register")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							phone : that.dataJson.phone,
+							password : that.dataJson.password,
+							verify :  that.dataJson.verify,
+							email : that.dataJson.email,
+							referrer : that.dataJson.referrer,
+							status : 1
+						}
+					})
+					.done(function(returnData){
+						if (returnData['status'] == 200000) {
+                            automsgbox('{$Think.lang._WAP_REGISTER_REGISTERSUCCESS_}', function() {
+                                window.location.href = "{:U('Agent/completeAgent')}?user_id=" + returnData['data']['userId'];
+                            },true);
+                        } else {
+                            automsgbox(returnData.message);
+                        }
+					})
+				},
+				ontab : function(index){
+					var that = this;
+					$('#navTab').find('span').eq(index).addClass('on');
+					$('#navTab').find('span').eq(index).siblings('span').removeClass('on');
+					that.tab = index;
+				},
+				getCode : function(){
+					var that = this;
+					that.account = $('#Account').val();
+					$.ajax({
+						url : "{:U("Login/getVerifyCode")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							account : that.account,
+							type : 0,
+						}
+					})
+					.done(function(returnData) {
+                       if (returnData.status == 200000) {
+                       		automsgbox(returnData['data']['code']);
+                            var thats = $('.getCode_btn');
+                            that.settime(thats);
+                       } else {
+                            automsgbox(returnData.message);
+                       }
+                   })
+				},settime : function (_this) {
+                    var that = this;
+                    if (vm.settimes == 0) { 
+                        _this.html("{$Think.lang._WAP_REGISTER_GETVERIFY_}"); 
+                        vm.noget = 1;
+                        vm.settimes = 60; 
+                        return;
+                    } else { 
+                        _this.html("{$Think.lang._WAP_REGISTER_REGAINVERIFY_}(" + vm.settimes + ")"); 
+                        vm.noget = 0;
+                        vm.settimes--;
+                    } 
+                    setTimeout(function() { that.settime(_this) } ,1000) 
+                }
+			}
+		})
+	</script>
+</block>

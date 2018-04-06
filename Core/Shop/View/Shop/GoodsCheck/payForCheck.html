@@ -1,0 +1,127 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._COMMON_PAY_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="style">
+	<style type="text/css">
+		.pageheader .pagetitle span{font-size:16px;margin:0 20px;}
+		.paywrap {background: #fff;padding:20px 0;}
+		.paywrap ul {border-top: 1px solid #e4e4e4;}
+		.paywrap ul li {line-height: 35px;padding: 10px 15px;color: #666;border-bottom: 1px solid #e4e4e4;}
+		.paywrap ul li.on{background:url(__PUBLIC__/Shop/images/finish_ico.png) no-repeat 99% center;background-size:25px;}
+		.paywrap ul li .o_pay {overflow: hidden;}
+		.paywrap ul li .o_pay em {width: 35px;height: 35px;display: block;float: left;}
+		.paywrap ul li .o_pay .paypal{background:url(__PUBLIC__/Shop/images/paypal_logo.png) no-repeat center center;background-size:35px;}
+		.paywrap ul li .o_pay .wechat{background:url(__PUBLIC__/Shop/images/weChat_ico.png) no-repeat center center;background-size:35px;}
+		.paywrap ul li .o_pay span{display:block;margin-left:15px;float:left;}
+		.paywrap ul li .o_pay .alipay{background:url(__PUBLIC__/Shop/images/alipay_ico.png) no-repeat center center;background-size:35px;}
+		.paywrap ul li .o_pay .credit{background:url(__PUBLIC__/Shop/images/credit_ico.png) no-repeat center center;background-size:35px;}
+		.paywrap ul li .o_pay .balance{background:url(__PUBLIC__/Shop/images/balance_ico.png) no-repeat center center;background-size:35px;}
+		.paywrap ul li .o_pay i{color:#f34949;float:right;padding-right:30px;}
+		.paywrap ul li{cursor:pointer;}
+	</style>
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._COMMON_PAY_} <span>{$Think.lang._COMMON_AMOUNTS_PAYABLE_}：{$order['total']} {$Think.lang._COMMON_GINGGIT_}</span><span>{$Think.lang._COMMON_ORDER_NUMBER_}：{$order['order_sn']}</span></h1>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+       	<h4>{$Think.lang._COMMON_FULL_PAYMENT_METHOD_}：</h4>
+       	<div class="paywrap">
+       		<ul>
+       			<!-- PayPal Logo -->
+       			<li onclick="window.location.href='{:U('Paypal/h5pay', array('order_sn'=> $_GET['order_sn'], 'sign'=> 'goodscheck'))}'">
+       				<div class="o_pay">
+       					<em class="paypal"></em> 
+       					<span>Paypal</span> 
+       				</div>
+       			</li>
+       			<!-- <a href="javascript:;">
+	       			<li>
+	       				<div class="o_pay">
+	       					<em class="alipay"></em> 
+	       					<span>支付宝支付</span> 
+	       				</div>
+	       			</li>
+       			</a>
+       			<a href="javascript:;">
+	       			<li>
+	       				<div class="o_pay">
+	       					<em class="wechat"></em> 
+	       					<span>微信支付</span> 
+	       				</div>
+	       			</li>
+	       		</a> -->
+       			<li id="balancePay">
+       				<div class="o_pay">
+       					<em class="balance"></em> 
+       					<span>{$Think.lang._COMMON_BALANCE_PAID_}</span> 
+       					<i>{$Think.lang._COMMON_BALANCE_}：{$userInfo['money']}</i>
+       				</div>
+       			</li>
+       		</ul> 
+       	</div>
+	</div>
+</block>
+<block name="script">
+	<script type="text/javascript">
+		// 选择支付方式
+		$(".paywrap").on("click",'ul a li',function(){
+			$(".paywrap").find("ul a li").removeClass("on");
+			$(this).addClass("on");
+		})
+
+		$('#balancePay').click(function(){
+			$.ajax({
+				url : "{:U("GoodsCheck/payForCheck")}",
+				type : "POST",
+				dataType : "json",
+				data : {
+					order_sn : "{$_GET['order_sn']}"
+				}
+			})
+			.done(function(returnData){
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData.message);
+					switch ( "{$_GET['tab']}" ) {
+						case '0' :
+							window.location.href = '{:U('GoodsCheck/goodsToTop')}';
+							break;
+						case '1' :
+							window.location.href = '{:U('GoodsCheck/goodsToAuth')}';
+							break;
+					}
+				} else {
+					alert(returnData['message']);
+				}
+			})
+		});
+
+		function checkPayment() {
+			$.ajax({
+				url: '{:U('Public/checkPayment')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn:"{$_GET['order_sn']}",sign:"goodscheck"}
+			})
+			.done(function(returnData) {
+				if ( returnData['data']['payment'] == 'paid' ) {
+					switch ( "{$_GET['tab']}" ) {
+						case '0' :
+							window.location.href = '{:U('GoodsCheck/goodsToTop')}';
+							break;
+						case '1' :
+							window.location.href = '{:U('GoodsCheck/goodsToAuth')}';
+							break;
+					}
+				}
+			});
+		}
+		setInterval('checkPayment()', 2000);
+	</script>
+</block>

@@ -1,0 +1,232 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="css/swiper.css">
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<div class="goods_detail_wrap">
+			<div class="goods_img_wrap swiper-container" id="Goods_img_cont">
+				<div class="goods_img_cont swiper-wrapper">
+					<div class="goods_img_box swiper-slide" v-for="(item,index) in goodsImages"><img :src="item"></div>
+				</div>
+				<div class="slide_num">{{slideNum}}/{{goodsImages.length}}</div>
+				<span class="back"></span>
+			</div>
+			<div class="goods_msg">
+				<p class="name db-overflow">
+					{{goodsInfo.goods_name}}
+					<em v-if="goodsInfo['is_auth'] == '1'">平台认证</em>
+				</p>
+				<p class="msgtt">{{goodsInfo.introduction}}</p>
+				<div class="g_msg_tt">
+					<span>RM{{goodsInfo.goods_price}}</span>
+					<p>热销{{goodsInfo.sale_number}}件, {{goodsInfo.browsing_number}}人浏览过</p>
+				</div>
+				<div class="select_g_t">
+					<div class="s_g_t" @click="editGoodsInfo">
+						<span>选择</span>
+						<input type="text" name="" disabled="disabled" value="" id="JselAttr">
+						<em></em>
+					</div>
+				</div>
+			</div>
+			<div class="goods_detail">
+				<div class="g_de_t">
+					<em class="lf"></em>
+					<span>商品详情</span>
+					<em class="rt"></em>
+				</div>
+				<div class="gs_d" v-html="Detail"></div>
+			</div>
+			<div class="goods_assess">
+				<div class="tt">商品评价({{commentCount}})</div>
+				<div class="g_assess_cont" v-if="commentCount == 0">
+					<p>暂无商品评价</p>
+				</div>
+				<div class="g_assess_cont" v-else>
+					<div class="eva_list_box">
+						<div class="user_eva" v-for="(item,index) in commentList">
+							<div class="eva_top">
+								<div class="eva_user">
+									<img :src="item.headimgurl">
+									<span>{{item.nickname}}</span>
+								</div>
+								<div class="eva_star_cont">
+									<div class="eva_star_box" :class="{on:item.star>=1}"></div>
+									<div class="eva_star_box" :class="{on:item.star>=2}"></div>
+									<div class="eva_star_box" :class="{on:item.star>=3}"></div>
+									<div class="eva_star_box" :class="{on:item.star>=4}"></div>
+									<div class="eva_star_box" :class="{on:item.star>=5}"></div>
+								</div>
+							</div>
+							<p>{{item.contain}}</p>
+							<div class="eva_goods_cont">
+								<span>{{item.add_time | time(1)}}</span>
+								<span>{{item.attrList}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a :href="'{:U('GoodsComment/goodsComment')}?goods_id='+goods_id" class="seemore_eva">查看更多评论</a>
+			<!-- 编辑规格 -->
+			<div class="select_goods_box" id="Jedit">
+				<div class="s_g_top">
+					<div class="s_g_img">
+						<img :src="goodsInfo.goods_image">
+					</div>
+					<p class="s_g_name">{{goodsInfo.goods_name}}</p>
+					<span class="s_price">RM{{goodsInfo.goods_price}}</span>
+					<em class="close" @click="closeGoodsInfo">x</em>
+				</div>
+				<div class="s_g_check_box" v-for="(item,index) in attrNameInfo">
+					<span>{{item.attr_name}}</span>
+					<ul class="s_g_c_ul" :data-id="item.id">
+						<li :class="{on:ind == 0}" v-for="(it,ind) in item.attrValue" :data-id="it.id" @click="selAttr">{{it.attr_value}}</li>
+					</ul>
+				</div>
+			</div>
+			<div class="eva_btnwrap">
+				<a :href="'{:U('Goods/editGoods')}?id='+goodsInfo['id']" class="eva_edi">{$Think.lang._WAP_GOODS_EDIT_}</a>
+				<a href="javascript:;" class="shelf" @click="setGoodsOnSale" v-if="goodsInfo['is_on_sale'] == '0'">{$Think.lang._WAP_GOODS_ONSALE_}</a>
+				<a href="javascript:;" class="shelf" @click="setGoodsOnSale" v-else>{$Think.lang._WAP_GOODS_OFFSALE_}</a>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/swiper.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsInfo : [],
+				goods_id : {$_GET["goods_id"]},
+				goodsImages : [],
+				slideNum : 1,
+				Detail : "",
+				commentCount : '',
+				commentList : [],
+				attrNameInfo : [],
+				longitude : 113.37763,
+				latitude : 23.13275,
+				is_on_sale : 0,
+				selAttrList : [],
+				selAttrClassfiy : [],
+				selAttrID : [],
+				selattrId : '',
+				goodsOn :[]
+			},
+			created(){
+				this.getGoodsInfo();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getGoodsInfo : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Goods/goodsDetail")}",
+						type : "POST",
+						dataType : "json",
+						async : false,
+						data : {
+							goods_id : that.goods_id,
+							longitude : that.longitude,
+							latitude : that.latitude
+						}
+					})
+					.done(function(returnData){
+						that.goodsInfo = returnData['data']['goodsInfo'];
+						that.goodsImages = returnData['data']['goodsImages'];
+						that.Detail = returnData['data']['goodsDesc'];
+						that.commentCount = returnData['data']['commentCount'];
+						that.commentList = returnData['data']['commentList'];
+						that.is_on_sale = parseInt(that.goodsInfo['is_on_sale']);
+						that.$nextTick(function(){
+			            var mySwiper = new Swiper('#Goods_img_cont', {
+							autoplayDisableOnInteraction : false, 
+								onSlideChangeEnd: function(swiper){
+									that.slideNum = swiper.activeIndex+1;
+								}
+							})
+			            })
+					})
+
+					$.ajax({
+						url : "{:U("Goods/getSkuAttr")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							category_id : that.goodsInfo.agent_category_id,
+							relevance_id : that.goodsInfo.relevance_id
+						}
+					})
+					.done(function(returnData){
+						that.attrNameInfo = returnData['data']['attrNameInfo'];
+						that.goodsOn = returnData['data']['goodsOn'];
+						for(var i = 0;i<that.attrNameInfo.length;i++){
+							that.selAttrClassfiy.push(that.attrNameInfo[i].id);
+						}
+					})
+				},
+				setGoodsOnSale : function(){
+					var that = this;
+					( that.is_on_sale == 0 ) ? that.is_on_sale = 1 : that.is_on_sale = 0;
+					console.log(that.is_on_sale);return;
+					$.ajax({
+						url : "{:U("Goods/setOnSale")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							goods_id : that.goods_id,
+							is_on_sale : that.is_on_sale
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							automsgbox(data.message);
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				},
+				selAttr : function(){
+					var that = this;
+					$(event.target).addClass("on");
+					$(event.target).siblings().removeClass('on');
+					var index = $(event.target).parent().attr('data-id');
+					$('.s_g_c_ul li.on').each(function(){
+						var id = $(this).attr('data-id');
+						that.selAttrID.push(id);						
+					})
+					var leng = that.selAttrID.length;
+					var newarr = [];
+					newarr.push(that.selAttrID[leng-2]);
+					newarr.push(that.selAttrID[leng-1]);
+					that.selattrId = newarr.join(',');
+					for(var j = 0;j < that.goodsOn.length;j++){
+						var skuArr = that.goodsOn[j]['skuArr'].join(',');
+						if( that.selattrId == skuArr ){
+							that.goodsInfo['goods_image'] = that.goodsOn[j]['goods_image'];
+							that.goodsInfo['goods_price'] = that.goodsOn[j]['goods_price'];
+						}
+					}
+					for(var i = 0;i < that.selAttrClassfiy.length;i++){
+						if( index == that.selAttrClassfiy[i] ){
+							that.selAttrList[i] = $(event.target).text();							
+						}							
+					}
+					$("#JselAttr").val(that.selAttrList);
+				},
+				editGoodsInfo : function(){
+					$("#Jedit").slideDown();
+				},
+				closeGoodsInfo : function(){
+					$("#Jedit").slideUp();
+				}
+			}
+		})
+	</script>
+</block>

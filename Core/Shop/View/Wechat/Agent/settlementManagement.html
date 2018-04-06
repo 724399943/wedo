@@ -1,0 +1,188 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="conetnt" id="content">
+		<div class="settle_manage">
+			<div class="s_man_top">
+				<h1>{$Think.lang._WAP_AGENT_SETTLEMENTMANAGEMENT_}</h1>
+				<span class="back"></span>
+				<p class="money">{{user['money']}}<span>{$Think.lang._COMMON_GINGGIT_}</span></p>
+				<p class="lm">{$Think.lang._COMMON_BALANCE_}</p>
+			</div>
+			<div class="p_cen_m">
+				<ul class="sm_ul">
+					<li class="smli">
+						<a href="{:U('User/withdraw')}">
+							<span class="s1">{$Think.lang._WAP_USER_WITHDRAW_}</span>
+							<span class="s2">{$Think.lang._WAP_USER_PAYMENTGATEWAY_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+					<li class="smli">
+						<a href="{:U('Agent/settlementLog')}">
+							<span class="s1">{$Think.lang._WAP_AGENT_SETTLEMENTDETAILS_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+				</ul>
+				<ul class="sm_ul">
+					<li class="smli">
+						<a href="{:U('Money/moneyLog')}">
+							<span class="s1">{$Think.lang._WAP_AGENT_OVERALLSTATEMENT_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+					<li class="smli sme">
+						<a href="javascript:;" @click="changingPassword">
+							<span class="s1">{$Think.lang._WAP_AGENT_WITHDRAWPASSWORD_}</span>
+							<span class="s2">{$Think.lang._WAP_AGENT_MODIFYPASSWORD_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 弹窗 -->
+		<div class="mask"></div>
+		<div class="setPay_psw">
+			<p v-if="eventType == 0">{$Think.lang._WAP_AGENT_SETWITHDRAWPASSWORD_}</p>
+			<p v-else-if="eventType == 1">{$Think.lang._WAP_AGENT_ORIGINALPASSWORD_}</p>
+			<p v-else-if="eventType == 2">{$Think.lang._WAP_AGENT_NEWPASSWORD_}</p>
+			<ul>
+				<li class="vertical-mi">{{password.substring(0,1)}}</li>
+				<li class="vertical-mi">{{password.substring(1,2)}}</li>
+				<li class="vertical-mi">{{password.substring(2,3)}}</li>
+				<li class="vertical-mi">{{password.substring(3,4)}}</li>
+				<li class="vertical-mi">{{password.substring(4,5)}}</li>
+				<li class="vertical-mi">{{password.substring(5,6)}}</li>
+				<div class="spinput">	
+					<input type="password" maxlength="6" v-model="password" id="pswInput" @input="changing">
+				</div>
+			</ul>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			user : {},
+			eventType : 0,
+			password : '',
+		},
+		created(){
+			this.loadSettlement();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadSettlement : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Agent/settlementManagement')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.user = returnData['data']['list'];
+					}
+				});
+			},
+			changing() {
+				var changingPassword = $(event.target).val(),
+					match = !!changingPassword.match(/^\d+$/);
+				if ( match == false ) {
+					this.password = '';
+					automsgbox('密码只能是数字');
+					return;
+				}
+				if ( changingPassword.length == 6 ) {
+					switch ( this.eventType ) {
+						case 0 :
+							this.editWithdrawPassword();
+							break;
+						case 1 :
+							this.verifyWithdrawPassword();
+							break;
+						case 2 :
+							this.editWithdrawPassword();
+							break;
+					}
+				}
+			},
+			showPasswordBox(eventType) {
+				this.eventType = eventType;
+				$('.mask').fadeIn();
+				$('.setPay_psw').fadeIn();
+				$("#pswInput").focus();
+			},
+			hidePasswordBox() {
+				$('.mask').fadeOut();
+				$('.setPay_psw').fadeOut();
+			},
+			changingPassword() {
+				if ( !this.user['withdraw_password'] ) {
+					this.showPasswordBox(0);
+				} else {
+					this.eventType = 1;
+					this.showPasswordBox(1);
+				}
+			},
+			editWithdrawPassword() {
+				var that = this;
+				if ( !that.password ) {
+					automsgbox('请输入新提现密码');
+				}
+				$.ajax({
+					url: '{:U('User/editWithdrawPassword')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {password:that.password}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox('设置密码成功', function(){
+							window.location.href = window.location.href;
+						});
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});
+			},
+			verifyWithdrawPassword() {
+				var that = this;
+				if ( !that.password ) {
+					automsgbox('请输入原提现密码');
+				}
+				$.ajax({
+					url: '{:U('User/verifyWithdrawPassword')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {password:that.password}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						that.eventType = 2;
+						that.showPasswordBox(2);
+						that.password = '';
+					} else {
+						that.hidePasswordBox();
+						automsgbox(returnData['message']);
+					}
+				});
+			}
+		}
+	})
+
+	$(document).click(function(e){ 
+		e = window.event || e; 
+		obj = $(e.srcElement || e.target);
+	 	if ($(obj).is(".mask")) { 
+	 	   	vm.hidePasswordBox();
+	  	}
+	});
+</script>
+</block>

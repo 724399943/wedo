@@ -1,0 +1,18 @@
+<ul>
+	<li class="current">
+		<ul class="Jcon-ctr">
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Point')) && in_array(ACTION_NAME, array('pointGoods', 'goodsDetail', 'pointInfo'))">on</if>">
+				<a href="{:U('Point/pointGoods')}">{$Think.lang._COMMON_POINT_WEDO_MALL}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Collect')) && in_array(ACTION_NAME, array('collectGoods'))">on</if>">
+				<a href="{:U('Collect/collectGoods')}">{$Think.lang._PC_POINT_COLLECT_GOODS_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Point')) && in_array(ACTION_NAME, array('pointLog', 'orderDetail'))">on</if>">
+				<a href="{:U('Point/pointLog')}">{$Think.lang._PC_POINT_WEDO_POINT_STATEMENT_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent', 'PointOrder')) && in_array(ACTION_NAME, array('myPointGoods', 'pointOrder', 'pointOrderDetail'))">on</if>">
+				<a href="{:U('Agent/myPointGoods')}">{$Think.lang._PC_POINT_MY_POINTS_MERCHANDISE_}</a>
+			</li>
+		</ul>
+	</li>
+</ul>

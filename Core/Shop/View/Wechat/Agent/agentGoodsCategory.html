@@ -1,0 +1,217 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_CLASSIFY_CATEGORIESMANAGEMENT_}</h1>
+		</header>
+		<div class="merch_control">
+			<ul>
+				<li v-for="(item,index) in categoryList">
+					<a href="javascript:;" @click="showEditCategoryBox(item.id,item.category_name)">
+						<span>{{item.category_name}}</span>
+						<em></em>
+					</a>
+				</li>
+			</ul>
+			<a href="javascript:;" class="add_btn" @click="showProcessCategoryBox(0)">{$Think.lang._WAP_CLASSIFY_ADDANEWCATEGORY_}</a>
+			<!-- 弹窗 -->
+			<div class="mask"></div>
+			<div class="cwin" id="JeditCategoryBox">
+				<div class="edit_classfiy">
+					<p @click="showProcessCategoryBox(1)">{$Think.lang._WAP_CLASSIFY_EDIT_}</p>
+					<p @click="delCategory('show')">{$Think.lang._WAP_CLASSIFY_DELETE_}</p>
+				</div>
+			</div>
+
+			<div class="cwin" id="JconfirmDeleteCategoryBox">
+				<div class="add_classfiy">
+					<div class="btn_wrap">
+						<a href="javascript:;" @click="delCategory('hide')">{$Think.lang._WAP_CLASSIFY_CANCEL_}</a>
+						<a href="javascript:;" @click="delCategory('sure')">{$Think.lang._WAP_CLASSIFY_CONFIRM_}</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="cwin" id="JprocessCategoryBox">
+				<div class="add_classfiy">
+					<input type="text" id="JcategoryName" placeholder="{$Think.lang._WAP_CLASSIFY_ENTERACATEGORY_}" v-model="category_name">
+					<div class="btn_wrap">
+						<a href="javascript:;" @click="hideCategoryBox">{$Think.lang._WAP_CLASSIFY_CANCEL_}</a>
+						<a href="javascript:;" @click="processCategory">{$Think.lang._WAP_CLASSIFY_CONFIRM_}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			categoryList : [],
+			page : 1,
+			goscroll : 1,
+			agentId : '{$agentId}',
+			categoryId : '',
+			eventType : '',  // 0：添加，1：编辑
+			category_name : '',
+		},
+		created(){
+			this.loadCategory();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadCategory : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Category/agentGoodsCategory')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						id : that.agentId,
+						page : that.page,
+					}
+				})
+				.done(function(returnData) {
+					if ( returnData['data']['list'].length ) {
+						if( that.categoryList.length == 0 ){
+							that.categoryList = returnData['data']['list'];
+						}else{
+							that.categoryList = that.categoryList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+					} else {
+						that.goscroll = 0;
+					}
+				});
+			},
+			showProcessCategoryBox(eventType) {
+				this.eventType = eventType;
+				if ( eventType == 0 ) {
+					this.category_name = '';
+				}
+				this.showCategoryBox();
+			},
+			showEditCategoryBox(categoryId,category_name) {
+				this.categoryId = categoryId;
+				this.category_name = category_name;
+				this.showCategoryBox(0);
+			},
+			addCategory() {
+				$.ajax({
+					url: '{:U('Agent/addAgentGoodsCategory')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {category_name : this.category_name}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox('{$Think.lang._WAP_CLASSIFY_ADDSUCCESS_}');
+						(function reload(){
+							window.location.href = window.location.href;
+						})();
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});
+			},
+			editCategory() {
+				$.ajax({
+					url: '{:U('Agent/editAgentGoodsCategory')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						id : this.categoryId,
+						category_name : this.category_name
+					}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox('{$Think.lang._WAP_CLASSIFY_EDITSUCCESS_}');
+						(function reload(){
+							window.location.href = window.location.href;
+						})();
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});
+			},
+			delCategory(type) {
+				switch ( type ) {
+					case 'hide' :
+						this.hideCategoryBox();
+						break;
+					case 'show' :
+						$('#JeditCategoryBox').hide();
+						$('#JconfirmDeleteCategoryBox').show();
+						break;
+					case 'sure' :
+						$.ajax({
+							url: '{:U('Agent/delAgentGoodsCategory')}',
+							type: 'POST',
+							dataType: 'json',
+							data: {id : this.categoryId}
+						})
+						.done(function(returnData) {
+							if ( returnData['status'] == '200000' ) {
+								automsgbox('{$Think.lang._WAP_CLASSIFY_DELETESUCCESS_}');
+								(function reload(){
+									window.location.href = window.location.href;
+								})();
+							} else {
+								automsgbox(returnData['message']);
+							}
+						});
+						break;
+				}
+			},
+			showCategoryBox(type) {
+				$('.mask').show();
+				( type == 0 ) ? $('#JeditCategoryBox').show() : $('#JprocessCategoryBox').show();
+			},
+			hideCategoryBox() {
+				$('.mask').hide();
+				$('.cwin').hide();
+			},
+			processCategory() {
+				var category_name = $('#JcategoryName').val();
+				if ( !category_name ) {
+					automsgbox('{$Think.lang._WAP_CLASSIFY_ENTERACATEGORY_}');
+					return;
+				}
+				( this.eventType == 0 ) ? this.addCategory(category_name) : this.editCategory(category_name);
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.loadCategory();
+						}
+					}
+				})
+			},
+		}
+	})
+
+	$(document).click(function(e){ 
+		e = window.event || e; 
+		obj = $(e.srcElement || e.target);
+	 	if ($(obj).is(".cwin")) { 
+	 	   	$('.mask').hide();
+			$('.cwin').hide();
+	  	}
+	});
+</script>
+</block>

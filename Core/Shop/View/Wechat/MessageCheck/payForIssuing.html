@@ -1,0 +1,88 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._COMMON_PAY_}</h1>
+		</header>
+		<div class="main">
+			<p class="order_num">{$Think.lang._COMMON_ORDER_NUMBER_}：{$order['order_sn']}</p>
+			<div class="paywrap">
+				<ul>
+					<li>
+						<div class="o_pay">
+							<em class="balance"></em>
+							<span>{$Think.lang._COMMON_BALANCE_PAID_}</span>
+							<i>{$Think.lang._COMMON_BALANCE_}：{$userInfo['money']}</i>
+						</div>
+					</li>
+				</ul>
+				<div class="topay">
+					<span>{$Think.lang._COMMON_AMOUNTS_PAYABLE_}</span>
+					<i>RM{$order['total']}</i>
+					<a href="javascript:;" class="pay_btn" @click="payForIssuing">{$Think.lang._COMMON_PAY_}</a>
+				</div>
+			</div>
+			<!-- 弹窗 -->
+			<div class="mask"></div>
+			<div class="payfinash">
+				<p>{$Think.lang._COMMON_PAY_PAYMENTISSUCCESFUL_}</p>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				order_sn : {$_GET["order_sn"]},
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				payForIssuing : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("MessageCheck/payForIssuing")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							order_sn : that.order_sn
+						}
+					})
+					.done(function(returnData){
+						if ( returnData['status'] == '200000' ) {
+							that.showSuccess();
+							setTimeout(function(){
+								window.location.href = "{:U('MessageCheck/issuedMessage')}";
+							}, 2000);
+						} else {
+							automsgbox(returnData['message']);
+						}
+					})
+				},
+				showSuccess() {
+					$('.mask').show();
+					$('.payfinash').show();
+				}
+			}
+		})
+
+		function checkPayment() {
+			$.ajax({
+				url: '{:U('Public/checkPayment')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn:"{$_GET['order_sn']}",sign:"issuing"}
+			})
+			.done(function(returnData) {
+				if ( returnData['data']['payment'] == 'paid' ) {
+					window.location.href = '{:U('MessageCheck/issuedMessage')}';
+				}
+			});
+		}
+		setInterval('checkPayment()', 2000);
+	</script>
+</block>

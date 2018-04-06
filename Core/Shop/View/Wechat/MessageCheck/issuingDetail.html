@@ -1,0 +1,47 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_MESSAGE_DETAILS_}</h1>
+		</header>
+		<div class="main">
+			<div class="news_detail">
+				{{message['content']}}
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			message : {},
+			id : "{$_GET['id']}",
+		},
+		created(){
+			this.loadMessage();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadMessage : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('MessageCheck/issuingDetail')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {id:that.id}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.message = returnData['data']['list'];
+					}
+				});
+			}
+		}
+	})
+</script>
+</block>

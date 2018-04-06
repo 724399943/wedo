@@ -1,0 +1,200 @@
+<extend name="Common:base" />
+
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/js/kindeditor/themes/default/default.css" />
+	<style type="text/css">
+		.adddivs{height:50px;position: relative;margin:10px auto;text-align: center;}
+		.adddivs .addinput{width: 50px; height: 50px; opacity: 0; display: inline-block;}
+		.adddivs .cutIcon{position:absolute;width:12px;height:12px;display: block;left: -4px;top:-4px;background: url(__PUBLIC__/Admin/images/cus_close.png) no-repeat center center;background-size: 12px;cursor: pointer;cursor: pointer;display: block;}
+		.adddivs .addinput-bg{width:50px;height:50px;display: inline-block;margin-left: 10px;background: url(/Static/Public/Admin/images/upload-bg.png) no-repeat center center;background-size: 48px;border:1px dashed #d5d5d5;}
+		.adddivs .img-bg{position: relative;width:50px;height:50px;display: inline-block;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Goods/menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+    <h1 class="pagetitle">
+    	编辑店铺分类
+    </h1>
+    <span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form class="stdform stdform2" action="{:U('Agent/agentEdit')}" method="post" id="JgoodsForm">
+		<div class="line-dete">
+			<label>分类名称：</label>
+	        <span class="field">
+	        	<input class="smallinput" type="text" name="category_name" id="category_name" value="{$agentcat['category_name']}" />
+	        </span>
+		</div>
+		
+		
+
+		<div class="line-dete">
+			<label>分类排序：</label>
+	        <span class="field">
+	        	<input class="smallinput" type="text" name="sort" id="sort" value="{$agentcat['sort']}" />
+	        </span>
+		</div>
+
+	
+
+		<div class="line-dete">
+			<label>icon：</label>
+	        <div class="field" id="JpointEditGoodsWrap">
+				<input type="hidden" id="JcoverPid" name="app_icon" value="{$agentcat['app_icon']}">
+				<div id="photoList" class="m-photo-list">
+					<div class="pic-wrap">
+						<img src="{$agentcat['app_icon']}"/>
+					</div>
+				</div>
+				<div class="upload-wrap">
+	        		<input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" />
+	        	</div>
+	        </div>
+		</div>
+
+
+		<div class="line-dete">
+			<label></label>
+	        <span class="field">
+	        	
+	        	<input type="button" class="stdbtn Jagentfirm" data-onsale="1" value="保存" style="margin-left:10px" />
+	        	
+	        	<input type="hidden" name="id" value="{$agentcat['id']}">
+	        </span>
+		</div>
+	</form>
+</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/plugins/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Common/js/json2.js"></script>
+	<script charset="utf-8" type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/kindeditor-min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/lang/zh_CN.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+		var firstUpload = true;
+
+		var editor;
+		KindEditor.ready(function(K) {
+			editor = K.create('#goodsDetail', {
+				height: "600px",
+				allowFileManager: true,
+				uploadJson: '{:U("Agent/descUploadPic")}',
+				items : ['source','fontname','fontsize','forecolor','preview','selectall','justifyleft','justifycenter','justifyright','link','unlink','image'],
+				afterCreate : function() {
+					this.loadPlugin('autoheight');
+				}
+			});
+		});
+
+		$('input[name="is_detection"]').click(function() {
+			console.log($(this).val());
+			if ($(this).val() == 1) {
+				$('#JdetItem').show();
+			} else {
+				$('#JdetItem').hide();
+			}
+		});
+
+		
+
+		// $('.JgoodsSubmit').click(function() {
+		// 	var attrStr = '',
+		// 		attrKey = $('.JattrName'),
+		// 		attrVal = $('.JattrVal');
+
+		// 	for (var i = 0, len = attrKey.length; i < len; i ++) {
+		// 		if (attrKey[i].value) {
+		// 			attrStr += attrKey[i].value + ':' + attrVal[i].value + ';';
+		// 		}
+		// 	}
+		// 	$('#attrList').val(attrStr.substring(0, attrStr.length - 1));
+
+		// 	var isOnSale = $(this).data('onsale');
+		// 	$('input[name="is_on_sale"]').val(isOnSale);
+		// 	editor.sync();
+		// 	$('#JgoodsForm').submit();
+		// });
+		  $('.Jagentfirm').click(function() {
+    		$('#JgoodsForm').submit();
+    	});
+
+		$("#photoList").on('click', 'img', function() {
+			$("#photoList").find('img').removeClass('s-cover');
+			$(this).addClass('s-cover');
+			$('#JcoverPid').val($(this).attr('src'));
+			// $(this).parents('.pic-wrap').find("input[name='photo[]']").attr('name','change')
+		});
+
+		$('.line-dete').on('click', '.del-pic', function() {
+			$(this).parent().remove();
+		});
+
+		$(document).on('click','.Jcuteach-img',function(){
+			$(this).siblings('img').remove();
+			$(this).parent('.img-bg').hide().siblings('.addinput-bg').show();
+		});
+
+		$(document).on('change', '#fileToUpload', function() {
+			var goodsImgLength = $('#photoList').find('img').length;
+			goodsImgLength = parseInt(goodsImgLength);
+			$.ajaxFileUpload({
+				url: "{:U('Agent/photoUpload')}",
+				secureuri: false,
+				fileElementId: 'fileToUpload',
+				dataType: 'json',
+				success: function (data, status) {
+					if(typeof(data.error) != 'undefined') {
+						if(data.error != '') {
+							alert(data.error);
+						} else {
+							$("#photoList").append('<div class="pic-wrap"><i class="del-pic"></i><img src="' + data.src + '" /><input type="hidden" name="[]" value="' + data.src + '" /></div>');
+
+							if (firstUpload && goodsImgLength === 0) {
+								firstUpload = false;
+								$('#JcoverPid').val(data.src);
+								$("#photoList").find('img').addClass('s-cover');
+								// $('#photoList').find("input[name='photo[]']").attr('name','change');
+							}
+						}
+						$('#JpointEditGoodsWrap .upload-wrap').remove();
+						$('#JpointEditGoodsWrap').append('<div class="upload-wrap"> <input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" /> </div>');
+					}
+				},
+				error: function (data, status, e) {
+					alert(e);
+				}
+			});
+		});
+
+		$(document).on('change', '#wxImageToUpload', function() {
+			$.ajaxFileUpload({
+				url: "{:U('Goods/wxIndexImageUpload')}",
+				secureuri: false,
+				fileElementId: 'wxImageToUpload',
+				dataType: 'json',
+				success: function (data, status) {
+					if(typeof(data.error) != 'undefined') {
+						if(data.error != '') {
+							alert(data.error);
+						} else {
+							// console.log(data);
+							$('#JwxImageDom').html('<div class="pic-wrap"><i class="del-pic"></i><img src="' + data.src + '" /></div>');
+							$('#JcoverWxPid').val(data.src);
+						}
+					}
+				},
+				error: function (data, status, e) {
+					alert(e);
+				}
+			});
+		});
+	</script>
+</block>

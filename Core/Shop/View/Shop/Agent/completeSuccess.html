@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title><block name="title">{:C('systemName')}</block><block name="suffix"></block></title>
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="<block name="description"></block>">
+    <meta name="keywords" content="<block name="keywords"></block>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="shortcut icon" href="__PUBLIC__/xcrozz.ico" type="image/x-icon">
+    <link href="__PUBLIC__/Shop/css/base.css" rel="stylesheet">
+    <link href="__PUBLIC__/Shop/css/style.css" rel="stylesheet">
+    <script src="__PUBLIC__/Wechat/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <link href="__PUBLIC__/Shop/css/login.css" rel="stylesheet">
+    <style type="text/css">
+        body{background: #fff;}
+        .comSpt{text-align:center;font-size:18px;color:#666;line-height:36px;}
+        .pt{color:#666;text-align:center;line-height:25px;margin:30px 0;}
+        .sqrcode_m .sqrcode_box{width:50%;margin:0 auto;position:relative;}
+        .sqrcode_m .sqrcode_box:before{content:'';display:block;padding:50% 0;}
+        .sqrcode_m .sqrcode_box img{width:100%;height:100%;position:absolute;top:0;left:0;}
+        .sqrcode_m p{text-align:center;color:#666;line-height:35px;}
+    </style>
+</head>
+<div class="login-box">
+    <div class="l-top">
+        <a href="/" class="logo">
+            <img src="__PUBLIC__/Shop/images/okshop_logo.png" width="134" alt="">
+        </a>
+    </div>
+    <div class="box clearfix">
+        <img src="__PUBLIC__/Shop/images/loginpic.jpg" alt="" class="pic">
+        <div class="login-input-b">
+            <div class="login-data login-sigin-data">
+                <div class="comSpt">{$Think.lang._WAP_SUPPLEMENT_SUCCESSFULLY_}</div>
+                <p class="pt">{$Think.lang._WAP_SUPPLEMENT_SUCCESSTIPS_}</p>
+                <div class="sqrcode_m">    
+                    <div class="sqrcode_box">
+                        <img src="{:trim($_GET['qrcode'], '.')}">
+                    </div>
+                    <p>{$Think.lang._WAP_SUPPLEMENT_MERCHANT_QRCODE_}</p>
+                </div>
+                <a href="{:U('Login/login')}" id="Jsbumit" class="conment-login">{$Think.lang._COMMON_CONFIRM_}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    
+</script>

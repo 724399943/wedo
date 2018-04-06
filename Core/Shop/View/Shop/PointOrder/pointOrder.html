@@ -1,0 +1,110 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_POINT_REDEEM_HISTORY_}</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_POINT_REDEEM_HISTORY_}</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="goodslist_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._COMMON_ORDER_NUMBER_}</th>
+	<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+	<th>{$Think.lang._COMMON_QUANTITY_}</th>
+	<th>{$Think.lang._COMMON_REDEEM_WEDO_POINTS_}</th>
+	<th>{$Think.lang._PC_POINT_TOTAL_REDEEM_POINTS_}</th>
+	<th>{$Think.lang._PC_POINT_REDEEM_TIME_}</th>
+	<th>{$Think.lang._COMMON_MERCHANT_NAME_}</th>
+	<th>{$Think.lang._COMMON_DELIVERY_METHOD_}</th>
+	<th>{$Think.lang._COMMON_ORDER_STATUS_}</th>
+	<th>{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			id = ( type == '0' ) ? data['goods_id'] : data['id'];
+			date = new Date(data['add_time'] * 1000);
+		for ( var j = 0; j < data['goodsList'].length; j ++ ) {
+			var goodsData = data['goodsList'][j];
+	%>
+	<tr>
+		<td><%=data['id']%></td>
+		<td><%=data['order_sn']%></td>
+		<td><%=goodsData['goods_name']%></td>
+		<td><%=goodsData['goods_number']%></td>
+		<td><%=goodsData['price']%></td>
+		<td><%=data['total']%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td><%=data['nickname']%></td>
+		<td>
+			<%if(data['express_type'] == '0'){%>
+				<%=byDelivery%>
+			<%}else{%>
+				<%=collectFromMerchant%>
+			<%}%>
+		</td>
+		<td>
+			<%if(data['is_pay'] == '1' && data['delivery_status'] == '0'){%>
+				<%=toBeDelivered%>
+			<%}else if(data['is_pay'] == '1' && data['delivery_status'] == '1' && data['received'] == '0'){%>
+				<%=toBeReceived%>
+			<%}else if(data['is_pay'] == '1' && data['delivery_status'] == '1' && data['received'] == '1'){%>
+				<%=toBeReview%>
+			<%}%>
+		</td>
+		<td class="center">
+			<a class="stdbtn btn_lime" href="<%=jumpUrl%>?order_sn=<%=data['order_sn']%>">{$Think.lang._PC_POINT_REDEEM_DETAILS_}</a>
+		</td>
+	</tr>
+	<%}%>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    var type = '0';
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('PointOrder/pointOrder')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['type'] = type;
+				returnData['data']['toBeDelivered'] = "{$Think.lang._PC_POINT_TO_BE_DELIVERED_}";
+				returnData['data']['toBeReceived'] = "{$Think.lang._PC_POINT_TO_BE_RECEIVED_}";
+				returnData['data']['toBeReview'] = "{$Think.lang._PC_POINT_TO_BE_REVIEW_}";
+				returnData['data']['jumpUrl'] = "{:U('PointOrder/pointOrderDetail')}";
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				returnData['data']['collectFromMerchant'] = "{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}";
+				var html = bt('goodslist_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+</script>
+</block>

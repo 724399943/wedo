@@ -1,0 +1,80 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">兑换详情</h1>
+		</header>
+		<div class="main">
+			<div class="exc_c_detail">
+				<div class="ex_deta_top">
+					<div class="p_cen_m">
+						<ul class="sm_ul">
+							<li class="line">
+								<a href="javascript:;">
+									<span class="s1">配送方式</span>
+									<span class="s2" v-if="orderDetail.express_type == 0">送货上门</span>
+									<span class="s2" v-else>到店取货</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="o_ryear_top">
+					<div class="o_address">
+						<div class="imgbox">
+							<img src="__PUBLIC__/Wechat/images/o_address_ico.png">
+						</div>
+						<div class="add">
+							<p class="user"><span>{{orderDetail.consignee}}</span><i>{{orderDetail.telephone}}</i></p>
+							<p class="a_d db-overflow">{{orderDetail.province}}{{orderDetail.city}}{{orderDetail.county}}{{orderDetail.address}}</p>
+						</div>
+					</div>
+				</div>
+				<div class="ex_w_store">
+					<h1>{{orderDetail.agent_name}}</h1>
+					<div class="s_w_cont" v-for="(item,index) in orderDetail.goodsList">
+						<div class="imgbox">
+							<img :src="item.goods_image">
+						</div>
+						<p>{{item.goods_name}}</p>
+						<span>{{item.price}}积分</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				orderDetail : [],
+				order_sn : {$_GET["order_sn"]}
+			},
+			created(){
+				this.getOrderDetail();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getOrderDetail : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Point/orderDetail")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							order_sn : that.order_sn
+						}
+					})
+					.done(function(data){
+						that.orderDetail = data.data.list;
+					})
+				}
+			}
+		})
+	</script>
+</block>

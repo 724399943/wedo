@@ -1,0 +1,69 @@
+<extend name="Public:base" />
+
+<block name="cusStyle">
+</block>
+
+<block name="menu">
+	<include file="Goods/menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+    <h1 class="pagetitle">
+    	{$Think.lang._PC_SETTING_CUSTOMER_FEEDBACK_}
+    </h1>
+    <span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form class="stdform stdform2" action="{:U('User/feedback')}" method="post" id="JgoodsForm">
+		<div class="line-dete" >
+			<label>您的建议：</label>
+	        <span class="field">
+	        <textarea class="smallinput" rows="10" name="text" id="text" placeholder="您合理的建议有助于我们改善用户体验..."></textarea>
+	       
+	        </span>
+		</div>
+
+		<div class="line-dete">
+			<label></label>
+	        <span class="field">
+	        	<input type="button" class="stdbtn JgoodsSubmit" value="提交" style="margin-left:10px" />
+	        	<!-- <input type="hidden" name="id" value="{$feed['id']}"> -->
+	        </span>
+		</div>
+	</form>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+ //提交表单
+ // $('.JgoodsSubmit').click(function() {
+ //    		$('#JgoodsForm').submit();
+ //    	});
+ 
+ $(function(){
+	$('.JgoodsSubmit').click(function(){
+		$.ajax({
+			url: "{:U('User/feedback')}",
+			type: 'POST',
+			dataType: 'json',
+			data: $('#JgoodsForm').serialize(),
+		})
+		.done(function(data) {
+			// console.log(data);return;
+			if (data.status == '200000') {
+				// msgbox(data.message,function(){
+				// 	window.location.href ="{:U('User/feedback')}";
+				// });
+			}else{
+				alert(data.message);
+			}
+		})
+	})	  
+ })
+
+</script>
+</block>
+

@@ -1,0 +1,20 @@
+<ul>
+	<if condition="checkControllerAuth(array('Order'))">
+		<li <if condition="in_array(ACTION_NAME, array('orderList'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('Order-orderList'))}" class="addons">订单管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('Order-orderList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('orderList', 'orderDetail'))">on</if>">
+						<a href="{:U('Order/orderList')}">订单列表</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('GoodsComment-goodsComment')">
+					<li class="<if condition="in_array(ACTION_NAME, array('goodsComment'))">on</if>">
+						<a href="{:U('GoodsComment/goodsComment')}">评价管理</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

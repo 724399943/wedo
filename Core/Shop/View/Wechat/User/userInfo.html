@@ -1,0 +1,119 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_EDIT_PERSONAL_INFORMATION_}</h1>
+			<a href="javascript:;" class="mail" @click="upHeadimgUrl">{$Think.lang._WAP_SUPPLEMENT_COMPLETE_}</a>
+		</header>
+		<div class="main">
+			<div class="y-bindphone">
+				<ul>
+					<li>
+						<span>{$Think.lang._WAP_AGENT_AVATAR_}</span>
+						<div class="imgbox" id="filePicker">
+							<img :src="user['headimgurl']">
+							<input type="file" name="upload_input" id="upload_input">
+						</div>
+					</li>
+					<li>
+						<span>{$Think.lang._WAP_AGENT_LOGIN_ACCOUNT_}</span>
+						<p>{{user['username']}}</p>
+					</li>
+					<li>
+						<a href="{:U('Agent/aptitudeData')}">
+							<span>{$Think.lang._WAP_AGENT_QUALIFICATION_}</span>
+							<i></i>
+						</a>
+					</li>
+					<li>
+						<a href="{:U('Agent/basicData')}">
+							<span>{$Think.lang._WAP_AGENT_BASIC_}</span>
+							<i></i>
+						</a>
+					</li>
+					<li class="editpsw">
+						<a href="{:U('Login/resetPassword')}">
+							<span>{$Think.lang._PC_SETTING_CHANGE_PASSWORD_}</span>
+							<i></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			user : {},
+			headimgurl :''
+		},
+		created(){
+			this.loadUser();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadUser : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('User/userInfo')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.user = returnData['data']['list'];
+					}
+				});
+			},
+			upHeadimgUrl : function(){
+				var that = this;
+				$.ajax({
+					url: '{:U('User/updateUser')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						nickname : that.user.nickname,
+						sex : that.user.sex,
+						headimgurl : that.headimgurl
+					}
+				})
+				.done(function(returndata) {
+					if (returndata.status == '200000') {
+						automsgbox('保存头像成功！', function(){
+							window.location.href = window.location.href;
+						});
+					}
+				})
+			}
+		}
+	})
+	// 上传头像
+	$(document).on('change', '#filePicker', function() {
+	    $.ajaxFileUpload({
+	        url: "{:U('Agent/photoUpload')}",
+	        secureuri: false,
+	        fileElementId: 'upload_input',
+	        dataType: 'json',
+	        success: function (data, status) {
+	            console.log(data)
+	            if(data.error != '') {
+	                alert(data.errorStr);
+	            } else {
+	               	vm.user['headimgurl'] = data.url;
+	               	vm.headimgurl = data.url;
+	            }
+	        },error: function (data, status, e) {
+	            alert(e);
+	        }
+	    });
+	});
+</script>
+</block>

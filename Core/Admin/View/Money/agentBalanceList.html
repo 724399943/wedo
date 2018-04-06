@@ -1,0 +1,142 @@
+<extend name="Common:base" />
+
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+<block name="title">商家余额管理</block>
+
+<block name="menu">
+	<include file="Money:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">商家余额管理</h1>
+	    <span class="pagedesc"></span>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" class="menber" >
+			<p>
+				<label>账号：</label>
+				<input type="text" name="username" placeholder="输入搜索账号" value="{$return['username']}">
+				&nbsp;&nbsp;
+				<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+				&nbsp;&nbsp;
+				<label>真实姓名：</label>
+				<input type="text" name="manager" placeholder="输入搜索姓名" value="{$return['manager']}">
+				&nbsp;&nbsp;
+				店铺分类：  
+				<select name="category_id">   
+					<option value="">全部</option>
+					<volist name="categoryList" id="value">
+						 <option value="{$value['id']}" <if condition="$return['category_id'] eq $value['id']">selected</if>>{$value['category_name']}
+						 </option>
+				    </volist>
+			    </select>
+			    &nbsp;&nbsp; 
+				<input type="submit" value="筛选">
+			</p>
+		</form>
+
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th width="10%">序号</th>
+				<th>账号</th>
+				<th>店铺名称</th>
+				<th>店铺分类</th>
+				<th>店铺位置</th>
+				<th>真实姓名</th>
+				<th>店铺余额</th>
+				<th>操作</th>
+			</tr>
+
+			<if condition="empty($agentList)">
+				<tr>
+					<td colspan="12">暂无会员数据</td>
+				</tr>
+			<else />
+				<volist name="agentList" id="agent">
+					<tr>
+						<td>{$agent['ids']}</td>
+						<td>{$agent['username']}</td>
+						<td>{$agent['agent_name']}</td>
+						<td>{$agent['category_name']}</td>
+						<td>{$agent['address']}</td>
+						<td>{$agent['manager']}</td>
+						<td><input id="Jmoney_{$agent['ids']}" type="text" value="{$agent['money']}"></td>
+						<td class="center">
+                            <if condition="checkActionAuth('Money-editagentBalanceList')">
+								<a class="stdbtn btn_lime" data-id="{$agent['ids']}">修改余额</a>
+				   			</if>
+						<!-- 	<input type="button" id="Jagent" value="修改余额" /> -->
+	        			</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="13">
+						<if condition = "$counting lt 25">
+						<else />
+						<div class="page-box">{$show}</div>
+					</if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+	<script type="text/javascript">
+	$('.Jgivebtn').click(function(){
+		$('.givepop-box').show();
+		$('#Jid').val($(this).data('id'));
+		$('#Jgivename').html($(this).data('user'));
+	})
+	$('.fall').click(function(){
+		$(this).parents('.givepop-box').hide();
+	})
+    
+
+    $('.btn_lime').click(function(){
+    	var ids = $(this).data('id');
+    	var Jmoney = $('#Jmoney_' + ids).val();
+    	// var ids = $('#ids').html();
+		if ( !Jmoney ) {
+			alert('请输入金额');
+		}
+		$.ajax({
+			url: '{:U('Money/editagentBalanceList')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				ids:ids,	
+				Jmoney : Jmoney
+			}
+		})
+		.done(function(returnData) {
+			alert(returnData['message']);
+			if ( returnData['status'] == '200000' ) {
+				window.location.href = window.location.href;
+			}
+		});
+	});
+	 
+	$('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#staDatartTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#startTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+		$('#endDataTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#endTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+</script>
+</block>

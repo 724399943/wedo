@@ -1,0 +1,167 @@
+<extend name="Common:base" />
+<block name="title">用户信用</block>
+<block name="menu">
+	<include file="Credit:menu" />
+</block>
+<block name="cusStyle">
+	<style type="text/css">
+		.mask{width:100%;height:100%;position:fixed;top:0;left:0;bottom:0;right:0;overflow:auto;background:rgba(0,0,0,.4);z-index:6;display:none;}
+		.replay_m{width:40%;padding:10px 15px;border:1px solid #ddd;border-radius:10px;background:#fff;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);--webkit-transform:translate(-50%,-50%);z-index:7;display:none;}
+		.replay_m p{color:#333;font-size:16px;line-height:30px;margin:0;}
+		.replay_m textarea{width:99%;height:70px;border:1px solid #e4e4e4;margin:10px 0;padding:1%;color:#666;}
+		.replay_m textarea.on{border:1px solid #1296db;}
+		.replay_m .rbtn{overflow:hidden;padding:10px 0;text-align:right;}
+		.replay_m .rbtn span{text-align:center;line-height:27px;padding:0 20px;border-radius:5px;border:1px solid #e4e4e4;display:inline-block;cursor:pointer;}
+		.replay_m .rbtn span:hover{background:#967bdc;border:1px solid #967bdc;color:#fff;}
+	</style>
+</block>
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">用户信用</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Credit/userCredit')}" method="get" id="searchForm">
+            <p>
+            	<label>账号：</label>
+				<input type="text" name="nickname" placeholder="输入搜索账号">
+				&nbsp;&nbsp;
+             	<input type="submit" value="搜索"/>
+            </p>
+        </form>
+        <notempty name="userInfo">
+        	<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+				<tr>
+					<th>用户类型</th>
+					<th>登录账号</th>
+					<th>信用值</th>
+					<th>用户状态</th>
+					<th>注册时间</th>
+					<th>操作</th>
+				</tr>
+				<tr>
+					<td>
+						<if condition="$userInfo['status'] eq '0'">
+							用户
+						<else/>
+							卖家
+						</if>
+					</td>
+					<td>{$userInfo['username']}</td>
+					<td>{$userInfo['credit']}</td>
+					<td>
+						<if condition="$userInfo['is_lock'] eq '0'">
+							正常
+						<else/>
+							屏蔽
+						</if>
+					</td>
+					<td>{:time_format($userInfo['add_time'])}</td>
+					<td>
+						<if condition="$userInfo['status'] eq '0'">
+							<a class="stdbtn btn_lime" href="{:U('User/editUser', array('id'=> $userInfo['id']))}">查看</a>
+						<else/>
+							<a class="stdbtn btn_lime" href="{:U('User/editAgent', array('id'=> $userInfo['id']))}">查看</a>
+						</if>
+						<a class="stdbtn btn_lime" href="javascript:;" id="KeditCredit">修改信用值</a>
+					</td>
+				</tr>
+			</table>
+			<br>
+        </notempty>
+        <notempty name="list">
+			<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+				<tr>
+					<th>序号</th>
+					<th>信用增减原因</th>
+					<th>信用值变动</th>
+					<th>信用值</th>
+					<th>变动时间</th>
+					<th>操作</th>
+				</tr>
+				<volist name="list" id="data">
+					<tr>
+						<td>{$data['user_id']}</td>
+						<td>
+	                        <if condition="$data['credit_type'] eq '0'">
+	                        	后台修改
+							<else/>
+								取消订单(订单号{$data['order_sn']})
+							</if>
+						</td>
+						<td>
+							<if condition="strpos($data['change_type'], '0') !== false">+{$data['credit']}
+								<else/>-{$data['credit']}
+							</if>
+						</td>
+						<td>{$data['surplus_credit']}</td>
+						<td>{:time_format($data['add_time'])}</td>
+						<td class="center">
+							<if condition="$data['credit_type'] eq '1'">
+								<a class="stdbtn btn_lime" href="{:U('PointOrder/pointOrderDetail', array('id'=>$data['id']))}">查看订单
+							    </a>
+							</if>
+						</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="6">
+						<if condition="$counting lt 25">
+						<else />
+						   <div class="page-box">{$show}</div>
+					    </if>
+					</td>
+				</tr>
+			</table>
+		</notempty>
+		<!-- 回复弹窗 -->
+   		<div class="mask"></div>
+        <div class="replay_m">
+        	<p>修改信用值：<input type="text" id="Kcredit"></p>
+        	<div class="rbtn">
+        		<span style="margin-right:15px;">取消</span>
+        		<span class="Rsure">确定</span>
+        	</div>
+        </div>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript">
+	var id = "{$userInfo['id']}";
+	$(function(){
+		// 修改信用值
+	    $('#KeditCredit').click(function(){
+	    	$(".mask").fadeIn();
+	    	$(".replay_m").fadeIn();
+	    });
+	    $(".mask").click(function(){
+	    	$(".replay_m").fadeOut();
+	    	$(this).fadeOut();
+	    })
+	    $(".rbtn").on('click','span',function(){
+	    	$(".replay_m").fadeOut();
+	    	$(".mask").fadeOut();
+	    	if( $(this).hasClass("Rsure") ){
+	    		var credit = $('#Kcredit').val();
+	    		if ( !credit ) {
+	    			alert('请输入信用值');
+	    			return;
+	    		}
+	    		$.ajax({
+	    			url: '{:U('Credit/userCredit')}',
+	    			type: 'POST',
+	    			dataType: 'json',
+	    			data: {id:id,credit:credit}
+	    		})
+	    		.done(function(data) {
+	    			if ( data['status'] == '200000' ) {
+	    				window.location.href = window.location.href;
+	    			} else {
+	    				alert(data['message']);
+	    			}
+	    		});
+	    	}	
+	    })
+	})
+</script>
+</block>

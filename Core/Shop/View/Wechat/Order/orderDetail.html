@@ -1,0 +1,182 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._COMMON_ORDER_DETAILS_}</h1>
+			<a href="{:U('Message/consultation')}"><i></i></a>
+		</header>
+		<div class="main">
+			<div class="order_main">
+				<div class="o_ryear_top">
+					<div class="o_z">
+						<div class="lf">
+							<p class="onum">{$Think.lang._WAP_ORDER_NUMBER_} {{order_sn}}</p>
+							<p class="otime">{$Think.lang._COMMON_ORDER_TIME_} {{orderData.add_time|time}}</p>
+						</div>
+						<div class="rt" v-if="orderData.status == 1">{$Think.lang._PC_POINT_TO_BE_DELIVERED_}</div>
+						<div class="rt" v-else-if="orderData.status == 2">{$Think.lang._PC_POINT_TO_BE_RECEIVED_}</div>
+						<div class="rt" v-else-if="orderData.status == 3">{$Think.lang._PC_POINT_TO_BE_REVIEW_}</div>
+						<div class="rt" v-else-if="orderData.status == 4">{$Think.lang._PC_POINT_IS_FINISHED_}</div>
+						<div class="rt" v-else-if="orderData.status == 5">{$Think.lang._PC_POINT_IS_CANCELED_}</div>
+					</div>
+					<div class="o_address">
+						<div class="imgbox">
+							<img src="__PUBLIC__/Wechat/images/o_address_ico.png">
+						</div>
+						<div class="add">
+							<p class="user"><span>{{orderData.consignee}}</span><i>{{orderData.telephone}}</i></p>
+							<p class="a_d db-overflow">{{orderData.province}}{{orderData.city}}{{orderData.county}}{{orderData.address}}</p>
+						</div>
+					</div>
+				</div>
+				<template v-for="(item,index) in goodsData">
+					<div class="o_de_mode">
+						<span>{$Think.lang._COMMON_DELIVERY_METHOD_}</span>
+						<em v-if="item.express_type == 0">{$Think.lang._COMMON_BY_DELIVERY_}</em>
+						<em v-else>{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}</em>
+					</div>
+					<div class="o_re_detail">
+						<div class="imgbox">
+							<img :src="item.logo">
+						</div>
+						<div class="o_re_store">
+							<p>{{item.agent_name}}</p>
+							<div class="star_cont">
+								<div class="star_box" v-for="n in parseInt(item.star)"></div>
+							</div>
+							<span>1.3km</span>
+						</div>
+					</div>
+					<div class="o_de_goods">
+						<div class="y-order-pro">
+				        	<a href="javascript:;" class="y-kein" v-for="(it,index) in item.goodsList">	 
+				        		<div class="y-imgbox">
+						        	<div class="y-img">
+							        	<div class="ab">
+							        		<img :src="it.goods_image">
+							        	</div>
+						        	</div>
+				        		</div>       		
+					        	<div class="y-jnjcn">
+						        	<div class="y_name_t">
+						        		<p class="y-njcn">{{it.goods_name}}</p>
+						        		<em>RM{{it.unit_price}}</em>
+						        	</div>
+						        	<div class="y-ws5d">
+							        	<span>{{it.attr_list}}</span>
+							        	<span class="num">x{{it.goods_number}}</span>
+							        </div>
+					        	</div>
+				        	</a>
+			        	</div>
+					</div>
+				</template>
+				<div class="o_g_debei">
+					<p class="otail"><span>{$Think.lang._WAP_ORDER_SUBTOTAL_}</span><span>RM{{orderData.total}}</span><span>{$Think.lang._WAP_ORDER_EARN_WEDO_POINTS_}</span><span>{{orderData.giving_point}}</span></p>
+					<p class="otail"><span>{$Think.lang._PC_ORDER_REMARKS_}</span><span>{{orderData.buyer_message}}</span></p>
+				</div>
+				<div class="o_g_cabtn" v-if="orderData.status == 1">
+					<a href="javascript:;" class="cancel" @click="cancelTheOrder">{$Think.lang._WAP_ORDER_CANCEL_ORDER_}</a>
+					<a href="javascript:;" class="godo" @click="delivery">{$Think.lang._WAP_ORDER_DELIVERED_}</a>
+				</div>
+				<div class="o_g_eva" v-else-if="orderData.status == 4 || orderData.status == 5">
+					<template v-for="(item,index) in goodsData">
+						<template v-for="(goodsData,goodsIndex) in item['goodsList']">
+							<div class="o_eva_box">
+								<p class="tit">{$Think.lang._WAP_ORDER_BUYERREVIEW_}：</p>
+								<p class="pt"><span class="cont db-ov erflow">{{goodsData['commentData']['contain']}}</span><span class="time">{{goodsData['commentData']['add_time']|time("yyyy-MM-dd")}}</span></p>
+							</div>
+							<div class="o_eva_box">
+								<p class="tit">{$Think.lang._WAP_ORDER_MYREPLY_}：</p>
+								<p class="pt">
+									<span class="cont db-overflow" v-if="goodsData['commentData']['reply_contain'] == ''">{$Think.lang._WAP_ORDER_AWAITINGREPLY_}</span>
+									<span class="cont db-overflow" v-else>{{goodsData['commentData']['reply_contain']}}</span>
+								</p>
+							</div>
+						</template>
+					</template>
+				</div>
+			</div>
+			<!-- 定位图标 -->
+			<!-- <div class="o_positi_wrap zi">
+				<div class="imgbox">
+					<img src="http://placehold.it/350x150">
+				</div>
+			</div> -->
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				orderData : [],
+				order_sn : {$_GET["order_sn"]},
+				goodsData : []
+			},
+			created(){
+				this.getOrderData();				
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getOrderData : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Order/orderDetail")}",
+						type : "POST",
+						dataType : "json",
+						data : {	
+							order_sn : that.order_sn
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							that.orderData = data.data.orderData;
+							that.goodsData = data.data.goodsData;
+						}
+					})
+				},
+				delivery : function(){
+					$.ajax({
+						url : "{:U("Order/delivery")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							order_sn : this.order_sn
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							automsgbox(data.message);
+							window.location.href = window.location.href;
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				},
+				cancelTheOrder : function(){
+					$.ajax({
+						url : "{:U("Order/merchantCancel")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							order_sn : this.order_sn
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							automsgbox(data.message);
+							window.location.href = window.location.href;
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				}
+			}
+		})
+	</script>
+</block>

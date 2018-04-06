@@ -1,0 +1,15 @@
+<ul>
+	<li class="current">
+		<ul class="Jcon-ctr">
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent')) && in_array(ACTION_NAME, array('agentGoodsCategory', 'goodsModel', 'addModelAttr'))">on</if>">
+				<a href="{:U('Agent/agentGoodsCategory')}">{$Think.lang._PC_GOODS_LEFT_CATEGORY_MENU_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent', 'Goods', 'GoodsForEdit')) && in_array(ACTION_NAME, array('agentGoods', 'goodsDetail', 'addGoods', 'editGoods', 'payForEdit'))">on</if>">
+				<a href="{:U('Agent/agentGoods')}">{$Think.lang._PC_GOODS_LEFT_GOODS_MENU_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent')) && in_array(ACTION_NAME, array('agentGoodsComment'))">on</if>">
+				<a href="{:U('Agent/agentGoodsComment')}">{$Think.lang._PC_GOODS_LEFT_COMMENT_MENU_}</a>
+			</li>
+		</ul>
+	</li>
+</ul>

@@ -1,0 +1,215 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_GOODS_LEFT_COMMENT_MENU_}</block>
+
+<block name="menu">
+	<include file="Goods:menu" />
+</block>
+
+<block name="style">
+	<style type="text/css">
+		.mask{width:100%;height:100%;position:fixed;top:0;left:0;bottom:0;right:0;overflow:auto;background:rgba(0,0,0,.4);z-index:6;display:none;}
+		.replay_m{width:40%;padding:10px 15px;border:1px solid #ddd;border-radius:10px;background:#fff;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);--webkit-transform:translate(-50%,-50%);z-index:7;display:none;}
+		.replay_m p{color:#333;font-size:16px;line-height:30px;margin:0;}
+		.replay_m textarea{width:99%;height:70px;border:1px solid #e4e4e4;margin:10px 0;padding:1%;color:#666;}
+		.replay_m textarea.on{border:1px solid #1296db;}
+		.replay_m .rbtn{overflow:hidden;padding:10px 0;text-align:right;}
+		.replay_m .rbtn span{text-align:center;line-height:27px;padding:0 20px;border-radius:5px;border:1px solid #e4e4e4;display:inline-block;cursor:pointer;}
+		.replay_m .rbtn span:hover{background:#967bdc;border:1px solid #967bdc;color:#fff;}
+	</style>
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_GOODS_LEFT_COMMENT_MENU_}</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<p>
+				<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+				<input type="text" name="goods_name" value="{$return['goods_name']}" placeholder="{$Think.lang._COMMON_SEARCH_GOODS_NAME_}">
+				&nbsp;&nbsp;
+				<label>{$Think.lang._PC_COMMENT_WHETHER_TO_REPLY}：</label>
+				<select name="is_reply">
+					<option value="-1" <if condition="$return['is_reply'] eq '-1'">selected</if>>{$Think.lang._COMMON_ALL_}</option>
+					<option value="0" <if condition="$return['is_reply'] eq '0'">selected</if>>{$Think.lang._PC_GOODS_NO_}</option>
+					<option value="1" <if condition="$return['is_reply'] eq '1'">selected</if>>{$Think.lang._PC_GOODS_YES_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._PC_COMMENT_RATE_}：</label>
+				<select name="star">
+					<option value="-1">{$Think.lang._COMMON_ALL_}</option>
+					<option value="1" <if condition="$return['star'] eq '1'">selected</if>>1 {$Think.lang._PC_COMMENT_STAR_}</option>
+					<option value="2" <if condition="$return['star'] eq '2'">selected</if>>2 {$Think.lang._PC_COMMENT_STAR_}</option>
+					<option value="3" <if condition="$return['star'] eq '3'">selected</if>>3 {$Think.lang._PC_COMMENT_STAR_}</option>
+					<option value="4" <if condition="$return['star'] eq '4'">selected</if>>4 {$Think.lang._PC_COMMENT_STAR_}</option>
+					<option value="5" <if condition="$return['star'] eq '5'">selected</if>>5 {$Think.lang._PC_COMMENT_STAR_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_DELIVERY_METHOD_}：</label>
+				<select name="express_type">
+					<option value="-1"  <if condition="$return['express_type'] eq '-1'">selected</if>>{$Think.lang._COMMON_ALL_}</option>
+					<option value="0" <if condition="$return['express_type'] eq '0'">selected</if>>{$Think.lang._COMMON_BY_DELIVERY_}</option>
+					<option value="1" <if condition="$return['express_type'] eq '1'">selected</if>>{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+			</p>
+		</form>
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+        <!-- 回复弹窗 -->
+   		<div class="mask"></div>
+        <div class="replay_m">
+        	<p>{$Think.lang._WAP_AGENT_REPLY_}<i id="Jnickname"></i>：</p>
+        	<textarea placeholder="{$Think.lang._WAP_AGENT_CONTENT_}" id="Repcont"></textarea>
+        	<div class="rbtn">
+        		<span style="margin-right:15px;">{$Think.lang._COMMON_CANCEL_}</span>
+        		<span class="Rsure">{$Think.lang._PC_GOODS_CONFIRM_REPLY_}</span>
+        	</div>
+        </div>
+	</div>
+</block>
+<block name="script">
+<script id="comment_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._COMMON_ORDER_NUMBER_}</th>
+	<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+	<th>{$Think.lang._COMMON_QUANTITY_}</th>
+	<th>{$Think.lang._COMMON_PRICE_PER_UNIT_}</th>
+	<th>{$Think.lang._PC_COMMENT_TOTAL_AMOUNT_}</th>
+	<th>{$Think.lang._PC_COMMENT_RATE_}</th>
+	<th>{$Think.lang._PC_COMMENT_CONTENT_}</th>
+	<th>{$Think.lang._PC_COMMENT_REVIEWER_}</th>
+	<th>{$Think.lang._COMMON_DELIVERY_METHOD_}</th>
+	<th>{$Think.lang._PC_COMMENT_TIME_}</th>
+	<th width="7%">{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			date = new Date(data['add_time'] * 1000);
+	%>
+	<tr>
+		<td><%=data['id']%></td>
+		<td><%=data['order_sn']%></td>
+		<td><%=data['goods_name']%></td>
+		<td><%=data['goods_number']%></td>
+		<td><%=data['unit_price']%></td>
+		<td><%=data['price']%></td>
+		<td><%=data['star']%></td>
+		<td><%=data['contain']%></td>
+		<td><%=data['nickname']%></td>
+		<td>
+			<%if(data['express_type'] == '0'){%>
+				<%=byDelivery%>
+			<%}else{%>
+				<%=collectFromMerchant%>
+			<%}%>
+		</td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td class="center">
+			<%if( !data['reply_contain'] ){%>
+				<a class="stdbtn btn_lime Replay" href="javascript:;" data-nickname="<%=data['nickname']%>" data-id="<%=data['id']%>"><%=reply%></a>
+			<%}else{%>
+				<%=replied%>
+			<%}%>
+		</td>
+	</tr>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template,
+    	page = 1,
+    	id,
+    	star = "{$return['star']}",
+    	is_reply = "{$return['is_reply']}",
+    	goods_name = "{$return['goods_name']}",
+    	express_type = "{$return['express_type']}";
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Agent/agentGoodsComment')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				type : 1,
+				star : star,
+				is_reply : is_reply,
+				goods_name : goods_name,
+				express_type : express_type,
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['reply'] = "{$Think.lang._WAP_AGENT_REPLY_}";
+				returnData['data']['replied'] = "{$Think.lang._PC_GOODS_REPLIED_}";
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				returnData['data']['collectFromMerchant'] = "{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}";
+				var html = bt('comment_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+    //回复评论
+    $("#template").on("click",".Replay",function(){
+    	$(".mask").fadeIn();
+    	$(".replay_m").fadeIn();
+    	id = $(this).attr("data-id");
+    	var name = $(this).attr("data-nickname");
+    	$(".replay_m").find("p").text("{$Think.lang._WAP_AGENT_REPLY_}："+name);
+    })
+    $("#Repcont").blur(function(event) {
+    	$(this).removeClass("on");
+    });
+    $("#Repcont").focus(function(event) {
+    	$(this).addClass("on");
+    });
+    $(".mask").click(function(){
+    	$(".replay_m").fadeOut();
+    	$(this).fadeOut();
+    })
+    $(".rbtn").on('click','span',function(){
+    	$(".replay_m").fadeOut();
+    	$(".mask").fadeOut();
+    	if( $(this).hasClass("Rsure") ){
+    		replyComment();
+    	}	
+    })
+    function replyComment() {
+		var reply_contain = $('#Repcont').val();
+		// if ( !reply_contain ) {
+		// 	alert('{$Think.lang._WAP_AGENT_CONTENT_}');
+		// 	return;
+		// }
+		$.ajax({
+			url: '{:U('Agent/replyComment')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				id : id,
+				reply_contain : reply_contain
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				alert(returnData['message']);
+				window.location.href = window.location.href;
+			} else {
+				alert(returnData['message']);
+			}
+		});
+	}
+</script>
+</block>

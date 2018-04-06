@@ -1,0 +1,185 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<div class="search_cate">
+				<span class="ser" @click="getGoodsList"></span>
+				<input type="text" id="keyword" name="keyword" placeholder="{$Think.lang._COMMON_SEARCH_FOR_PRODUCTS_}" v-model="keyword">
+				<span class="scanl" @click="clearinput">X</span>
+			</div>
+			<a href="javascript:history.back(-1);"><span class="cancel">{$Think.lang._COMMON_CANCEL_}</span></a>
+		</header>
+		<div class="search_wrap">
+			<div class="search_tabm" id="stab">
+				<h1>{$Think.lang._WAP_AGENT_SEARCH_HISTORY_}</h1>
+				<div class="search_tab">
+					<ul>
+						<li v-for="(item,index) in oldkey" @click="selkeyword">{{item}}</li>
+					</ul>
+				</div>
+			</div>
+			<div class="search_box" id="sbox" style="display:none;">
+				<!-- 搜索结果 -->
+				<div class="search_result" v-if="nothing == 0">
+					<ul>
+						<li v-for="(item,index) in goodsList" @click="jumpToGoodsDetail(item.id)">
+							<div class="imgbox">
+								<img :src="item.goods_image">
+							</div>
+							<p><span class="name">{{item.goods_name}}</span><span class="num">{$Think.lang._COMMON_SALES_NUMBER_}{{item.sale_number}}</span></p>
+							<i>RM{{item.goods_price}}{$Think.lang._COMMON_GINGGIT_}</i>
+						</li>
+					</ul>
+				</div>
+
+				<!-- 搜索结果为空 -->
+				<div class="search_result" v-else>
+					<h1>{$Think.lang._WAP_AGENT_NO_RESULTS_FOUND_}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsList : [],
+				keyword : "",
+				page : 1,
+				goscroll : 1,
+				nothing : 0,
+				currentkey : "",
+				oldkey : []
+			},
+			created(){
+				this.loadmore();
+				this.oninput();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getGoodsList : function(){
+					var that = this;
+					if ( !that.keyword ) {
+						automsgbox('请输入关键词');
+						return;
+					}
+					$("#stab").hide();
+					$("#sbox").show();
+					that.goodsList = [];
+					$.ajax({
+						url : "{:U("Agent/searchAgentGoods")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							keyword : that.keyword,
+							page : that.page
+						}
+					})
+					.done(function(returnData){
+						that.initializeStorage();
+						if( returnData['data']['list'].length > 0 ){
+							if( that.goodsList.length == 0 ){
+								that.goodsList = returnData['data']['list'];
+							}else{
+								that.goodsList = that.goodsList.concat(returnData['data']['list']);
+							}
+							that.goscroll = 1;
+							that.nothing = 0;
+						}else{
+							that.goscroll = 0;
+							if(that.goodsList.length == 0){
+								that.nothing = 1;
+							}
+						}
+						that.keyword = "";
+						$("#keyword").blur();
+					})
+				},
+				getKeyword : function(){
+					var that = this;
+					that.oldkey = [];
+					// localStorage.clear();//清除所有数据
+					for(var i = 1;i <= 11; i++){
+						var key = window.localStorage['key_' + i];
+						if( typeof(key) != "undefined"){
+							that.oldkey.push(key);
+						}
+					}
+				},
+				initializeStorage : function() {
+					var that = this;
+					var key = '';
+					var save = true;
+					for (var i = 1; i <= 11; i++) {
+						key = window.localStorage['key_' + i];
+						if ( !key ) {
+							that.currentkey = i;
+							break;
+						} else {
+							if ( key == that.keyword ) {
+								save = false;
+							}
+							continue;
+						}
+					}
+					if ( that.currentkey == 11 ) {
+						that.currentkey = 10;
+						that.resetStorage();
+					}
+
+					if ( save === true ) {
+						localStorage.setItem('key_' + that.currentkey, that.keyword);
+					}
+				},
+				resetStorage : function() {
+					for (var i = 1; i < 10; i++) {
+						key = window.localStorage['key_' + (i+1)];
+						localStorage.setItem('key_' + i, key);
+					}
+				},
+				oninput : function(){
+					$(document).ready(function(){
+						$("#keyword").focus(function(){
+							$("#stab").show();
+							$("#sbox").hide();
+							vm.getKeyword();
+						})
+					})
+				},
+				clearinput : function(){
+					$("#keyword").val('');
+				},
+				selkeyword : function(){
+					var that = this;
+					var txt = $(event.target).text();
+					$("#keyword").val(txt);
+					that.keyword = txt;
+					that.getGoodsList();
+				},
+				loadmore(){
+					var that = this;
+					document.addEventListener("scroll",function(){
+						var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+						if(scrollTop + window.innerHeight >= document.body.clientHeight){
+							if(that.goscroll){
+								that.page++;
+								that.goscroll = 0;
+								that.getGoodsList();
+							}
+						}
+					})
+				},
+				jumpToGoodsDetail(id) {
+					window.location.href = "{:U('Goods/agentGoodsDetail')}?goods_id=" + id;
+				}
+			}
+		})
+	</script>
+</block>

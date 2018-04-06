@@ -1,0 +1,29 @@
+<ul>
+	<if condition="checkControllerAuth(array('Point'))">
+		<li <if condition="in_array(ACTION_NAME, array('pointGoodsList'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('Point-pointGoodsList'))}" class="addons">积分管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('Point-pointGoodsList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('pointGoodsList', 'pointAddGoods', 'pointEditGoods'))">on</if>">
+						<a href="{:U('Point/pointGoodsList')}">积分商品列表</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('PointOrder-pointOrderList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('pointOrderList', 'pointOrderDetail'))">on</if>">
+						<a href="{:U('PointOrder/pointOrderList')}">积分订单列表</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Point-pointLog')">
+					<li class="<if condition="in_array(ACTION_NAME, array('pointLog'))">on</if>">
+						<a href="{:U('Point/pointLog')}">积分记录</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Point-pointSetting')">
+					<li class="<if condition="in_array(ACTION_NAME, array('pointSetting'))">on</if>">
+						<a href="{:U('Point/pointSetting')}">积分获取规则设置</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

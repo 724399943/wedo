@@ -1,0 +1,103 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._COMMON_PAY_}</h1>
+		</header>
+		<div class="main">
+			<p class="order_num">{$Think.lang._COMMON_ORDER_NUMBER_}：{$order['order_sn']}</p>
+			<div class="paywrap">
+				<ul>
+       				<li onclick="window.location.href='{:U('Paypal/h5pay', array('order_sn'=> $_GET['order_sn'], 'sign'=> 'bidding'))}'">
+       					<div class="o_pay">
+       						<em class="paypal"></em>
+       						<span>Paypal</span>
+       					</div>
+       				</li>
+					<li>
+						<div class="o_pay">
+							<em class="balance"></em>
+							<span>{$Think.lang._COMMON_BALANCE_PAID_}</span>
+							<i>{$Think.lang._COMMON_BALANCE_}：{$userInfo['money']}</i>
+						</div>
+					</li>
+				</ul>
+				<div class="topay">
+					<span>{$Think.lang._COMMON_AMOUNTS_PAYABLE_}</span>
+					<i>RM{$order['total']}</i>
+					<a href="javascript:;" class="pay_btn" @click="payForBidding">{$Think.lang._COMMON_PAY_}</a>
+				</div>
+			</div>
+			<!-- 弹窗 -->
+			<div class="mask"></div>
+			<div class="payfinash">
+				<p>支付完成</p>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				order_sn : {$_GET["order_sn"]},
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				payForBidding : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Bidding/payForBidding")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							order_sn : that.order_sn
+						}
+					})
+					.done(function(returnData){
+						if ( returnData['status'] == '200000' ) {
+							automsgbox(returnData.message,function(){
+								var url = "{:U('Bidding/biddingRecord')}?bidding_type={$_GET['tab']}&tab={$_GET['tab']}";
+								window.location.href = url;
+							})
+						} else {
+							automsgbox(returnData['message']);
+						}
+					})
+				}
+			}
+		})
+
+		function checkPayment() {
+			$.ajax({
+				url: '{:U('Public/checkPayment')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn:"{$_GET['order_sn']}",sign:"bidding"}
+			})
+			.done(function(returnData) {
+				if ( returnData['data']['payment'] == 'paid' ) {
+					switch ( "{$_GET['tab']}" ) {
+						case '0' :
+							window.location.href = '{:U('Bidding/biddingRecord', array('bidding_type'=> '0', 'tab'=> '0'))}';
+							break;
+						case '1' :
+							window.location.href = '{:U('Bidding/biddingRecord', array('bidding_type'=> '1', 'tab'=> '1'))}';
+							break;
+						case '2' :
+							window.location.href = '{:U('Bidding/biddingRecord', array('bidding_type'=> '2', 'tab'=> '2'))}';
+							break;
+						case '3' :
+							window.location.href = '{:U('Bidding/biddingRecord', array('bidding_type'=> '3', 'tab'=> '3'))}';
+							break;
+					}
+				}
+			});
+		}
+		setInterval('checkPayment()', 2000);
+	</script>
+</block>

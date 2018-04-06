@@ -1,0 +1,116 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_USER_ADVERTISING_SPACE_BIDDING_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_ADVERTISING_SPACE_BIDDING_}
+	    	<a href="{:U('Bidding/biddingRecord', array('bidding_type'=> '3'))}" class="btn btn_link" style="float:right;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_MY_BIDDING_RECORD_}</span>
+	    	</a>
+	    	<a href="{:U('Bidding/platformBiddingRecord', array('bidding_type'=> '3'))}" class="btn btn_link" style="float:right;margin-right:15px;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_WEDO_BIDDING_RECORD_}</span>
+	    	</a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<p>
+				<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+				<input type="text" name="goods_name" value="{$return['goods_name']}" placeholder="{$Think.lang._COMMON_SEARCH_GOODS_NAME_}">
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_PLATFORM_CATEGORY_}：</label>
+				<select name="category_id">
+					<option value="">{$Think.lang._COMMON_ALL_}</option>
+					<volist name="categoryList" id="data">
+						<option value="{$data['id']}" <if condition="$return['category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+					</volist>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_MERCHANT_CATEGORY_}：</label>
+				<select name="agent_category_id">
+					<option value="">{$Think.lang._COMMON_ALL_}</option>
+					<volist name="agentCategoryList" id="data">
+						<option value="{$data['id']}"  <if condition="$return['agent_category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+					</volist>
+				</select>
+				<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+				<a href="{:U('Bidding/toBiddingBanner', array('banner_type'=> '0'))}" class="btn btn_link" style="float:right;margin-right:15px;"><span style="font-size:14px;">{$Think.lang._PC_USER_MERCHANT_AS_ADVERTISING_}></span></a>
+			</p>
+		</form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template">
+                 
+		</table>
+		<div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="biddingBanner_tpl" type="text/html">
+	<tr>
+		<th>{$Think.lang._COMMON_NO_}</th>
+		<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+		<th>{$Think.lang._COMMON_GOODS_INTRODUCTION_}</th>
+		<th>{$Think.lang._COMMON_PLATFORM_CATEGORY_}</th>
+		<th>{$Think.lang._COMMON_MERCHANT_CATEGORY_}</th>
+		<th>{$Think.lang._PC_USER_RELEASE_DATE_}</th>
+		<th width="10%">{$Think.lang._COMMON_OPERATE_}</th>
+	</tr>
+	<%for(var i = 0;i < list.length;i++){
+		var data = list[i],
+			date = new Date(data['add_time'] * 1000);%>
+		<tr>
+			<td><%=data['id']%></td>
+			<td><%=data['goods_name']%></td>
+			<td><%=data['introduction']%></td>
+			<td><%=data['category_name']%></td>
+			<td><%=data['agent_category_name']%></td>
+			<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+			<td>
+				<a class="stdbtn btn_lime" href="<%=jumpUrl%>?goods_id=<%=data['id']%>&banner_type=1">{$Think.lang._PC_USER_APPLY_FOR_A_BID_}</a>
+			</td>
+		</tr>
+	<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+	var bt = baidu.template;
+	var keyword = "{$return['goods_name']}",
+		category_id = "{$return['category_id']}",
+		agent_category_id = "{$return['agent_category_id']}";
+	function loadData(page) {
+		popupWin.show('{$Think.lang._COMMON_LOADING_}');
+		$.ajax({
+			url : "{:U("Bidding/notBiddingGoods")}",
+			type : "POST",
+			dataType : "json",
+			data : {
+				keyword : keyword,
+				category_id : category_id,
+				agent_category_id : agent_category_id,
+				page : page,
+				bidding_type : 3,
+				type : 1
+			}
+		})
+		.done(function(returnData){
+			if ( returnData["data"]["list"].length ){
+				returnData['data']['jumpUrl'] = "{:U('Bidding/toBiddingBanner')}";
+				var html = bt('biddingBanner_tpl', returnData['data']);
+				$("#template").html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}	
+			popupWin.hide();
+		});
+	}
+	loadData(1);
+</script>
+</block>

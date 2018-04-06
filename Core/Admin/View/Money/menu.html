@@ -1,0 +1,39 @@
+<ul>
+	<if condition="checkActionAuth(array('Money-customerRechargeLog', 'Money-moneyLog', 'Money-moneyList', 'Money-agentBalanceList'))">
+		<li <if condition="checkActionAuth(array('Money-customerRechargeLog', 'Money-moneyLog', 'Money-moneyList', 'Money-agentBalanceList'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('Money-customerRechargeLog', 'Money-moneyLog', 'Money-moneyList', 'Money-agentBalanceList'))}" class="addons">财务管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('Money-customerRechargeLog')">
+					<li class="<if condition="in_array(ACTION_NAME, array('customerRechargeLog', 'rechargeSetting'))">on</if>">
+						<a href="{:U('Money/customerRechargeLog')}">顾客财务充值情况</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Money-increaseRateSetting')">
+					<li class="<if condition="in_array(ACTION_NAME, array('increaseRateSetting'))">on</if>">
+						<a href="{:U('Money/increaseRateSetting')}">钱包利率管理</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Money-moneyLog')">
+					<li class="<if condition="in_array(ACTION_NAME, array('moneyLog'))">on</if>">
+						<a href="{:U('Money/moneyLog')}">系统收支流水</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Money-moneyList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('moneyList', 'moneySetting'))">on</if>">
+						<a href="{:U('Money/moneyList')}">提现管理</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Money-agentRegisterSetting')">
+					<li class="<if condition="in_array(ACTION_NAME, array('agentRegisterSetting'))">on</if>">
+						<a href="{:U('Money/agentRegisterSetting')}">新注册商家赠送金额管理</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Money-agentBalanceList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('agentBalanceList'))">on</if>">
+						<a href="{:U('Money/agentBalanceList')}">商家余额管理</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

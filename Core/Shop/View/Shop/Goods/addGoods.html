@@ -1,0 +1,407 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/js/kindeditor/themes/default/default.css" />
+	<style type="text/css">
+		.adddivs{height:50px;position: relative;margin:10px auto;text-align: center;}
+		.adddivs .addinput{width: 50px; height: 50px; opacity: 0; display: inline-block;}
+		.adddivs .cutIcon{position:absolute;width:12px;height:12px;display: block;left: -4px;top:-4px;background: url(__PUBLIC__/Admin/images/cus_close.png) no-repeat center center;background-size: 12px;cursor: pointer;cursor: pointer;display: none;}
+		.adddivs .addinput-bg{width:50px;height:50px;display: inline-block;margin-left: 10px;background: url(/Static/Public/Admin/images/upload-bg.png) no-repeat center center;background-size: 48px;border:1px dashed #d5d5d5;}
+		.adddivs .img-bg{position: relative;width:50px;height:50px;display: inline-block;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Goods/menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+    <h1 class="pagetitle">
+    	{$Think.lang._PC_GOODS_ADDING_GOODS_}
+    	<a href="{:U('Agent/agentGoods')}" class="btn btn_link" style="float: right">
+            <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+        </a>
+    </h1>
+    <span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form class="stdform stdform2" id="JgoodsForm">
+		<div class="line-dete">
+			<label>{$Think.lang._COMMON_PRODUCTS_NAME_}</label>
+	        <span class="field">
+	        	<input class="smallinput" type="text" name="goods_name" id="goods_name" value="{$goodsInfo['goods_name']}" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._COMMON_PRODUCTS_NAME_
+	        	}" />
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label>{$Think.lang._COMMON_GOODS_INTRODUCTION_}</label>
+	        <span class="field">
+	        	<textarea name="introduction" cols="10" rows="5" id="introduction" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._COMMON_GOODS_INTRODUCTION_}"></textarea>
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label>{$Think.lang._COMMON_DELIVERY_METHOD_}</label>
+	        <span class="field">
+	        	<input type="checkbox" class="expressType" value="0" checked>{$Think.lang._COMMON_BY_DELIVERY_}
+	        	&nbsp;&nbsp;&nbsp;
+	        	<input type="checkbox" class="expressType" value="1" checked>{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}
+	        	<input type="hidden" name="express_type">
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label>{$Think.lang._COMMON_PLATFORM_CATEGORY_}</label>
+	        <span class="field">
+	        	<select name="category_id">
+	        		<option value="0">请选择</option>
+	    			<volist name="categoryList" id="data">
+		        		<option value="{$data['id']}">{$data['category_name']}</option>
+	    			</volist>
+	        	</select>
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label>{$Think.lang._COMMON_MERCHANT_CATEGORY_}</label>
+	        <span class="field">
+	        	<select name="agent_category_id" id="Jcategory">
+	        		<option value="0">请选择</option>
+	    			<volist name="agentCategoryList" id="data">
+		        		<option value="{$data['id']}">{$data['category_name']}</option>
+	    			</volist>
+	        	</select>
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label>
+				{$Think.lang._COMMON_PRODUCTS_PICTURE_}<br/>
+				<!-- <span class="font-color">(点击产品图可选择封面)</span> -->
+			</label>
+	        <div class="field" id="JgoodsListWrap">
+				<input type="hidden" id="JcoverPid" name="goods_image" value="{$goodsInfo['goods_image']}">
+				<div id="photoList" class="m-photo-list">
+					<volist name="goodsImages" id="data">
+						<div class="pic-wrap">
+							<i class="del-pic" data-id="{$data['id']}"></i>
+							<img src="{$data}" <if condition="$goodsInfo['goods_image'] eq $data">class="s-cover"</if>>
+							<input type="hidden" name="images[]" value="{$data}">
+						</div>
+					</volist>
+				</div>
+				<div class="upload-wrap">
+	        		<input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" />
+	        	</div>
+	        </div>
+		</div>		
+		<div class="line-dete" id="JattrData" style="display:none;">
+			<label>{$Think.lang._PC_GOODS_PRODUCTS_INFORMATION_}</label>
+	        <div class="field">
+	        	<div id="JattrWrap" class="m-attr-wrap">
+                	
+	        	</div>
+	        </div>
+		</div>
+		<div class="line-dete" id="JeditSKU" style="display:none">
+			<label>{$Think.lang._COMMON_EDIT_}SKU</label>
+		</div>
+		<div class="line-dete">
+			<label>{$Think.lang._PC_GOODS_PRODUCTS_DESCRIPTION_}</label>
+	        <span class="field">
+	        	<textarea class="text" name="description" id="description">{$goodsDesc}</textarea>
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label>{$Think.lang._PC_GOODS_PRODUCTS_KEYWORD_}</label>
+	        <span class="field">
+	        	<input class="smallinput" type="text" name="keyword" id="keyword" value="{$goodsInfo['keyword']}" placeholder='{$Think.lang._PC_GOODS_KEYWORD_PLACEHOLDER_}' />
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label></label>
+	        <span class="field">
+	        	<input type="button" class="stdbtn JgoodsSubmit" value="{$Think.lang._COMMON_SAVE_}" />
+	        	<input type="hidden" name="id" value="{$goodsInfo['id']}">
+	        	<input type="checkbox" checked>
+	        	{$Think.lang._PC_GOODS_PLATFORM_AGREEMENT_}
+	        </span>
+		</div>
+	</form>
+</div>
+</block>
+
+<block name="script">
+<script type="text/html" id="attrData_tpl">
+	<table>
+	<%for(var i = 0; i < list.length; i++){
+		var data = list[i];%>
+		<tr>
+			<td>
+            	<%=data['attr_name']%>
+			</td>
+			<%for(var j = 0;j < data['attrValue'].length;j++){
+				var cont = data['attrValue'][j];%>
+				<td>
+	    			<span class="multi_attr" data-attr="<%=cont['attr_name_id']%>" data-attrname="<%=data['attr_name']%>" data-value="<%=cont['id']%>">
+	        			<input type="checkbox" id="Jattr_<%=cont['id']%>" class="JattrCheck"><i><%=cont['attr_value']%></i>
+	        		</span>
+				</td>
+			<%}%>
+		</tr>
+	<%}%>
+	</table>
+</script>
+<script type="text/javascript" src="__PUBLIC__/Common/js/json2.js"></script>
+<script charset="utf-8" type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+	var image = "{$goodsInfo['goods_image']}";
+	var expressType = [],
+		attrData = [];
+	if(image == ''){
+		var firstUpload = true;
+	} else {
+		var firstUpload = false;
+	}
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('#description', {
+			height: "600px",
+			allowFileManager: true,
+			uploadJson: '{:U("Goods/photoUpload")}',
+			items : ['source','fontname','fontsize','forecolor','preview','selectall','justifyleft','justifycenter','justifyright','link','unlink','image'],
+			afterCreate : function() {
+				this.loadPlugin('autoheight');
+			}
+		});
+	});
+
+	function loadCategoryAttr(category_id) {
+		$('#JeditSKU').hide();
+		$.ajax({
+			url: '{:U('Goods/categoryAttr')}',
+			type: 'POST',
+			dataType: 'json',
+			async : false,
+			data: {category_id:category_id}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				attrData = returnData['data']['list'];
+				var html = bt('attrData_tpl', returnData['data']);
+				$('#JattrWrap').html(html);
+				if ( attrData.length > 0 ) {
+					$("#JattrData").show();
+				}else{
+					$("#JattrData").hide();
+				}
+			}
+		});
+	}
+
+	// (function() {
+	// 	if(!jQuery.isEmptyObject(skuData)){
+	// 		$('.JattrCheck').removeAttr('checked');
+	// 		for (var i = 0; i < skuData['relevance_attr'].length; i ++) {
+	// 			var attr = document.getElementById('Jattr_' + skuData['relevance_attr'][i]);
+	// 			attr.checked = 'checked';
+	// 			attr.parentNode.className += ' on';
+	// 		}
+	// 		if($(".JattrCheck").is(':checked')) {
+	// 			createCombination();
+	// 			for (var j in skuData['relevance_id']) {
+	// 				var skuItem = skuData['relevance_id'][j];
+	// 				$('#JskuPrice_' + skuItem['attr']).val(skuItem['goods_price']);
+	// 				$('#JskuNumber_' + skuItem['attr']).val(skuItem['goods_number']);
+	// 			}
+	// 		}
+	// 	}
+	// })();
+
+	function createCombination() {
+		var attrData = {};
+		$('#JcombineList').remove();
+		$('.multi_attr.on').each(function() {
+			var attr = $(this).data('attr');
+			var value = $(this).data('value');
+			var value_name = $(this).find('i').text();
+			var attr_name = $(this).data('attrname');
+
+			if (!attrData[attr]) {
+				attrData[attr] = {};
+			}
+			attrData[attr]['attr_name'] = attr_name;
+			attrData[attr]['attr_list'] = attrData[attr]['attr_list'] ? attrData[attr]['attr_list'] : {};
+			attrData[attr]['attr_list'][value] = value_name;
+		});
+
+		var attrStr = [];
+		var attrList = [];
+		var allAttr = [];
+		var field = document.createElement('div');
+		field.className = 'field';
+		field.id = 'JcombineList';
+		attrStr.push('<table><tr>');
+		console.log(attrData);
+		for(var i in attrData) {
+			if (attrData.hasOwnProperty(i)) {
+				attrStr.push('<th>' + attrData[i].attr_name + '</th>');
+				attrList.push(i);
+			}
+
+			var len = allAttr.length
+			allAttr[len] = [];
+			for (var j in attrData[i].attr_list) {
+				if (attrData[i].attr_list.hasOwnProperty(j)) {
+					allAttr[len].push(attrData[i]['attr_list'][j] + '-' + i + '-' + j);
+				}
+			}
+		}
+		attrStr.push('<th>{$Think.lang._COMMON_PRODUCTS_PRICE_}&nbsp;</th> <th>{$Think.lang._COMMON_GOODS_NUMBER_}&nbsp;</th>&nbsp;<th>{$Think.lang._COMMON_OPERATE_}&nbsp;</th></tr>');
+		var combineResult = combine(allAttr);
+		for (var j = 0; j < combineResult.length; j ++) {
+			var tmp_list = combineResult[j].split('**');
+			var multi_attr = ',',
+				sku_id = '';
+			attrStr.push('<tr>');
+			for (var k = 0; k < tmp_list.length; k ++) {
+				var tmp_attr = tmp_list[k].split('-');
+				attrStr.push('<td>' + tmp_attr[0] + '</td>');
+				multi_attr += tmp_attr[2] + ',';
+				sku_id += tmp_attr[2] + '-';
+			}
+			sku_id = sku_id.substring(0, sku_id.length - 1);
+			if ( j == 0) {
+				attrStr.push('<td><input name="SKUprice[]" type="text" id="JskuPrice_' + sku_id + '"/>&nbsp;{$Think.lang._COMMON_GINGGIT_}<input type="hidden" name="SKUattr[]" value="' + multi_attr + '" /></td> <td><input type="text" id="JskuNumber_' + sku_id + '" name="SKUnumber[]"/>&nbsp;件</td> <td><button type="button" class="KdelAttr">删除</button></td> </tr>');
+			} else {
+				attrStr.push('<td><input name="SKUprice[]" type="text" id="JskuPrice_' + sku_id + '"/>&nbsp;{$Think.lang._COMMON_GINGGIT_}<input type="hidden" name="SKUattr[]" value="' + multi_attr + '" /></td> <td><input type="text" id="JskuNumber_' + sku_id + '" name="SKUnumber[]"/>&nbsp;件</td> <td><button type="button" class="KdelAttr">删除</button></td> </tr>');
+			}
+		}
+
+		attrStr.push('</table>');
+		field.innerHTML = attrStr.join('');
+		var JeditSKU = document.getElementById('JeditSKU');
+		JeditSKU.appendChild(field);
+		JeditSKU.style.display = 'block';
+	}
+	
+	// 排列组合
+	function combine(arr) {
+	    if(arr.length > 1) {
+	        var len1 = arr[0].length, len2 = arr[1].length, newArr = arr.slice(0), temp = [];
+	        for(var i = 0; i < len1; i ++) {
+	            for(var j = 0; j < len2; j ++) {
+	                temp.push(arr[0][i] + '**' + arr[1][j])
+	            }
+	        }
+	        newArr.splice(0, 2, temp);
+	        return arguments.callee(newArr)
+	    }
+	    return arr[0]
+	}
+
+	// 选择属性
+	$("#JattrWrap").on('click', '.JattrCheck', function() {
+		if ($(this).attr('checked')) {
+			$(this).parent().addClass('on');
+		} else {
+			$(this).parent().removeClass('on');
+		}
+		createCombination();
+	});
+
+	// 删除属性
+	$('#JeditSKU').on('click', '.KdelAttr', function(){
+		$(this).parents('tr').remove();
+	});
+
+	// 保存
+	$('.JgoodsSubmit').click(function() {
+		$('input[name="express_type"]').val(expressType.join(','));
+		editor.sync();
+		$.ajax({
+			url: '{:U('Goods/addGoods')}',
+			type: 'POST',
+			dataType: 'json',
+			data: $('#JgoodsForm').serialize()
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				alert('{$Think.lang._COMMON_SUCCESS_}');
+				window.location.href = "{:U('Agent/agentGoods')}";
+			} else {
+				alert(returnData['message']);
+			}
+		});
+	});
+
+	// 选择商品封面
+	$("#photoList").on('click', 'img', function() {
+		$("#photoList").find('img').removeClass('s-cover');
+		$(this).addClass('s-cover');
+		$('#JcoverPid').val($(this).attr('src'));
+	});
+
+	// 删除商品图
+	$('#photoList').on('click', '.del-pic', function() {
+		$(this).parent().remove();
+	});
+
+	// 上传商品图
+	$(document).on('change', '#fileToUpload', function() {
+		$.ajaxFileUpload({
+			url: "{:U('Goods/photoUpload')}",
+			secureuri: false,
+			fileElementId: 'fileToUpload',
+			dataType: 'json',
+			success: function (data, status) {
+				if(typeof(data.error) != 'undefined') {
+					if(data.error != '') {
+						alert(data.error);
+					} else {
+						$("#photoList").append('<div class="pic-wrap"><i class="del-pic"></i><img src="' + data.url + '" /><input type="hidden" name="images[]" value="' + data.url + '" /></div>');
+						if (firstUpload) {
+							firstUpload = false;
+							$('#JcoverPid').val(data.url);
+							$("#photoList").find('img').addClass('s-cover');
+						}
+					}
+					$('.upload-wrap').remove();
+					$('#JgoodsListWrap').append('<div class="upload-wrap"> <input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" /> </div>');
+				}
+			},
+			error: function (data, status, e) {
+				alert(e);
+			}
+		});
+	});
+
+	$('.expressType').each(function(){
+		if ( $(this).is(':checked') ) {
+			var val = $(this).val();
+			expressType.push(val);
+		}
+	});
+
+	// 选择配送方式
+	$('.expressType').click(function(){
+		var val = $(this).val();
+		if ( $(this).is(':checked') ) {
+			expressType.push(val);
+		} else {
+			for (var i = 0; i < expressType.length; i++) {
+				if ( expressType[i] == val ) {
+					expressType.splice(i, 1);
+				}
+			}
+		}
+	});
+
+	$("#Jcategory").on("change",function(){
+		if( $("option:selected") ){
+			loadCategoryAttr($(this).val());
+		}
+	})
+</script>
+</block>

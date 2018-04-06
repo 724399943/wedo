@@ -1,0 +1,14 @@
+<ul>
+	<if condition="checkActionAuth('Article-index')">
+		<li <if condition="checkActionAuth('Article-index', 'Article-articleDetail', 'Article-editArticle')">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('Article-index'))}" class="addons">文章管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('Article-index')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Article'))">on</if>">
+						<a href="{:U('Article/index')}">文章管理</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

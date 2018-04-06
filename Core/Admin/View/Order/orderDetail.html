@@ -1,0 +1,299 @@
+<extend name="Common:base" />
+
+<block name="title">订单详情</block>
+<block name='cusStyle'>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+		<style type="text/css">
+		.givepop-box{ width: 400px; min-height: 180px; background: #fff; overflow: hidden; }
+		.givepop-box .g-line{ line-height: 32px; margin-top: 10px; padding-left: 40px; }
+		.g-line input{ width: 200px; }
+		.g-btn{ overflow: hidden; margin-top: 20px; padding-left: 90px;}
+		input.fall{ margin-left: 20px; }
+		.givepop-box .stdbtn{ margin-left: 100px; }
+		.caiji-box{ max-height: 500px; overflow: auto; }
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Order:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">订单详情</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+	<form action="{:U(Order/orderList)}" method="post" class="stdform">
+	    <div class="line-order">订单信息
+	    	<!-- <span class="state-btn fix-btn Jdelivery">发货</span> -->
+			<if condition="$orderDetail['is_out_date'] eq 1">
+				<span class="state-btn">已取消</span>
+			<elseif condition="$orderDetail['is_pay'] eq 0 AND $orderDetail['is_delete'] eq 0" />
+			   <span class="state-btn">待付款</span>
+			<elseif condition="$orderDetail['is_pay'] eq 1 AND $orderDetail['delivery_status'] eq 0" />
+				<if condition="$orderDetail['supplier_id'] eq 1">
+					<span class="state-btn fix-btn Jdelivery">发货</span>
+			   	    <else/>
+			   	    <span class="state-btn">待发货</span>
+				</if>
+			<elseif condition="$orderDetail['is_pay'] eq 1 AND $orderDetail['received'] eq 0" />
+			<span class="state-btn">待收货</span>
+			<else/>
+			<span class="state-btn">已收货</span>
+			</if>
+		<if condition="$orderDetail['is_out_date'] eq '0' AND $orderDetail['is_pay'] eq '0' AND $orderDetail['agent_id'] eq '1'">
+			<span class="state-btn fix-btn Jmakeprice">修改价格</span>
+		</if>
+		</div>
+		<p>
+			<label>订单号</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$orderDetail['order_sn']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>下单时间</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{:date('Y-m-d H:i:s',$orderDetail['add_time'])}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>支付时间</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{:date('Y-m-d H:i:s',$orderDetail['add_time'])}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>我的信用值</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$user['credit']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>订单金额</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$orderDetail['price']}" readOnly="true" />
+			</span>
+		</p>
+		<div class="line-order">购买人信息</div>
+		<p>
+			<label>用户人头像</label>
+			<span class="field">
+			<img src="{$user['headimgurl']}" style="width: 40px; height: 40px; border-radius: 50%;" alt="">
+			</span>
+		</p>
+		<p>
+			<label>用户昵称</label>
+			<span class="field">
+				<input type="text" class="smallinput" value="{$user['nickname']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>用户账号</label>
+			<span class="field">
+				<input type="text" class="smallinput" value="{$user['username']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>绑定手机</label>
+			<span class="field">
+				<input type="text" class="smallinput" value="{$user['phone']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>用户备注</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$returnData['buyer_message']}" readOnly="true" />
+			</span>
+		</p>
+		<div class="line-order">收货人信息</div>
+		<p>
+			<label>收货人信息</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$returnData['consignee']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>收货人手机</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$returnData['telephone']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>收货人地址</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$returnData['province']}{$returnData['city']}{$returnData['county']}-{$returnData['address']}" readOnly="true" />
+			</span>
+		</p>
+
+		<div class="line-order">商品信息</div>
+		<div class="par" id="Jdetection">
+			<table>
+				<tr>
+					
+					<th>商品名称</th>
+					<th>商品型号</th>
+					<th>商品单价</th>
+					<th>数量</th>
+					<th>总支付</th>
+				</tr>
+				
+				<tr>
+					<td>{$orderDetail['goods_name']}</td>
+					<td>
+						<switch name="orderDetail['goods_type']" >
+							 		<case value="0">普通商品</case>
+							 		<case value="1">赠品</case>
+							 		<case value="2">套餐</case>
+						</switch>
+					</td>
+					<td>{$orderDetail['unit_price']}</td>
+					<td>{$orderDetail['goods_number']}</td>
+					<td>{$orderDetail['price']}</td>
+				</tr>
+			</table>
+		<p>
+			<label>用户评价</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$comment['contain']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>卖家回复</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$comment['reply_contain']}" readOnly="true" />
+			</span>
+		</p>		
+		</div>
+	</form>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+    var html = '<div class="givepop-box"> <form method="post" id="Jmake"> <input type="hidden" name="id" id="Jid" value="{$orderDetail['id']}"> <div class="g-line">订单价格：<span id="Jgivename">{$orderDetail['total']}</span></div> <div class="g-line">修改价格：<input type="text" name="make_price" id="giveNum"/></div> <div class="g-btn"> <input type="button" class="stdbtn" id="JconfirmEdit" value="确定"> <input type="button" class="stdbtn fall" value="取消"> </div> </form></div>';
+	$('.Jmakeprice').click(function() {
+		popwin('修改价格', html);
+	});
+
+	$(document).on('click','#JconfirmEdit',function() {
+		$.ajax({
+			url: '{:U('Order/makePrice')}',
+			type: 'POST',
+			dataType: 'json',
+			data: $('#Jmake').serialize()
+		})
+		.done(function(data) {
+			if(data.error == 1) {
+				alert('修改价格失败');
+			}else{
+				window.location.href='{:U('Order/orderDetail',array('id'=>$orderDetail['id']))}'
+			}
+		})
+	});
+	// 判断输入长度
+    function OnInput (event){
+        if(event.target.value.length >=12){
+        	$(event.target).parent('.g-line').next().find('.Jcode_sn').focus();
+        } 
+    }
+    // 只能输入数字
+    function onlyNum() {
+	    if(!(event.keyCode==46)&&!(event.keyCode==8)&&!(event.keyCode==37)&&!(event.keyCode==39))
+	    if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)))
+	    event.returnValue=false;
+    }
+	$('.JbindBarcode').click(function() {
+		var id = $(this).data('id');
+		var tote = $(this).data('num');
+		var html ='<div class="givepop-box caiji-box">';
+		for (var i = 1; i <= tote; i++) {
+			html += '<div class="g-line">商品'+i+'条形码：<input type="text" maxlength="12" onkeydown="onlyNum()" oninput="OnInput(event)" name="code_sn" class="Jcode_sn"></div>';
+		    if(i == tote ){
+		    	html += '<div class="g-line"><span data-id="'+id+'" class="stdbtn JbindConfirm-commit" >确定</span></div></div>';
+		    }
+		}
+		popwin('绑定条形码', html);
+	});
+
+	$(document).on('click', '.JbindConfirm-commit', function() {
+		var codeall ='';
+		var return_status=1;
+		$('.Jcode_sn').each(function(index, el) {
+			if($(this).val()==''){
+				var intnum =parseInt(index)+1;
+				alert('第'+intnum+'商品条形码不能为空！');
+				return_status = 0;
+			}else{
+				if($(this).val().length == 12){
+					codeall+=$(this).val()+',';
+				}else{
+					alert('商品条形码不正确');
+					return_status = 0;
+				}
+				
+			}
+
+		});
+		var id = $(this).data('id');
+		if(return_status){
+			$.ajax({
+				url: "{:U('Order/bindBarcode')}",
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					id: id,
+					barcode: codeall,
+					order_sn:'{$orderDetail['order_sn']}'
+				}
+			})
+			.done(function(data) {
+				// 关闭弹窗
+			    popclose();
+				if (data.error == 1) {
+					alert(data.msg);
+				} else {
+					alert('绑定成功！');
+					window.location.href="{:U('Order/orderDetail',array('id'=>$orderDetail['id']))}";
+				}
+			});
+		}
+
+	});
+
+	$('.Jdelivery').click(function(event) {
+		var caiji = "{$orderDetail['detection_status']}";
+		if(caiji=='1'){
+			alert('请先检测绑定产品');
+			var caijiapi = $('#Jdetection').offset().top;
+			$('html,body').animate({scrollTop: caijiapi}, 100);
+		}else{
+		// 发货
+		var delivery = '<div class="givepop-box"> <div class="g-line">快递公司：<input type="text" name="express" id="Jexpress"></div> <div class="g-line">快递编号：<input type="text" name="" id="Jexpress_num"></div> <div class="g-line"><span class="stdbtn Jdelivery-commit" >确定</span></div></div>'
+		popwin('代理商发货',delivery);
+
+		}
+	});
+	$(document).on('click','.Jdelivery-commit',function(){
+		var id = '{$orderDetail['id']}';
+		$.ajax({
+			url: '{:U('Supplier/delivery')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {id: id,express:$('#Jexpress').val(),express_sn:$('#Jexpress_num').val()}
+		})
+		.done(function(data) {
+			// 关闭弹窗
+			popclose();
+			window.location.href="{:U('Order/orderDetail',array('id'=>$orderDetail['id']))}";
+
+
+		})	
+	});
+
+	$('.fall').click(function() {
+		popclose();
+	});
+</script>
+</block>

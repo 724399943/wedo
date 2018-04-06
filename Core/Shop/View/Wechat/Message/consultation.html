@@ -1,0 +1,272 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_ORDER_CONTACT_MERCHANT_}</h1>
+			<a href="tel:12345678"><span class="call"></span></a>
+		</header>
+		<div class="main">
+			<div class="imchat_wrap">    
+			    <div id=em-kefu-webim-chat class="em-widget-wrapper">
+			        <div id=em-widgetBody class=em-widgetBody-wrapper>			            
+			            <div class=em-widget-chat>
+			                
+			            </div>
+			        </div>			        
+			        <div id=em-widgetSend class=em-widget-send-wrapper>
+			            <div class=toolbar>
+			           		<i class="em-add-open icon-face e-face fg-hover-color" title=功能 id="openFun"></i>
+			           		<i class="em-address-ye icon-face e-face fg-hover-color" data-type="text" title=发送 id="sendPrivateText"></i>			       
+			                <div contenteditable="true" class=em-widget-div spellcheck=false id="talkInputId"></div>
+			            </div>
+			            <div class="open-upload-box" id="OuploadImg">
+			            	<div class="o_up_main">
+			            		<div class="imgbox">
+			            			<img src="__PUBLIC__/Wechat/images/chat_upload_img.png">
+			            			<input id=em-widget-img-input type=file class=upload-img-container accept=image/* > 
+			            		</div>
+			            		<p>图片</p>
+			            	</div>
+			            </div>
+			        </div>			        			    
+			    </div>			   
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/html" id="userChat_tpl">
+<%for(var i=list.length - 1; i>=0; i--){%>
+	<%var data = list[i];%>
+	<%if(fromId == data['from_id']){%>
+	<div class="em-widget-left">
+		<div class="em-widget-msg-wrapper">
+			<i class="icon-corner-left">
+				<img src="<%=data['fromUser']['headimgurl']%>">
+			</i>
+			<%if( data['content']['type'] == '1' ){%>
+				<div class="em-widget-msg-container em-widget-msg-txt"><%=data['content']['content']%></div>
+			<%}else if ( data['content']['type'] == '2' ) {%>
+				<div class="em-widget-msg-container em-widget-msg-img">
+					<a href="javascript:;">
+						<img class="em-widget-imgview" src="<%=data['content']['content']%>">
+					</a>
+				</div>
+			<%}else if ( data['content']['type'] == '3' ) {%>
+				<div class="em-widget-msg-container em-widget-msg-txt"><%=data['content']['content']%></div>
+			<%}else{%>
+				<div class="em-widget-msg-container em-widget-msg-txt">
+					
+					
+				</div>
+			<%}%>
+		</div>
+	</div>
+	<%}else{%>
+		<div class="em-widget-right">
+			<div class="em-widget-msg-wrapper">
+				<i class="icon-corner-right">
+					<img src="<%=data['curUser']['headimgurl']%>">
+				</i>
+				<%if( data['content']['type'] == '1' ){%>
+					<div class="em-widget-msg-container em-widget-msg-txt"><%=data['content']['content']%></div>
+					<div class="emcaoTips">
+						<div class="triangle-up"></div>
+						<div class="operation">
+							<span class="Del">删除</span> <span>|</span> <span class="Copy">复制</span>
+						</div>
+					</div>
+				<%}else if ( data['content']['type'] == '2' ) {%>
+					<div class="em-widget-msg-container em-widget-msg-img">
+						<a href="javascript:;">
+							<img class="em-widget-imgview" src="<%=data['content']['content']%>">
+						</a>
+					</div>
+				<%}else if ( data['content']['type'] == '3' ) {%>
+					<div class="em-widget-msg-container em-widget-msg-txt"><%=data['content']['content']%></div>
+				<%}else{%>
+					<div class="em-widget-msg-container em-widget-msg-txt">
+						
+					</div>
+				<%}%>
+			</div>
+		</div>
+	<%}%>
+<%}%>
+</script>
+<script type="text/javascript" src="__PUBLIC__/ImApi/js/webim.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ImApi/js/strophe-1.2.8.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ImApi/js/websdk-1.4.10.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Common/js/json2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wechat/js/chat.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Shop/js/baiduTemplate.js"></script>
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {},
+		created(){
+			$('#Jloading').fadeOut();
+		}
+	})
+	var to = "wedo{$_GET['id']}";
+
+	// 环信通信云
+    // if (_isLogin) {
+        var username = "wedo{$Think.session.userId}";
+        var password = "wedo{$Think.session.userId}";
+        chatLogin(username, password);
+    // }//登录
+    var userInfo = {:json_encode($_SESSION['userInfo'])};
+    
+    //创建本地聊天窗
+    var systemName = "{:C('systemName')}";
+    $('#Talker').text(systemName);
+    var talker = "<li><div class='headImgbox'><img></div><span class='name'>"+systemName+"</span></li>";
+	$("#Jcontact").append(talker);
+
+    $('#selectEmoji').click(function(){
+        showEmotionDialog();
+    });//表情
+
+    $('#sendPrivateText').click(function(){
+        $("#emotionUl").parent().addClass('hide');
+        sendPrivateText(userInfo, to);
+    })//发送消息
+
+    $('#em-widget-img-input').on('change',function(){
+        sendPrivateImg(userInfo, to);
+    })//发送图片
+
+    // 单聊贴图发送
+    document.addEventListener('paste', function (e) {
+    	var user = {};
+    	user['id'] = userInfo['id'];
+	    user['nickname'] = userInfo['nickname'];
+	    user['headimgurl'] = userInfo['headimgurl'];
+
+        if (e.clipboardData && e.clipboardData.types) {
+            if (e.clipboardData.items.length > 0) {
+                if (/^image\/\w+$/.test(e.clipboardData.items[0].type)) {
+                    var blob = e.clipboardData.items[0].getAsFile();
+                    var url = window.URL.createObjectURL(blob);
+                    var id = conn.getUniqueId();             // 生成本地消息id
+                    var msg = new WebIM.message('img', id);  // 创建图片消息
+                    msg.set({
+                        apiUrl: WebIM.config.apiURL,
+                        file: {data: blob, url: url},
+                        to: to,                      // 接收消息对象
+                        roomType: false,
+                        chatType: 'singleChat',
+                        action : 'action',                     //用户自定义，cmd消息必填
+        				ext :user,    //用户自扩展的消息内容（群聊用法相同）
+                        onFileUploadError: function (error) {
+                            console.log('Error');
+                        },
+                        onFileUploadComplete: function (data) {
+                            console.log('Complete');
+                        },
+                        success: function (id) {
+                            var _url = url;
+                            var html = "<div class='em-widget-right'><div class='em-widget-msg-wrapper'><i class='icon-corner-right'><img src="+user.headimgurl+"></i><div class='em-widget-msg-container em-widget-msg-img'><a href='javascript:;''><img class='em-widget-imgview' src='"+_url+"'></a></div></div></div>";
+                            $('.em-widget-chat').append(html);
+                            console.log('Success');
+                        }
+                    });
+                    conn.send(msg.body);
+                }
+            }
+        }
+    });
+
+    // 功能
+    $("#openFun").bind('click',function(e){
+    	$("#OuploadImg").slideDown(200);
+    	stopPropagation(e);
+    })
+
+    function stopPropagation(e) { 
+		if (e.stopPropagation){ 
+			e.stopPropagation(); 
+		}else{ 
+			e.cancelBubble = true;
+		} 
+	} 
+
+	$(document).bind('click',function(){ 
+		$("#OuploadImg").slideUp(200);
+		$('.emcaoTips').fadeOut(150);
+	})
+
+	// 复制删除消息
+	var timer;
+	$('#em-widgetBody').on('touchstart','.em-widget-msg-wrapper',function(){
+		var el = $(this);
+		timer = setTimeout(function(){
+			el.find('.emcaoTips').fadeIn(150);
+		},1000)
+	})
+	$('#em-widgetBody').on('touchend','.em-widget-msg-wrapper',function(){
+		clearTimeout(timer);
+	})
+	// 删除
+	$("#em-widgetBody").on('click','.Del',function(){
+		$(this).parents('.em-widget-right').remove();
+	})
+	//复制
+	function Copy(str){
+	    var save = function(e){
+	        e.clipboardData.setData('text/plain', str);
+	        e.preventDefault();
+	    }
+	    document.addEventListener('copy', save);
+	    document.execCommand('copy');
+	    document.removeEventListener('copy',save);
+	    alert('复制成功！');
+	}
+	$("#em-widgetBody").on('click','.Copy',function(){
+		Copy($(this).parents('.emcaoTips').siblings('.em-widget-msg-txt').text());
+	})
+
+	var page = 1;
+	var fromId = "{$_GET['id']}";
+	var bt = baidu.template;
+	function loadUserChat() {
+		$.ajax({
+			url: '{:U('Chat/userChat')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {page:page, to_id:fromId}
+		})
+		.done(function(returnData) {
+			var html = '';
+			if ( returnData['data']['list'].length > 0 ) {
+				returnData['data']['fromId'] = fromId;
+				html = bt('userChat_tpl', returnData['data']);
+			}
+			$('.em-widget-chat').html(html);
+		});
+	}
+	loadUserChat();
+	$('.y-confirm-order-h1').click(function(){
+		var userInfo2 = []
+		sendPrivateText(userInfo2, to);
+	})
+	//重置本地信息的total
+	function resetTotal(fromId){
+		fromId = 'wedo' + fromId;
+		var messageList =  localStorage['messageList'];
+		if ( messageList ) {
+			var messageList = JSON.parse(messageList);
+			for(var i=0; i<messageList.length; i++){
+				if( messageList[i].id == fromId ){
+					messageList[i].total = 0;
+					break;
+				}
+			}
+			localStorage['messageList'] = JSON.stringify(messageList);
+		}
+	}
+	resetTotal();
+</script>
+</block>

@@ -1,0 +1,84 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_OVERALLSTATEMENT_}</h1>
+		</header>
+		<div class="main">
+			<div class="settle_details">
+				<div class="set_d_list">
+					<ul>
+						<li v-for="(item, index) in logList">
+							<div class="lf">
+								<p class="tt">{{item['event']}}</p>
+								<p class="time">{{item['add_time']|time}}</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 遮罩层 -->
+			<!-- <div class="omask"></div> -->
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			logList : [],
+			page : 1,
+		},
+		created(){
+			this.loadMoneyLog();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadMoneyLog : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Money/moneyLog')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						page : that.page
+					}
+				})
+				.done(function(returnData) {
+					if( returnData['data']['list'].length > 0 ){
+						if( that.logList.length == 0 ){
+							that.logList = returnData['data']['list'];
+						}else{
+							that.logList = that.logList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+					}else{
+						that.goscroll = 0;
+					}
+				});
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.loadMoneyLog();
+						}
+					}
+				})
+			}
+		}
+	})
+</script>
+</block>

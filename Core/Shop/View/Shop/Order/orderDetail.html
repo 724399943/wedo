@@ -1,0 +1,246 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._COMMON_ORDER_DETAILS_}</block>
+<block name="style">
+	<link rel="stylesheet" href="__PUBLIC__/Shop/css/messagebox.css" type="text/css" />
+	<style type="text/css">
+		.padbottom{border-bottom:1px solid #e4e4e4;padding-bottom:30px;overflow:hidden;position:relative;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Order:menu" />
+</block>
+
+<block name="main">
+	<div class="order_detail" id="template">
+		
+	</div>
+	<div class="mask"></div>
+    <div class="replay_m">
+        <p id="Ktitle"></p>
+        <textarea placeholder="" id="Kcontent"></textarea>
+        <div class="rbtn">
+            <span class="Kcancel" style="margin-right:15px;">{$Think.lang._COMMON_BUTTON_NO_}</span>
+            <span class="Ksure">{$Think.lang._COMMON_BUTTON_YES_}</span>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+<script id="orderDetail_tpl" type="text/html">
+	<div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._COMMON_ORDER_DETAILS_} - 
+	    	<%switch( orderData['status'] ){
+    			case '0' :%>
+					{$Think.lang._PC_POINT_PENDING_PAYMENT_}
+				<%break;
+				case '1' :%>
+					{$Think.lang._PC_POINT_TO_BE_DELIVERED_}
+				<%break;
+				case '2' :%>
+					{$Think.lang._PC_POINT_TO_BE_RECEIVED_}
+				<%break;
+				case '3' :%>
+					{$Think.lang._PC_POINT_TO_BE_REVIEW_}
+				<%break;
+				case '4' :%>
+					{$Think.lang._PC_POINT_IS_FINISHED_}
+				<%break;
+				case '5' :%>
+					{$Think.lang._PC_POINT_IS_CANCELED_}
+				<%break;%>
+	   		<%}%>
+			<a href="javascript:;" class="btn btn_link" style="float:right;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_ORDER_PRINT_ORDER_}</span>
+	    	</a>
+	    	<a href="{:U('Message/consultation')}" class="btn btn_link" style="float:right;margin-right:15px;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_ORDER_CONTACT_UESR_}</span>
+	    	</a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper" style="position:relative;padding-bottom:50px;">
+		<form action="{:U('Point/pointInfo')}" method="post" class="stdform">
+		<div class="padbottom">
+			<div class="order_pad" style="float:left;width:40%;border-right:1px solid #e4e4e4;">
+				<%
+					var add_time = new Date(orderData['add_time'] * 1000),
+						pay_time = new Date(orderData['pay_time'] * 1000);
+				%>
+				<p>
+					<label>{$Think.lang._COMMON_ORDER_NUMBER_}：</label>
+					<span class="field"><%=orderData['order_sn']%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._COMMON_ORDER_TIME_}：</label>
+					<span class="field"><%=add_time.pattern('yyyy-MM-dd HH:mm:ss')%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._PC_ORDER_PAY_TIME_}：</label>
+					<span class="field"><%=pay_time.pattern('yyyy-MM-dd HH:mm:ss')%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._PC_ORDER_MY_HONOUR_POINTS_}：</label>
+					<span class="field"><%=goodsData[0]['credit']%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._PC_COMMENT_TOTAL_AMOUNT_}：</label>
+					<span class="field">RM<%=orderData['total']%></span>
+				</p>
+			</div>
+			<div class="order_pad" style="float:left;width:40%;">
+				<p>
+					<label>{$Think.lang._COMMON_UESR_NAME_}：</label>
+					<span class="field"><%=userData['nickname']%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._PC_ORDER_HONOUR_POINTS_}：</label>
+					<span class="field"><%=userData['credit']%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._COMMON_DELIVERY_METHOD_}：</label>
+						<span class="field">
+						<%if(goodsData[0]['express_type'] == '0'){%>
+							<%=byDelivery%>
+						<%}else{%>
+							<%=collectFromMerchant%>
+						<%}%>
+						</span>
+				</p>
+				<p>
+					<label>{$Think.lang._PC_ORDER_DELIVERY_INFORMATION_}：</label>
+					<span class="field"><%=orderData['consignee']%>&nbsp;&nbsp;&nbsp;&nbsp;<%=orderData['telephone']%>&nbsp;&nbsp;&nbsp;&nbsp;<%=orderData['address']%></span>
+				</p>
+				<p>
+					<label>{$Think.lang._PC_ORDER_USER_REMARKS_}：</label>
+					<span class="field"><%=orderData['buyer_message']%></span>
+				</p>
+			</div>
+		</div>
+		<div class="padbottom">
+			<div class="line-order" style="border:none;">{$Think.lang._PC_ORDER_PRODUCT_INFORMATION_}</div>
+			<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+				<tr>
+					<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+					<th>{$Think.lang._PC_ORDER_PRODUCT_MODEL_}</th>
+					<th>{$Think.lang._COMMON_PRICE_PER_UNIT_}</th>
+					<th>{$Think.lang._COMMON_QUANTITY_}</th>
+					<th>{$Think.lang._PC_ORDER_TOTAL_PAYMENT_}</th>
+				</tr>
+				<%for(var i = 0;i < goodsData[0]['goodsList'].length;i++){
+					var data = goodsData[0]['goodsList'][i];%>
+					<tr>
+						<td style="text-align:center;"><%=data['goods_name']%></td>
+						<td style="text-align:center;"><%=data['attr_list']%></td>
+						<td style="text-align:center;">RM<%=data['unit_price']%></td>
+						<td style="text-align:center;"><%=data['goods_number']%></td>
+						<td style="text-align:center;">RM<%=data['price']%></td>
+					</tr>
+				<%}%>
+			</table>
+		</div>
+		<div class="padbottom">
+			<p>
+				<span>{$Think.lang._PC_ORDER_MY_REMARKS_}：</span>
+				<textarea style="width:280px;height: 50px;" id="remark" placeholder="{$Think.lang._COMMON_REMARK_PLACEHODLER_}"><%=orderData['remark']%></textarea>
+			</p>
+		</div>
+		<%if(orderData['status'] == 4 || orderData['status'] == 5){%>
+			<%for(var j=0; j<goodsData.length; j++){%>
+				<%for(var k=0; k<goodsData[j]['goodsList'].length; k++){%>
+					<%var data = goodsData[j]['goodsList'][k];%>
+					<div class="padbottom" style="border:none;">
+						<p style="font-size:16px;color:#666;"><%=userRating%>：<%=data['commentData']['contain']%></p>
+						<p style="font-size:16px;color:#666;"><%=myReply%>：<%=data['commentData']['reply_contain']%></p>
+					</div>
+				<%}%>
+			<%}%>
+		<%} else if (orderData['status'] == 1) {%>
+			<br>
+			<input type="button" class="stdbtn Kdelivery" data-sn="<%=orderData['order_sn']%>" value="<%=toDelivery%>">
+			&nbsp;&nbsp;
+			<!-- <input type="button" class="stdbtn Kcancel" data-sn="<%=orderData['order_sn']%>" value="<%=toCancel%>"> -->
+		<%}%>
+		</form>
+	</div>
+</script>
+
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+
+    function loadData() {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Order/orderDetail')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				order_sn : "{$_GET['order_sn']}"
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				returnData['data']['toDelivery'] = "{$Think.lang._WAP_ORDER_DELIVERED_}";
+				returnData['data']['toCancel'] = "{$Think.lang._WAP_ORDER_CANCEL_ORDER_}";
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				returnData['data']['collectFromMerchant'] = "{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}";
+				returnData['data']['userRating'] = "{$Think.lang._PC_ORDER_USER_RATING_}";
+				returnData['data']['myReply'] = "{$Think.lang._PC_ORDER_MY_REPLY_}";
+				var html = bt('orderDetail_tpl', returnData['data']);
+				$('#template').html(html);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData();
+
+    // 发货
+    $('#template').on('click', '.Kdelivery', function(){
+    	var title = $(this).val();
+    		order_sn = $(this).data('sn');
+    		remark = document.getElementById("remark").value;
+    	messageBox(title, '<p>{$Think.lang._COMMON_TO_DELIVERY_}</p>', function(){
+	    	$.ajax({
+				url: '{:U('Order/delivery')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn: order_sn,remark: remark}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData['message']);
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+    	},1);
+    });
+
+    // 取消订单
+    $('#template').on('click', '.Kcancel', function(){
+    	var title = $(this).val(),
+    		order_sn = $(this).data('sn')
+    	messageBox(title, '<p>{$Think.lang._COMMON_TO_CANCEL_}</p>', function(){
+	    	$.ajax({
+				url: '{:U('Order/merchantCancel')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {order_sn: order_sn}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData['message']);
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+    	},1);
+    });
+</script>
+</block>

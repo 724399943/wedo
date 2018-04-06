@@ -1,0 +1,24 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_SUPPLEMENT_SUCCESSFULLY_}</h1>
+		</header>
+		<div class="selClassfiy">
+			<h1>{$Think.lang._WAP_SUPPLEMENT_SUCCESSFULLY_}</h1>
+			<p>{$Think.lang._WAP_SUPPLEMENT_SUCCESSTIPS_}</p>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {},
+			created(){
+				$('#Jloading').fadeOut();
+			}
+		})
+	</script>
+</block>

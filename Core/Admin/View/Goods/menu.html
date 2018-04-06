@@ -1,0 +1,68 @@
+<ul>
+	<if condition="checkActionAuth(array('Category-goodsCategory'))">
+		<li <if condition="checkActionAuth(array('AgentCategory-agentCategory'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('AgentCategory-agentCategory'))}" class="addons">商城管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth(array('AgentCategory-agentCategory'))">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('AgentCategory')) && in_array(ACTION_NAME, array('agentCategory', 'addAgentCategory', 'editAgentCategory'))">on</if>">
+						<a href="{:U('AgentCategory/agentCategory')}">店铺分类管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth(array('Category-goodsCategory'))">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Category')) && in_array(ACTION_NAME, array('goodsCategory', 'addGoodsCategory', 'editGoodsCategory'))">on</if>">
+						<a href="{:U('Category/goodsCategory')}">商品分类管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth(array('Goods-goodsRanking'))">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Goods')) && in_array(ACTION_NAME, array('goodsRanking'))">on</if>">
+						<a href="{:U('Goods/goodsRanking')}">商品查询排行</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth(array('Goods-goodsList'))">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Goods')) && in_array(ACTION_NAME, array('goodsList', 'goodsDetail'))">on</if>">
+						<a href="{:U('Goods/goodsList')}">商品管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('GoodsCheck-goodsAuth')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('GoodsCheck')) && in_array(ACTION_NAME, array('goodsAuth', 'authSetting'))">on</if>">
+						<a href="{:U('GoodsCheck/goodsAuth')}">商品认证管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('GoodsCheck-goodsTop')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('GoodsCheck')) && in_array(ACTION_NAME, array('goodsTop', 'topSetting'))">on</if>">
+						<a href="{:U('GoodsCheck/goodsTop')}">商品置顶管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('Bidding-biddingIndexGoods')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingIndexGoods', 'auditBiddingIndexGoods'))">on</if>">
+						<a href="{:U('Bidding/biddingIndexGoods')}">首页商品竞价管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('Bidding-biddingFavorableGoods')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingFavorableGoods', 'auditBiddingFavorableGoods'))">on</if>">
+						<a href="{:U('Bidding/biddingFavorableGoods')}">优惠商品竞价管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('Bidding-biddingAgent')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Bidding')) && in_array(ACTION_NAME, array('biddingAgent', 'auditBiddingAgent'))">on</if>">
+						<a href="{:U('Bidding/biddingAgent')}">首页商家竞价管理</a>
+					</li>
+				</if>
+
+				<if condition="checkActionAuth('Bidding-biddingBanner')">
+					<li class="<if condition="in_array(CONTROLLER_NAME, array('Bidding', 'Ad')) && in_array(ACTION_NAME, array('biddingBanner', 'index', 'addAd', 'auditBiddingBanner'))">on</if>">
+						<a href="{:U('Bidding/biddingBanner')}">广告位竞价管理</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

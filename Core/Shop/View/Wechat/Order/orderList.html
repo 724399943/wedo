@@ -1,0 +1,345 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Wechat/css/LCalendar.css">
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1" @click="change"><span>{$Think.lang._WAP_ORDER_ALLORDERS_}</span><b></b></h1>
+			<ul class="all_orderul" id="orderul">
+				<li @click="selomsg(1)">{$Think.lang._PC_POINT_TO_BE_DELIVERED_}</li>
+				<li @click="selomsg(2)">{$Think.lang._PC_POINT_TO_BE_RECEIVED_}</li>
+				<li @click="selomsg(3)">{$Think.lang._PC_POINT_TO_BE_REVIEW_}</li>
+				<li @click="selomsg(4)">{$Think.lang._PC_POINT_IS_FINISHED_}</li>
+				<li @click="selomsg(5)">{$Think.lang._PC_POINT_IS_CANCELED_}</li>
+			</ul>
+		</header>
+		<div class="main">
+			<div class="order_main">
+				<div class="order_nav">
+					<div class="o_nav on" @click="seldeta">
+						<span class="on" id="Jcalendar">{$Think.lang._WAP_ORDER_ALLDATES_}</span>
+						<input id="Jcalendar" type="text" name="" value="" v-model="start_time">
+						<input id="birthday" type="hidden" name="birthday" value="2007-11-08">
+						<em></em>
+					</div>
+					<div class="o_nav">
+						<span @click="selship">{$Think.lang._WAP_ORDER_DELIVERYMETHODS_}</span>
+						<i></i>
+						<ul class="onav_ul" id="shipul">
+							<li @click="seldeship(0)">{$Think.lang._COMMON_BY_DELIVERY_}</li>
+							<li @click="seldeship(1)">{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="my_order_wrap">
+			        <ul class="yy-myorder-list" id="Jtab-orderList">
+				        <li class="clearfix" v-for="(item, index) in orderList" @click="seeOrder(item.order_sn)">
+				        	<div class="order-tophead">
+								<span class="ott-t">{$Think.lang._WAP_ORDER_NUMBER_}:</span>
+								<span class="ott-sn">{{item['order_sn']}}</span>
+								<em class="ot-tips" v-if="item['status'] == '5'">{$Think.lang._PC_POINT_IS_CANCELED_}</em>
+								<em class="ot-tips" v-else-if="item['status'] == '1'">{$Think.lang._PC_POINT_TO_BE_DELIVERED_}</em>
+								<em class="ot-tips" v-else-if="item['status'] == '2'">{$Think.lang._PC_POINT_TO_BE_RECEIVED_}</em>
+								<em class="ot-tips" v-else-if="item['status'] == '3'">{$Think.lang._PC_POINT_TO_BE_REVIEW_}</em>
+								<em class="ot-tips" v-else-if="item['status'] == '4'">{$Think.lang._PC_POINT_IS_FINISHED_}</em>
+							</div>
+				        	<div class="y-order-pro">
+					        	<a href="javascript:;" class="y-kein" v-for="(goods, goodsIndex) in item['goodsList']">
+					        		<div class="y-imgbox">
+							        	<div class="y-img">
+								        	<div class="ab">
+								        		<img :src="goods['goods_image']">
+								        	</div>
+							        	</div>
+					        		</div>       		
+						        	<div class="y-jnjcn">
+							        	<div class="y_name_t">
+							        		<p class="y-njcn">{{goods['goods_name']}}</p>
+							        		<em>RM{{goods['unit_price']}}</em>
+							        	</div>
+							        	<div class="y-ws5d">
+								        	<span>{{goods['attr_list']}}</span>
+								        	<span class="num">x{{goods['goods_number']}}</span>
+								        </div>
+						        	</div>
+					        	</a>
+				        	</div>
+				        	<p class="tt-count">					        		
+				        		{$Think.lang._WAP_ORDER_ATOTALOF_}{{item['goods_number']}}{$Think.lang._WAP_ORDER_GOODS_} {$Think.lang._WAP_ORDER_SUBTOTAL_}
+					        	<em>RM{{item['total']}}</em>
+				        	</p>
+				        	<div class="btbox clearfix" v-if="item['status'] == '1'">
+				        		<a href="javascript:;" class="c2" @click="delivery(item['order_sn'])">{$Think.lang._WAP_ORDER_DELIVERED_}</a>
+				        	</div>
+				        </li>
+			        </ul>
+		    	</div> 
+	    	</div>
+	    	<!-- 弹窗 -->
+			<div class="omask"></div>
+			<div class="navmask"></div>
+		</div>
+	</div>
+</block>
+<block name="footer">
+	<include file="Public:footer" />
+</block>
+<block name="curScript">
+<if condition="$_COOKIE['think_language'] eq 'zh-cn'">
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/LCalendar.js"></script>
+<else/>
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/LCalendar_en.js"></script>
+</if>
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			orderList : [],
+			page : 1,
+			goscroll : 1,
+			order_type : 'all',
+			obol : true,
+			sbol : true,
+			otype : 1,
+			start_time : '',
+			express_type : -1,
+			historyList : [],
+			count : 0,
+		},
+		created(){
+			this.loadOrder();
+			this.loadmore();
+			this.loadMessage();
+			window.initMessage = this.initMessage;
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadOrder : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Order/orderList')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						order_type : that.order_type,
+						user_type : 'saler',
+						express_type : that.express_type,
+						page : that.page
+					}
+				})
+				.done(function(returnData) {
+					if( returnData['data']['list'].length > 0 ){
+						if( that.orderList.length == 0 ){
+							that.orderList = returnData['data']['list'];
+						}else{
+							that.orderList = that.orderList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+					}else{
+						that.goscroll = 0;
+					}
+				});
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.loadOrder();
+						}
+					}
+				})
+			},
+			delivery(order_sn) {
+				$.ajax({
+					url: '{:U('Order/delivery')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {order_sn: order_sn}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox('发货成功', function(){
+							window.location.href = window.location.href;
+						});
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});
+			},
+			change : function(){
+				var that = this;
+				$('#orderul').slideToggle(200);
+				$('#shipul').fadeOut();
+				$('.navmask').fadeOut();
+				vm.sbol = true;
+				if(that.obol){
+					$('.omask').show();
+					that.obol = false;
+				}else{
+					$('.omask').fadeOut();
+					that.obol = true;
+				}
+			},
+			selomsg : function(index){
+				var that = this;
+				$(event.target).addClass('on');
+				$(event.target).siblings().removeClass('on');
+				$('#orderul').fadeOut();
+				$('.omask').fadeOut();
+				that.obol = true;
+				that.otype = index;
+				that.orderList = [];
+				switch (that.otype) {
+					case 1 : 
+						that.order_type = 'toBeShipped';
+						that.loadOrder();
+						break;
+					case 2 : 
+						that.order_type = 'toBeReceived';
+						that.loadOrder();
+						break;
+					case 3 : 
+						that.order_type = 'toBeComment';
+						that.loadOrder();
+						break;
+					case 4 :
+						that.order_type = 'isFinish';
+						that.loadOrder();
+						break;
+					case 5 : 
+						that.order_type = 'isOutDate';
+						that.loadOrder();
+						break;
+				}
+			},
+			selship : function(){
+				var that = this;
+				$('#shipul').slideToggle(200);
+				if(that.sbol){
+					$('.navmask').fadeIn();
+					that.sbol = false;
+				}else{
+					$('.navmask').fadeOut();
+					that.sbol = true;
+				}
+			},
+			seldeta : function(){
+				$('#shipul').fadeOut();
+				$('.navmask').fadeOut();
+				vm.sbol = true;
+			},
+			seldeship : function(index){
+				var that = this;
+				that.express_type = index;
+				$(event.target).addClass('on');
+				$(event.target).siblings().removeClass('on');
+				that.orderList = [];
+				that.loadOrder();
+				$('#shipul').fadeOut();
+				$('.navmask').fadeOut();
+				vm.sbol = true;
+			},
+			seeOrder : function(index){
+				window.location.href = "{:U('Order/orderDetail')}?order_sn="+index;
+			},
+			loadMessage : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Message/index')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.count = parseInt(returnData['data']['count']);
+						that.$nextTick(function(){
+							that.initMessage();
+						});
+					}
+				});
+			},
+			//处理信息显示
+			initMessage(){
+				var messageList = localStorage.messageList;
+				if ( messageList ) {
+					var messageList = JSON.parse(messageList);
+					/****处理显示列表信息*****/
+					for(var i=0; i<this.historyList.length; i++){
+						for(var j=0; j<messageList.length; j++){
+							var list_from = 'wedo' + this.historyList[i].id,
+								messageData = messageList[j];
+							if( list_from == messageData.id ){
+								this.historyList[i].content = {type:messageData['type'],content:messageData['content']};
+								this.historyList[i].count = messageData.total;
+								this.historyList[i].add_time = messageData.time / 1000;
+								this.count += parseInt(messageData.total);
+								break;
+							}
+						}
+					}
+				}
+				this.labelCount();
+			},
+			labelCount(){
+				if ( this.count > 0 ) {
+					$('.reddot').text(this.count);
+				} else {
+					$('.reddot').remove();
+				}
+			}
+		}
+	})
+	//初始化选择日期
+	var calendar = new LCalendar();
+    calendar.init({
+        'trigger': '#Jcalendar', //标签id
+        'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+        'minDate': '2000-1-1', //最小日期
+        'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 5) + '-' + new Date().getDate(), //最大日期,
+        'callback': function() {
+        	var birthday = $('#Jcalendar').val();
+        	$('#birthday').val(birthday);
+            var time = birthday.split('-');
+            time = time.join('/');
+            vm.start_time = time;
+            vm.orderList = [];
+            $.ajax({
+				url: '{:U('Order/orderList')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					order_type : vm.order_type,
+					date : vm.start_time,
+					user_type : 'saler',
+					page : vm.page
+				}
+			})
+			.done(function(returnData) {
+				if( returnData['data']['list'].length > 0 ){
+					if( vm.orderList.length == 0 ){
+						vm.orderList = returnData['data']['list'];
+					}else{
+						vm.orderList = vm.orderList.concat(returnData['data']['list']);
+					}
+					vm.goscroll = 1;
+				}else{
+					vm.goscroll = 0;
+				}
+			});
+			vm.loadmore();
+        }
+    });
+</script>
+</block>

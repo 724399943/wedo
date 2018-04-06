@@ -1,0 +1,70 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<div class="integral_wrap">
+			<div class="s_man_top jibg">
+				<h1>{$Think.lang._WAP_POINT_MYPOINTS_}</h1>
+				<span class="back"></span>
+				<p class="money">{{point['point']}}</p>
+				<p class="lm">{$Think.lang._WAP_POINTORDER_POINTS_}</p>
+			</div>
+			<div class="p_cen_m">
+				<ul class="sm_ul">
+					<li class="smli sme pe">
+						<a href="{:U('Point/pointGoods')}">
+							<span class="s1">{$Think.lang._WAP_POINT_WEDOMALL_}</span>
+							<span class="s2">{$Think.lang._WAP_POINT_EXCHANGE_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+					<li class="smli">
+						<a href="{:U('Point/pointLog')}">
+							<span class="s1">{$Think.lang._WAP_POINT_POINTSSTATEMENT_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+				</ul>
+				<ul class="sm_ul">
+					<li class="smli">
+						<a href="{:U('Agent/myPointGoods')}">
+							<span class="s1">{$Think.lang._WAP_POINT_POINTSMERCHANDISE_}</span>
+							<em class="ei"></em>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			point : {},
+		},
+		created(){
+			this.loadPoint();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadPoint : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Point/index')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.point = returnData['data']['list'];
+					}
+				});
+			}
+		}
+	})
+</script>
+</block>

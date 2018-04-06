@@ -1,0 +1,314 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_USER_MERCHANT_INFORMATION_SETTING_}</block>
+<block name='style'>
+	<style type="text/css">
+		.g_imgmain{position:absolute;top:0px;right:20%;}
+		.g_imgmain span{display:block;}
+		.g_imgmain .g_imgbox{width:280px;position:relative;}
+		.g_imgmain .g_imgbox img{width:100%;height:180px;position:absolute;top:0;left:0;}
+		.pgbtn{display:block;width:180px;margin:20px 0 20px 80px;line-height:40px;text-align:center;color:#333;border-radius:5px;background:rgba(0,0,0,.3);color:#fff;}
+		.pgbtn:hover{background:#967bdc;}
+		.smallinput.on{border:none;box-shadow: none;-webkit-box-shadow: none;-moz-box-shadow: none;}
+		.padbottom{border-bottom:1px solid #e4e4e4;padding-bottom:30px;overflow:hidden;position:relative;}
+		.add_g_de .g_imgm ul li {display: inline-block;width: 100px;margin-right: 15px;margin-bottom: 15px;}
+		.add_g_de .g_imgm ul li .imgbox {width: 100%;position: relative;}
+		.add_g_de .g_imgm ul li .imgbox:before {content: '';display: block;padding: 50% 0;}
+		.add_g_de .g_imgm ul li .imgbox img {width: 100%;height: 100%;position: absolute;top: 0;left: 0;}
+		.add_g_de .g_imgm ul li .imgbox em {display: block;width: 15px;height: 15px;background: url(__PUBLIC__/Shop/images/close_ico.png) no-repeat;background-size: 15px;position: absolute;top: -5px;right: -5px;}
+		.add_g_de .g_imgm ul li .upload_input {width: 100%;background: url(__PUBLIC__/Shop/images/add_ico.png) no-repeat center center;background-size: 100%;position: relative;}
+		.add_g_de .g_imgm ul li .upload_input:before {content: '';display: block;padding: 50% 0;}
+		.add_g_de .g_imgm ul li .upload_input input {width: 100%;height: 100%;position: absolute;top: 0;left: 0;opacity: 0;}
+		.smallinput.on{border:none;box-shadow: none;-webkit-box-shadow: none;-moz-box-shadow: none;}
+		.flebtn{line-height:35px;border-radius:5px;text-align:center;border:1px solid #e4e4e4;display:inline-block;width:130px;}
+		.flebtn:hover{background:#967bdc;border-color:#967bdc;color:#fff;}
+		.qrcode_wrap{position:absolute;top:254px;right:130px;}
+		.store_code{display:inline-block;width:150px;margin-right:20px;}
+		.store_code .imgbox{width:100%;position:relative;}
+		.store_code .imgbox:before{content:'';display:block;padding:50% 0;}
+		.store_code .imgbox img{width:100%;height:100%;position:absolute;top:0;left:0;}
+		.line-order .edit{line-height:30px;display:block;border:1px solid #e4e4e4;width:80px;text-align:center;border-radius:5px;float:right;cursor:pointer;margin:5px 0;}
+		.line-order .edit:hover{background:#967bdc;border-color:#967bdc;color:#fff;}
+		.smask{position:fixed;top:0;left:0;right:0;bottom:0;overflow:auto;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;}
+        .storeTypeBox{padding:15px 50px;border:1px solid #333;width:50%;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);background:#fff;display:none;}
+        .storeTypeBox h1{text-align:center;font-size:20px;color:#333;}
+        .storeTypeBox ul {border:1px solid #e4e4e4;overflow:hidden;margin-top:10px;}
+        .storeTypeBox ul li{float:left;line-height:40px;color:#666;overflow:hidden;border-bottom:1px solid #e4e4e4;border-right:1px solid #e4e4e4;margin-right:-1px;margin-bottom:-1px;width:44%;padding:0 3%;position:relative;}
+        .storeTypeBox ul li span{float:left;}
+        .storeTypeBox ul li input{width:20px;height:20px;float:right;position:absolute;top:50%;right:3%;transform:translateY(-50%);-webkit-transform:translateY(-50%);}
+        .storeTypeBox .sbtn{display:block;width:220px;height:40px;line-height:40px;border:1px solid #e4e4e4;border-radius:5px;margin:15px auto;text-align:center;}
+        .storeTypeBox .sbtn:hover{background:rgba(22, 155, 213, 1);color:#fff;border:1px solid rgba(22,155,213,1);}
+        .storeTypeBox .pt{text-align:center;}
+        .ke-container{display:none;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_USER_MERCHANT_INFORMATION_SETTING_}</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper" style="position:relative;padding-bottom:50px;">
+		<form action="{:U('Point/pointInfo')}" method="post" class="stdform" id="template">
+			<div class="padbottom" id="agentCategory">
+				<p style="width:100%;">
+					<label>{$Think.lang._PC_USER_MERCHANT_INTRODUCTION_}：</label>
+					<span class="field">
+						<a href="javascript:;" class="flebtn Kintroduction">{$Think.lang._COMMON_VIEW_}</a>
+					</span>
+					<span class="field" id="kindEdit" style="display:none;">
+						<textarea id="content" name="content" style="width:800px;height:600px;"></textarea>
+					</span>
+				</p>
+			</div>
+			<div class="padbottom" style="border:none;">
+				<div class="line-order" style="border:none;">{$Think.lang._PC_USER_AUDIT_STATUS_}</div>
+				<p style="font-size:16px;color:#666;">
+					<if condition="$status eq '0'">
+						{$Think.lang._PC_USER_UNAUDITED_}
+					<elseif condition="$status eq '1'"/>
+						{$Think.lang._PC_USER_AUDITED_}
+					</if>
+				</p>
+			</div>
+		</form>
+	</div>
+	<!-- 弹选择分类 -->
+	<div class="smask"></div>
+	<div class="storeTypeBox">
+	    <h1>{$Think.lang._WAP_SUPPLEMENT_CHOOSECATEGORY_}</h1>
+	    <ul id="sTypeUl">
+	        
+	    </ul>
+	    <a href="javascript:;" class="sbtn" id="JsbType">{$Think.lang._COMMON_CONFIRM_}</a>
+	    <p class="pt">{$Think.lang._WAP_SUPPLEMENT_TIPS_}</p>
+	</div>
+</block>
+
+<block name="script">
+<script id="aptitude_tpl" type="text/html">
+	<div class="padbottom">
+		<div class="line-order" style="border:none;">{$Think.lang._PC_USER_QUALIFICATION_INFORMATION_}</div>
+		<p style="width:50%;">
+			<label>{$Think.lang._PC_USER_COMPANY_NAME_}：</label>
+			<span class="field"><%=list['company_name']%></span>
+		</p>
+		<p style="width:50%;">
+			<label>{$Think.lang._PC_USER_LICENSE_NUMBER_}：</label>
+			<span class="field"><%=list['registr_id']%></span>
+		</p>
+		<p style="width:50%;">
+			<label>{$Think.lang._PC_USER_COMPANY_ADDRESS_}：</label>
+			<span class="field"><%=list['address']%></span>
+		</p>
+		<div class="g_imgmain">
+			<span>{$Think.lang._PC_USER_BUSINESS_DOCUMENTS_}：</span>
+			<div class="g_imgbox">
+				<img src="<%=list['license']%>">
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="agentCategory_tpl">
+	<div class="line-order" style="border:none;">{$Think.lang._PC_USER_BASIC_INFORMATION_} <span class="edit" data-edit="0">{$Think.lang._COMMON_EDIT_}</span></div>
+	<p style="width:50%;float:left;line-height:34px;">
+		<label>{$Think.lang._COMMON_AGENT_NAME_}：</label>
+		<span class="field">
+			<input type="text" name="agent_name" class="smallinput on" value="<%=list['agent_name']%>" readonly="readonly" id="agent_name" style="width:95%;" />
+		</span>
+	</p>
+	<p style="width:50%;float:left;line-height:34px;">
+		<label>{$Think.lang._PC_USER_CONTACT_PERSON_NAME_}：</label>
+		<span class="field">
+			<input type="text" name="agent_name" class="smallinput on" value="<%=list['agent_name']%>" readonly="readonly" style="width:95%;" />
+		</span>
+	</p>
+	<p style="width:50%;float:left;line-height:34px;">
+		<label>{$Think.lang._PC_USER_MERCHANT_ADDRESS_}：</label>
+		<span class="field">
+			<input type="text" name="address" class="smallinput on" value="<%=list['address']%>" readonly="readonly" id="address" style="width:95%;" />
+		</span>
+	</p>
+	<p style="width:50%;float:left;line-height:34px;">
+		<label>{$Think.lang._PC_USER_CONTACT_PERSON_EMAIL_}：</label>
+		<span class="field">
+			<input type="text" name="email" class="smallinput on" value="<%=list['email']%>" readonly="readonly" id="email" style="width:95%;" />
+		</span>
+	</p>
+	<p style="width:50%;float:left;line-height:34px;">
+		<label>{$Think.lang._PC_USER_CONTACT_NUMBER_}：</label>
+		<span class="field">
+			<input type="text" name="telephone" class="smallinput on" value="<%=list['telephone']%>" readonly="readonly" id="telephone" style="width:95%;" />
+		</span>
+	</p>
+	<p style="width:100%;line-height:34px;">
+		<label>{$Think.lang._PC_USER_MERCHANT_NUMBER_}：</label>
+		<span class="field">
+			<input type="text" name="agent_phone" class="smallinput on" value="<%=list['agent_phone']%>" readonly="readonly" id="agent_phone" style="width:38.5%;" />
+		</span>
+	</p>
+	<p style="width:50%;float:left;line-height:34px;" id="chooseStype">
+		<label>{$Think.lang._PC_USER_MERCHANT_CATEGORIES_}：</label>
+		<span class="field">
+			<input type="text" name="categoryids" class="smallinput on" value="<%=list['categoryids']%>" readonly="readonly" style="width:95%;" />
+		</span>
+	</p>
+	<!-- 二维码 -->
+	<div class="qrcode_wrap" id="Jqrcode">
+		
+	</div>
+	<div class="add_g_de" style="float:left;width:100%;">
+		<div class="g_imgm">
+			<label>{$Think.lang._PC_USER_MERCHANT_PICTURE_}：</label>
+			<ul style="margin-left:170px;">
+				<li>
+					<div class="imgbox">
+						<img src="<%=list['logo']%>" id="uploadImg">
+						<em class="removeIMG"></em>
+					</div>
+				</li>
+				<li style="display:none;" id="filePicker">
+					<div class="upload_input">
+						<input type="file" name="upload_input" id="upload_input">
+						<input type="hidden" name="logo" id="hiddenImg">
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<p style="width:50%;float:left;line-height:34px;">
+		<label>{$Think.lang._PC_USER_MERCHANT_KEYWORD_}：</label>
+		<span class="field">
+			<input type="text" name="agent_keyword" class="smallinput on" value="<%=list['agent_keyword']%>" readonly="readonly" placeholder="{$Think.lang._PC_USER_MERCHANT_KEYWORD_LIMITED_}" id="agent_keyword" style="width:95%;" />
+		</span>
+	</p>
+	
+</script>
+<script type="text/html" id="qrcode_tpl">
+	<div class="store_code">
+		<span>{$Think.lang._PC_USER_MERCHANT_QR_CODE_}：</span>
+		<div class="imgbox">
+			<img src="<%=agentQRcode%>">
+		</div>
+	</div>
+	<div class="store_code">
+		<span>{$Think.lang._PC_USER_PAY_QR_CODE_}：</span>
+		<div class="imgbox">
+			<img src="<%=agentReceiptQRcode%>">
+		</div>
+	</div>
+</script>
+<script type="text/html" id="basicData_tpl">
+<%for(var i = 0;i < list.length;i++){
+	var data = list[i];%>
+	<li>
+        <span><%=data['category_name']%></span>
+        <input type="checkbox" name="" value="<%=data['category_name']%>" data-id="<%=data['id']%>" id="<%=data['id']%>">
+    </li>
+<%}%>
+</script>
+<script type="text/javascript">
+	var bt = baidu.template;
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Agent/aptitudeData')}',
+			type: 'POST',
+			dataType: 'json',
+			async: false,
+			data: {
+				type : 0
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == "200000" ) {
+				var html = bt('aptitude_tpl', returnData['data']);
+				$('#template').prepend(html);
+				getAgentCategory();
+				getbasicData();
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+    function getbasicData(){
+	    $.ajax({
+			url: "{:U("Agent/basicData")}",
+			type: "POST",
+			dataType: 'json',
+			data: {}
+		})
+		.done(function(returnData) {
+			if(returnData.status == "200000"){
+				var html = bt('agentCategory_tpl',returnData['data']);
+				$("#agentCategory").prepend(html);
+				$("#content").val(returnData.data.list.introduction);
+				getQrcode();
+				changeCategory();
+			}else{
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}
+		})
+	}
+	function getQrcode(){
+	    $.ajax({
+			url: "{:U("Agent/agentCenter")}",
+			type: "POST",
+			dataType: 'json',
+			data: {}
+		})
+		.done(function(returnData) {
+			if(returnData.status == "200000"){
+				var html = bt('qrcode_tpl',returnData['data']);
+				$("#Jqrcode").html(html);
+			}else{
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}
+		})
+	}
+	function getAgentCategory(){
+		$.ajax({
+			url: "{:U("Category/agentCategory")}",
+			type: "POST",
+			dataType: 'json',
+			async: false,
+			data: {}
+		})
+		.done(function(data) {
+			if(data.status == 200000){
+				var html = bt("basicData_tpl",data['data']);
+				$("#sTypeUl").html(html);
+			}else{
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}
+		})
+	}
+	function changeCategory(){
+		var cate = $("#chooseStype").find('input').val();
+		var name = [];
+		var ntype = '';
+		cate = cate.split(',');
+		for(var i = 0;i < cate.length;i++){
+			name.push($("#sTypeUl").find("#"+cate[i]).val());
+			ntype = name.join(",");	
+		}
+		$("#chooseStype").find('input').val(ntype);
+	}
+
+	//编辑
+	$("#template").on("click",".edit",function(){
+		window.location.href = '{:U('Agent/editBasicData')}';
+	});
+
+	$('#template').on('click', '.Kintroduction', function(){
+		window.location.href = '{:U('Agent/editBasicData')}';
+	});
+</script>
+</block>

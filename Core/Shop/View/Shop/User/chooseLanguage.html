@@ -1,0 +1,40 @@
+<extend name="Public:base" />
+
+<block name="menu">
+	<include file="User:menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+    <h1 class="pagetitle">
+    	{$Think.lang._PC_SETTING_CHOOSE_LANGUAGE_}
+    </h1>
+    <span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form class="stdform stdform2" action="{:U('User/chooseLanguage')}" method="POST">
+		<div class="line-dete">
+			<label>{$Think.lang._PC_SETTING_CHOOSE_LANGUAGE_}</label>
+	        <span class="field">
+	        	<input type="radio" name="language" value="zh-cn" <if condition="$_COOKIE['think_language'] eq 'zh-cn'">checked</if>>{$Think.lang._PC_SETTING_CHINESE_}
+	        	<input type="radio" name="language" value="en-us" <if condition="$_COOKIE['think_language'] eq 'en-us'">checked</if>>{$Think.lang._PC_SETTING_ENGLISH_}
+	        	<br>
+	        	<i style="color: #967bdc;font-weight: bold;">{$Think.lang._PC_SETTING_LANGUAGE_TIPS_}</i>
+	        </span>
+		</div>
+		<div class="line-dete">
+			<label></label>
+	        <span class="field">
+	        	<input type="submit" class="stdbtn" value="{$Think.lang._PC_SETTING_SWITCH_}" />
+	        </span>
+		</div>
+	</form>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+</script>
+</block>
+

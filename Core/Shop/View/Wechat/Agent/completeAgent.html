@@ -1,0 +1,282 @@
+<extend name="Public:base" />
+<block name="style">
+	<style type="text/css">
+		body,.bcont{position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;}
+	</style>
+</block>
+<block name="main">
+	<div class="basic_wrap" id="content">
+		<div class="content bcont">
+			<header class="head">
+				<span class="back"></span>
+				<h1 class="y-confirm-order-h1">{$Think.lang._WAP_SUPPLEMENT_ADDINFORMATION_}</h1>
+			</header>
+			<div class="suppleData">
+				<form>
+					<ul>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_COMPANYNAME_}</span>
+								<input type="text" v-model="dataJson.company_name">
+							</div>
+						</li>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_LICENSENUMBER_}</span>
+								<input type="text" v-model="dataJson.registr_id">
+							</div>
+						</li>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_COMPANYADDRESS_}</span>
+								<input type="text" v-model="dataJson.address" @click="location">
+								<!-- <input type="text" v-model="dataJson.address"> -->
+							</div>
+						</li>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_PERSONNAME_}</span>
+								<input type="text" v-model="dataJson.manager">
+							</div>
+						</li>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_PERSONEMAIL_}</span>
+								<input type="text" v-model="dataJson.email">
+							</div>
+						</li>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_NUMBER_}</span>
+								<input type="text" v-model="dataJson.telephone">
+							</div>
+						</li>
+						<li>
+							<div class="sinput">
+								<span>{$Think.lang._WAP_SUPPLEMENT_PHONENUMBER_}</span>
+								<input type="text" placeholder="{$Think.lang._WAP_SUPPLEMENT_OPTIONAL_}" v-model="dataJson.agent_phone">
+							</div>
+						</li>
+						<li>
+							<div class="sinput" @click="basicfun">
+								<span>{$Think.lang._WAP_SUPPLEMENT_MERCHANTBUSINESS_}</span>
+								<em></em>
+								<input type="text" readonly="readonly" class="type" v-model="namestr" placeholder="{$Think.lang._WAP_SUPPLEMENT_PLEASESELECT_}" id="Jtype" style="width:60%;">
+							</div>
+						</li>
+					</ul>
+				</form>
+				<div class="paper_wrap" id="filePicker">
+					<p>{$Think.lang._WAP_SUPPLEMENT_UPLOADDOCUMENTS_}</p>
+					<div class="papers_box">
+						 <img :src="imgeUrl" alt="">
+					</div>  
+					<input type="file" name="upload_input" accept="image" id="upload_input">
+				</div>
+				<div class="sdiv"><span>{$Think.lang._WAP_REGISTER_AGREE_}</span><a href="javascript:;" @click="toregist">{$Think.lang._WAP_REGISTER_AGREEMENT_}</a></div>
+				<a href="javascript:;" class="commit_btn" @click="commitfun">{$Think.lang._WAP_SUPPLEMENT_SUBMIT_}</a>
+			</div>
+		</div>
+		<div class="content basic" id="basicData">
+			<header class="head" style="position:absolute;">
+				<span class="backed" @click="closeBaisc('back')"></span>
+				<h1 class="y-confirm-order-h1">{$Think.lang._WAP_SUPPLEMENT_CHOOSECATEGORY_}</h1>
+				<a href="javascript:;" class="mail" @click="closeBaisc('finish')">{$Think.lang._WAP_SUPPLEMENT_COMPLETE_}</a>
+			</header>
+			<div class="selClassfiy">  
+				<p>{$Think.lang._WAP_SUPPLEMENT_TIPS_}</p>
+				<ul id="checkBasic">
+					<li v-for="(item,index) in dataList">
+						<div class="sclont">
+							<span>{{item.category_name}}</span>
+							<div class="check_box">
+								<input :id="item.id" type="checkbox" :value="item.id" v-model="selbasic" @change="selfun(item.category_name)">
+								<label :for="item.id"></label>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="content basic" id="Jregist">
+			<header class="head" style="position:absolute;">
+				<span class="backed" @click="closeRegistr"></span>
+				<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGREEMENT_TITTLE_}</h1>
+			</header>
+			<div class="main" v-html="article['content']"></div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				dataJson : {
+					address : "{$_GET['address']}",
+					longitude : "{$_GET['lng']}",
+					latitude : "{$_GET['lat']}",
+				},
+				imgeUrl : '',
+				dataList : [],
+				selbasic : [],
+				namearr:[],
+				namestr:'',
+				article : {},
+			},
+			created(){
+				this.getDataList();
+				this.loadArticle();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				commitfun : function(){
+					var that = this;
+					var categoryids = that.selbasic.join(",");
+					
+					$.ajax({
+						url : "{:U("Agent/completeAgent")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							company_name : that.dataJson.company_name,
+							registr_id : that.dataJson.registr_id,
+							address : that.dataJson.address,
+							manager : that.dataJson.manager,
+							email : that.dataJson.email,
+							telephone : that.dataJson.telephone,
+							agent_phone : that.dataJson.agent_phone,
+							user_id : "{$_GET['user_id']}",
+							categoryids : categoryids,
+							license : that.imgeUrl,
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							automsgbox(data.message,function() {
+                                window.location.href = "{:U('Login/login')}";
+                            },true);
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				},
+				getDataList : function(){
+					var that = this;
+					$.ajax({
+						url: "{:U("Category/agentCategory")}",
+						type: "POST",
+						dataType: 'json',
+						data: {}
+					})
+					.done(function(data) {
+						if(data.status == 200000){
+							that.dataList = data.data.list;
+						}
+					})
+				},
+				getBasicFun : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Agent/basicData")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							that.dataJson = data.data.list;
+							that.imgurl = data.data.list.logo;
+							that.namestr = data.data.list.categoryids;
+							var cate = that.namestr.split(',');
+							for(var i = 0;i < cate.length;i++){
+								if(cate[i].indexOf($("#"+cate[i]+"").val()) != -1){
+									that.selbasic.push(cate[i]);
+									that.namearr.push($("#"+cate[i]+"").parent().siblings('span').text());	
+									that.namestr = that.namearr.join(",");
+								}
+							}
+						}
+					})
+				},
+				selfun : function(name){
+					var that = this;
+					if($(event.target).is(':checked')){
+					 	that.namearr.push(name);
+					} else {
+						that.namearr.shift(name);
+					}
+					if(that.selbasic.length > 3){
+						that.selbasic.splice(0,1);
+						that.namearr.splice(name,1);
+					}
+				},
+				closeBaisc : function(type){
+					var that = this;
+					$("#basicData").removeClass("on");
+					if(type = "finish"){
+						var sel = that.namearr.join(",");
+						that.namestr = sel;
+					}
+				},
+				basicfun : function(){
+					var that = this;
+					$("#basicData").addClass("on");
+					for(var i = 0;i < that.selbasic.length;i++){
+						$("#"+that.selbasic[i]+"").trigger('change');
+					}
+				},
+				toregist : function(){
+					$("#Jregist").addClass("on");
+				},
+				closeRegistr : function(){
+					$("#Jregist").removeClass("on");
+				},
+				loadArticle : function() {
+					var that = this;
+					$.ajax({
+						url: '{:U('Article/articleDetail')}',
+						type: 'POST',
+						dataType: 'json',
+						data: {sign:"agreement"}
+					})
+					.done(function(returnData) {
+						if( returnData['status'] == '200000' ){
+							that.article = returnData['data']['list'];
+						}
+					});
+				},
+				location(){
+					window.location.href = '{:U('Agent/location')}';
+				}
+			}
+		})
+		// 上传图片
+		$(document).on('change', '#filePicker', function() {
+		    $.ajaxFileUpload({
+		        url: "{:U('Bidding/photoUpload')}",
+		        secureuri: false,
+		        fileElementId: 'upload_input',
+		        dataType: 'json',
+		        success: function (data, status) {
+		            console.log(data)
+		            if(data.error != '') {
+		                alert(data.errorStr);
+		            } else {
+		                vm.imgeUrl = data.url
+		                // if (vm.imgeUrl != '') {
+		                //    vm.ajaxChangeHeadimg();	                   
+		                // }
+		            }
+		        },error: function (data, status, e) {
+		            alert(e);
+		        }
+		    });
+		});
+	</script>
+</block>

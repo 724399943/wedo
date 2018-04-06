@@ -1,0 +1,90 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_POINTORDER_REDEEMHISTORY_}</h1>
+		</header>
+		<div class="main">
+			<div class="settle_details">
+				<div class="set_d_list">
+					<ul>
+						<li v-for="(item,index) in goodsList" @click="jumpToDetail(item.order_sn)">
+							<div class="lf">
+								<p class="tt">{$Think.lang._WAP_POINTORDER_CUSTOMER_}-{{item.consignee}}</p>
+								<p class="time">{{item.add_time | time}}</p>
+							</div>
+							<em></em>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 遮罩层 -->
+			<!-- <div class="omask"></div> -->
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			goodsList : [],
+			page : 1,
+			goscroll : 1,
+			order_sn : ''
+		},
+		created(){
+			this.loadGoods();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadGoods : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('PointOrder/pointOrder')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						page : that.page,
+					}
+				})
+				.done(function(returnData) {
+					if( returnData['data']['list'].length > 0 ){
+						if( that.goodsList.length == 0 ){
+							that.goodsList = returnData['data']['list'];
+						}else{
+							that.goodsList = that.goodsList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+					}else{
+						that.goscroll = 0;
+					}
+				});
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.loadGoods();
+						}
+					}
+				})
+			},
+			jumpToDetail(id) {
+				window.location.href = "{:U('PointOrder/pointOrderDetail')}?order_sn=" + id;
+			}
+		}
+	})
+</script>
+</block>

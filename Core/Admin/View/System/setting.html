@@ -1,0 +1,95 @@
+<extend name="Common:base" />
+
+<block name="menu">
+	<include file="System/menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">系统设置</h1>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+
+        <ul class="hornav">
+            <li class="current" data-index="1"><a href="javascript:;">基本设置</a></li>
+        </ul>
+
+        <form class="stdform stdform2" action="{:U(System/setting)}" method="post">
+	        <div id="contentwrapper" class="contentwrapper">
+	        	<div id="updates" class="subcontent" style="display: block;">
+					<volist name="configList" id="vo">
+						<if condition="in_array($vo['config_sign'], array('webSite', 'systemName', 'serviceTel', 'business', 'goodsEditPrice', 'referrerPoint'))">
+							<div class="line-dete" <if condition="in_array($vo['config_sign'], array('articleType'))">style="display: none;"</if>>
+								<label>{$vo['config_name']}</label>
+				                <span class="field">
+				                	<input type="hidden" name="config[{$key}][config_sign]" value="{$vo['config_sign']}">
+				                	<input type="hidden" name="config[{$key}][config_name]" value="{$vo['config_name']}">
+				                	<input type="text" name="config[{$key}][config_value]"  class="smallinput" value="{$vo['config_value']}">
+				                	<input type="hidden" name="config[{$key}][explain]" value="{$vo['explain']}">
+				                	<small class="desc">{$vo['explain']}</small>
+				                </span>
+				            </div>
+				        <elseif condition="in_array($vo['config_sign'], array('logo', 'defaultHeadimg'))" />
+							<div class="line-dete">
+								<label>{$vo['config_name']}</label>
+				                <span class="field">
+				                	<input type="hidden" id="Jcover{$vo['config_sign']}" name="config[{$key}][config_value]" value="{$vo['config_value']}">
+									<div id="J{$vo['config_sign']}Pic" class="m-photo-list">
+										<div class="pic-wrap">
+										<img style="<if condition="$vo['config_sign'] neq 'logo'">width:auto; height:100%;<else />width:160px; height:160px;</if>" src="{$vo['config_value']}" /></div>
+									</div>
+									<div class="upload-wrap">
+						        		<input type="file" id="J{$vo['config_sign']}ToUpload" name="J{$vo['config_sign']}ToUpload" data-sign="{$vo['config_sign']}" class="f-upload" />
+						        	</div>
+				                	<input type="hidden" name="config[{$key}][config_sign]" value="{$vo['config_sign']}">
+				                	<input type="hidden" name="config[{$key}][config_name]" value="{$vo['config_name']}">
+				                	<input type="hidden" name="config[{$key}][explain]" value="{$vo['explain']}">
+				                </span>
+				            </div>
+			            </if>
+		        	</volist>
+		        	<input type="submit" class="big-btn stdbtn" value="更新">
+	            </div>
+	        </div>
+        </form>
+	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/plugins/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+
+		$(document).on('change', '.f-upload', function() {
+			var sign = $(this).attr('data-sign');
+			$.ajaxFileUpload({
+				url: "{:U('System/photoSave')}",
+				secureuri: false,
+				fileElementId: 'J' + sign + 'ToUpload',
+				dataType: 'json',
+				success: function (data, status) {
+					if(typeof(data.error) != 'undefined') {
+						if(data.error != '') {
+							alert(data.error);
+						} else {
+							if (sign == 'logo') {
+								$('#J' + sign + 'Pic').html('<div class="pic-wrap"><img style="width:160px; height:160px" src="' + data.src + '" /></div>');
+							} else {
+								$('#J' + sign + 'Pic').html('<div class="pic-wrap"><img style="width:auto; height:100% " src="' + data.src + '" /></div>');
+							}
+							$('#Jcover' + sign).val(data.src);
+						}
+					}
+				},
+				error: function (data, status, e) {
+					alert(e);
+				}
+			});
+		});
+
+		$('.line-dete').on('click', '.del-pic', function() {
+			$(this).parent().remove();
+		});
+	</script>
+</block>

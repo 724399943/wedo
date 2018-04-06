@@ -1,0 +1,207 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Wechat/css/LArea.css">
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">兑换</h1>
+		</header>
+		<div class="main">
+			<div class="exchange_wrap">
+				<div class="ex_w_top">
+					<div class="p_cen_m">
+						<ul class="sm_ul">
+							<li class="line" id="selDelivery" @click="selfun">
+								<a href="javascript:;">
+									<span class="s1">配送方式</span>
+									<span class="s2" id="Jmode">到店取货</span>
+									<em class="ei"></em>
+								</a>
+							</li>
+							<li class="smsel" id="smsel">
+								<div class="se_mode">
+									<span>送货上门</span>
+									<div class="se_radio">
+										<input type="radio" name="select" @change="shipfun(0)">
+									</div>
+								</div>
+								<div class="se_mode">
+									<span>到店取货</span>
+									<div class="se_radio">
+										<input type="radio" name="select" checked="checked" @change="shipfun(1)">
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="ex_w_store">
+					<h1>{{goodsInfo.agent_name}}</h1>
+					<div class="s_w_cont">
+						<div class="imgbox">
+							<img :src="goodsInfo.goods_image">
+						</div>
+						<p>{{goodsInfo.goods_name}}</p>
+						<span>{{goodsInfo.goods_price}}积分</span>
+					</div>
+				</div>
+				<div class="y-bindphone" id="Bindu" style="display:none;">
+					<ul>
+						<li>
+							<a href="javascript:;">
+								<span>收货人</span>
+								<i></i>
+								<input type="text" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}" v-model="dataJson.consignee">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<span>电话</span>
+								<i></i>
+								<input type="text" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}" v-model="dataJson.telephone">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<span>地址</span>
+								<i></i>
+								<input type="text" id="Jclickplace" name="" placeholder="请选择">
+								<input id="JAreavalue" type="hidden" name="area" readonly="" value="">
+			    				<input id="province" type="hidden" name="province" value="" v-model="dataJson.province">
+			    				<input id="city" type="hidden" name="city" value="" v-model="dataJson.city">
+			    				<input id="county" type="hidden" name="county" value="" v-model="dataJson.county">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<span>详细地址</span>
+								<i></i>
+								<input type="text" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}" v-model="dataJson.address">
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+				<a href="javascript:;" class="widup" @click="commitfun">确认兑换</a>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/LArea.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/LAreaData.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsInfo : [],
+				goods_id : {$_GET["goods_id"]},
+				onsel : 1,
+				express_type : 1,
+				order_sn : "",
+				dataJson : {}
+			},
+			created(){
+				this.getGoods();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getGoods : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Point/pointInfo")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							goods_id : that.goods_id
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							that.goodsInfo = data.data.goodsInfo;
+							that.apifun();
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				},
+				commitfun : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Point/agentCommitPointInfo")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							goods_id : that.goods_id,
+							express_type : that.express_type,
+							consignee : that.dataJson.consignee,
+							telephone : that.dataJson.telephone,
+							province : that.dataJson.province,
+							city : that.dataJson.city,
+							county : that.dataJson.county,
+							address : that.dataJson.address
+						}
+					})
+					.done(function(data){
+						if(data.status == 200000){
+							that.order_sn = data.data.order_sn;
+							automsgbox(data.message,function(){
+                                window.location.href = "commitSuccess?order_sn="+that.order_sn;
+                            });
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				},
+				selfun : function(){
+					var that = this;
+					if(that.onsel){
+						$("#selDelivery").find('em').addClass('on');
+						$("#smsel").slideToggle(200);
+						that.onsel = 0;
+					}else{
+						$("#selDelivery").find('em').removeClass('on');
+						$("#smsel").slideToggle(200);
+						that.onsel = 1;
+					}
+				},
+				shipfun : function(index){
+					var that = this;
+					that.express_type = index;
+					if(that.express_type == 0){
+						$("#Bindu").show();
+						$("#Jmode").text("送货上门");
+					}else{
+						$("#Bindu").hide();
+						$("#Jmode").text("到店取货");
+					}
+				},
+				apifun : function(){
+					// 初始化所在地信息
+		     		var that = this;
+					var LA = new LArea();
+					LA.init({
+						'trigger': '#Jclickplace', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+						'valueTo': '#JAreavalue', //选择完毕后id属性输出到该位置
+						'keys': {
+							id: 'id',
+							name: 'name'
+						},
+						//绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+						'type': 1, //数据源类型
+						'data': LAreaData ,  //数据源
+						'callback': function() {
+							that.dataJson.province = document.getElementById('province').value
+		            		that.dataJson.city = document.getElementById('city').value        
+		            		that.dataJson.county = document.getElementById('county').value	 
+		         		}
+		         	})
+		         	// LArea.value=[{$pointInfo['area']}];//控制初始位置，注意：该方法并不会影响到input的value
+				}
+			}
+		})
+	</script>
+</block>

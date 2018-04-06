@@ -1,0 +1,145 @@
+<extend name="Common:base" />
+
+<block name="title">系统收支流水</block>
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+
+<block name="menu">
+	<include file="Money:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">系统收支流水</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" {:U('Money/moneyLog')} class="order-list">
+			<p>
+				<label>关键字：</label>
+				<input type="text" name="keyword" placeholder="请输入搜索关键字" value="{$return['keyword']}">
+				&nbsp;&nbsp;
+				<label>收支金额：</label>
+				<input type="text" name="startMoney" placeholder="0.00" value="{$return['startMoney']}">
+				-
+				<input type="text" name="endMoney" placeholder="0.00" value="{$return['endMoney']}">
+				&nbsp;&nbsp;
+				<label>时间：</label>
+				<input type="text" id="startTime" date-time="{$return['startTime']}">
+				<input type="hidden" name="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" id="endTime" date-time="{$return['endTime']}">
+				<input type="hidden" name="endTime" value="{$return['endTime']}">
+				&nbsp;&nbsp;
+			</p>
+			<p>
+				<label>收支来源：</label>
+				<select name="from">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['from'] eq '0'">selected</if>>支付宝</option>
+					<option value="1" <if condition="$return['from'] eq '1'">selected</if>>微信</option>
+					<option value="2" <if condition="$return['from'] eq '2'">selected</if>>银行卡</option>
+					<option value="3" <if condition="$return['from'] eq '3'">selected</if>>卖家钱包</option>
+					<option value="4" <if condition="$return['from'] eq '4'">selected</if>>买家钱包</option>
+					<option value="5" <if condition="$return['from'] eq '5'">selected</if>>我的账户</option>
+				</select> 
+				&nbsp;&nbsp;
+				<label>收支去向：</label>
+				<select name="to">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['to'] eq '0'">selected</if>>支付宝</option>
+					<option value="1" <if condition="$return['to'] eq '1'">selected</if>>微信</option>
+					<option value="2" <if condition="$return['to'] eq '2'">selected</if>>银行卡</option>
+					<option value="3" <if condition="$return['to'] eq '3'">selected</if>>卖家钱包</option>
+					<option value="4" <if condition="$return['to'] eq '4'">selected</if>>买家钱包</option>
+					<option value="5" <if condition="$return['to'] eq '5'">selected</if>>我的账户</option>
+				</select> 
+				&nbsp;&nbsp;
+				<label>收支类别：</label>
+				<select name="type">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['type'] eq '0'">selected</if>>收入</option>
+					<option value="1" <if condition="$return['type'] eq '1'">selected</if>>支出</option>
+				</select> 
+				&nbsp;&nbsp;
+				<input type="submit" value="筛选">
+			</p>
+		</form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable order-table">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>收支内容</th>
+					<th>关联账户账号</th>
+					<th>收支金额</th>
+					<th>收支类别</th>
+					<th>收支来源</th>
+					<th>收支去向</th>
+					<th>时间</th>
+				</tr>
+			</thead>
+			<tbody>
+			  	<volist name="list" id="data">
+					<tr class="tr-th">
+						<td>{$data['id']}</td>
+						<td>{$data['description']}</td>
+						<td>{$data['username']}</td>
+						<td>{$data['money']}</td>
+						<td><if condition="$data['type'] eq '1'">支出<else/>收入</if></td>
+						<td>
+							<switch name="data['from']">
+								<case value="0">支付宝</case>
+								<case value="1">微信</case>
+								<case value="2">银行卡</case>
+								<case value="3">卖家钱包</case>
+								<case value="4">买家钱包</case>
+								<case value="5">我的账户</case>
+							</switch>
+						</td>
+						<td>
+							<switch name="data['to']">
+								<case value="0">支付宝</case>
+								<case value="1">微信</case>
+								<case value="2">银行卡</case>
+								<case value="3">卖家钱包</case>
+								<case value="4">买家钱包</case>
+								<case value="5">我的账户</case>
+							</switch>
+						</td>
+						<td>{:time_format($data['add_time'])}</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="16" class="table-page">
+						<if condition="$counting lt 25">
+						<else />
+							<div class="page-box">{$show}</div>
+						</if>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+    $('#startTime').val(moment.unix($('#startTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#endTime').val(moment.unix($('#endTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#startTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('input[name="startTime"]').val(moment($input.val()).unix().valueOf());
+		}
+	});
+	$('#endTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('input[name="endTime"]').val(moment($input.val()).unix().valueOf());
+		}
+	});
+</script>
+</block>

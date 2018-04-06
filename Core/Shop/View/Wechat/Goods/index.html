@@ -1,0 +1,43 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<h1 class="y-confirm-order-h1">商品管理</h1>
+			<em></em>
+		</header>
+		<div class="merch_control">
+			<ul>
+				<li>
+					<span>分类管理</span>
+					<em></em>
+				</li>
+				<li>
+					<span>现有商品</span>
+					<em></em>
+				</li>
+				<li>
+					<span>新增商品</span>
+					<em></em>
+				</li>
+				<li>
+					<span>评价管理</span>
+					<em></em>
+				</li>
+			</ul>
+		</div>
+	</div>
+</block>
+<block name="footer">
+	<include file="Public:footer" />
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {},
+			created(){
+				$('#Jloading').fadeOut();
+			}
+		})
+	</script>
+</block>

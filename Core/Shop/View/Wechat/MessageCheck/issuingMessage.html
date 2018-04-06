@@ -1,0 +1,211 @@
+<extend name="Public:base" />
+<block name="style">
+	<style type="text/css">
+		body,.bcont{position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;}
+		.issmsg_wrap{overflow:hidden;position:absolute;top:0;left:0;right:0;bottom:0;}
+		.releaseNews .paper_wrap {margin-top: 4%; background: #fff; height: 20%; position: relative; height: 180px; margin-bottom: 4%;}
+		.releaseNews .paper_wrap .papers_box {width: 94%; height: 94%; position: absolute; top: 0; left: 0; padding: 3%;}
+		.releaseNews .paper_wrap .papers_box img {width: 100%; height: 100%;}
+	</style>
+</block>
+<block name="main">
+	<div class="issmsg_wrap">
+		<div class="content bcont" id="content">
+			<header class="head">
+				<span class="back"></span>
+				<h1 class="y-confirm-order-h1">{$Think.lang._WAP_MESSAGECHECK_CREATEPOST_}</h1>
+			</header>
+			<div class="main">
+				<div class="releaseNews">
+					<ul>
+						<li>
+							<div class="rel_text">
+								<textarea placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}" v-model="content"></textarea>
+							</div>
+						</li>
+						<li>
+							<a href="javascript:;" @click="showChooseTag">
+								<span>{$Think.lang._WAP_MESSAGECHECK_CHOOSEGOODS_}</span>
+								<i>{{goodsName}}</i>
+								<em></em>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<span>{$Think.lang._WAP_MESSAGECHECK_IMAGE_}</span>
+								<em></em>
+								<input type="file" name="upload_input" class="upimg" id="upload_input">
+							</a>
+						</li>
+						<li>
+							<div class="paper_wrap" >
+								<div class="papers_box">
+									 <img :src="image" alt="">
+								</div>  
+							</div>
+						</li>
+					</ul>
+					<a href="javascript:;" class="releaseNews" @click="issuingMessage">{$Think.lang._WAP_USER_SUBMIT_}</a>
+				</div>
+			</div>
+		</div>
+		<div class="content gcont" id="goodsContent">
+			<header class="head" style="position: absolute;">
+				<span class="backed" @click="hideChooseTag"></span>
+				<h1 class="y-confirm-order-h1">{$Think.lang._WAP_MESSAGECHECK_CHOOSEGOODS_}</h1>
+			</header>
+			<div class="main">
+				<div class="sel_goodsm">
+					<ul>
+						<li v-for="(item, index) in goodsList" @click="chooseGoods(item['id'], item['goods_name'])">
+							<a href="javascript:;">
+								<div class="imgbox">
+									<img :src="item['goods_image']">
+								</div>
+								<div class="se_ggg">
+									<h1>{{item['goods_name']}}</h1>
+									<p class="db-overflow">{{item['introduction']}}</p>
+									<span>RM{{item['goods_price']}}</span>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			goodsId : "{$id}", // 商品id
+			image : '', // 推送图片
+			content : '', // 内容
+			goodsName : "{$Think.lang._WAP_SUPPLEMENT_PLEASESELECT_}", // 商品名称
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			issuingMessage() {
+				var that = this;
+				if ( !that.content ) {
+					automsgbox('{$Think.lang._PC_MESSAGE_ENTER_TEXT_PUBLISH_}');
+					return;
+				}
+				if ( !that.goodsId ) {
+					automsgbox('{$Think.lang._WAP_MESSAGECHECK_CHOOSEGOODS_}');
+					return;
+				}
+				if ( !that.image ) {
+					automsgbox('{$Think.lang._WAP_MESSAGECHECK_IMAGE_}');
+					return;
+				}
+				$.ajax({
+					url: '{:U('MessageCheck/issuingMessage')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						goods_id : that.goodsId,
+						image : that.image,
+						content : that.content
+					}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						window.location.href = '{:U('MessageCheck/payForIssuing')}?order_sn=' + returnData['data']['order_sn'];
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});
+			},
+			showChooseTag() {
+				$('#goodsContent').addClass('on');
+			}
+		}
+	})
+
+	var vm2 = new Vue({
+		el : "#goodsContent",
+		data : {
+			goodsList : [],
+			page : 1,
+		},
+		created(){
+			this.loadGoods();
+			this.loadmore();
+		},
+		methods : {
+			loadGoods : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Agent/agentGoods')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						page : that.page
+					}
+				})
+				.done(function(returnData) {
+					if( returnData['data']['list'].length > 0 ){
+						if( that.goodsList.length == 0 ){
+							that.goodsList = returnData['data']['list'];
+						}else{
+							that.goodsList = that.goodsList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+					}else{
+						that.goscroll = 0;
+					}
+				});
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.loadGoods();
+						}
+					}
+				})
+			},
+			chooseGoods(id, goodsName) {
+				vm.goodsId = id;
+				vm.goodsName = goodsName;
+				this.hideChooseTag();
+			},
+			hideChooseTag() {
+				$('#goodsContent').removeClass('on');	
+			}
+		}
+	})
+
+	// 上传图片
+	$(document).on('change', '#upload_input', function() {
+	    $.ajaxFileUpload({
+	        url: "{:U('MessageCheck/photoUpload')}",
+	        secureuri: false,
+	        fileElementId: 'upload_input',
+	        dataType: 'json',
+	        success: function (data, status) {
+	            if(data.error != '') {
+	                alert(data.errorStr);
+	            } else {
+	                vm.image = data.url
+	            }
+	        },error: function (data, status, e) {
+	            alert(e);
+	        }
+	    });
+	});
+</script>
+</block>

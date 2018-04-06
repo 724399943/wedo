@@ -1,0 +1,119 @@
+<ul class="headermenu">
+	<if condition="checkControllerAuth('Index')">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Index','Keyword'))">current</if>">
+			<a href="{:getAuthUrl(array('Index-systemInfo','Index-statistics', 'Index-clearCache'))}">
+				<span class="icon icon-console"></span>
+				<span class="tet">控制台</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth('Auth', 'Admin')">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Auth', 'Admin', 'Feedback'))">current</if>">
+			<a href="{:getAuthUrl(array('Admin-adminList', 'Admin-addAdmin', 'Auth-roleList', 'Auth-addRole', 'Feedback-feedbackList'))}">
+				<span class="icon icon-admin"></span>
+				<span class="tet">管理员中心</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Article'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Article'))">current</if>">
+			<a href="{:getAuthUrl(array('Article-index'))}">
+				<span class="icon icon-content"></span>
+				<span class="tet">内容管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('User'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('User'))">current</if>">
+			<a href="{:getAuthUrl(array('User-userList'))}">
+				<span class="icon icon-users"></span>
+				<span class="tet">用户管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Goods', 'Category', 'GoodsCheck', 'Bidding', 'AgentCategory'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Goods', 'Category', 'GoodsCheck', 'Bidding','AgentCategory', 'Ad'))">current</if>">
+			<a href="{:getAuthUrl(array('AgentCategory-agentCategory'))}">
+				<span class="icon icon-message"></span>
+				<span class="tet">商城管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Order'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Order','GoodsComment'))">current</if>">
+			<a href="{:getAuthUrl(array('Order-orderList'))}">
+				<span class="icon icon-orders"></span>
+				<span class="tet">订单管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Money'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Money'))">current</if>">
+			<a href="{:getAuthUrl(array('Money-customerRechargeLog'))}">
+				<span class="icon icon-chart"></span>
+				<span class="tet">财务管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Credit'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Credit'))">current</if>">
+			<a href="{:getAuthUrl(array('Credit-creditSetting'))}">
+				<span class="icon icon-credit"></span>
+				<span class="tet">信用管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Point', 'PointOrder'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Point', 'PointOrder'))">current</if>">
+			<a href="{:getAuthUrl(array('Point-pointGoodsList'))}">
+				<span class="icon icon-point"></span>
+				<span class="tet">积分管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth(array('Agent'))">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent'))">current</if>">
+			<a href="{:getAuthUrl(array('Agent-checkAgentList'))}">
+				<span class="icon icon-store"></span>
+				<span class="tet">商家管理</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<if condition="checkControllerAuth('System', 'Message')">
+		<li class="<if condition="in_array(CONTROLLER_NAME, array('System', 'Message'))">current</if>">
+			<a href="{:getAuthUrl(array('System-setting', 'Message-messageCheckList'))}">
+				<span class="icon icon-system"></span>
+				<span class="tet">系统设置</span>
+			</a>
+			<em></em>
+		</li>
+	</if>
+
+	<li>
+		<a href="{:U('Login/logout')}">
+			<span class="icon icon-exit"></span>
+			<span class="tet">退出登录</span>
+		</a>
+		<em></em>
+	</li>
+</ul>

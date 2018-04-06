@@ -1,0 +1,59 @@
+<extend name="Public:base" />
+
+<block name="style">
+<style type="text/css">
+	.contentwrapper h1{text-align: center;}
+	.contentwrapper .time{text-align: right;padding:3% 25%;}
+	.contentwrapper .pic{text-align: center;margin-top: 15px}
+
+</style>
+</block>
+<block name="title">{$Think.lang._PC_MESSAGE_DETAILS_}</block>
+
+<block name="menu">
+	<include file="Message:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_MESSAGE_DETAILS_}
+	    	<a href="{:U('MessageCheck/issuedMessage')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+       
+	</div>
+</block>
+<block name="script">
+
+<script id="message_tpl">
+	<h1><%=list['title']%></h1>
+	<div class="time"><%=list['add_time']%></div>
+	<div class="content"><%=list['content']%></div>
+	<div class="pic"><img src="<%=list['image']%>"></div>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+
+	$.ajax({
+		url: '{:U('MessageCheck/issuingDetail')}',
+		type: 'POST',
+		dataType: 'json',
+		data: {id:{$_GET['id']}}
+	})
+	.done(function(returnData) {
+		if( returnData['status'] == '200000' ){
+			console.log(returnData['data']);
+			var html = bt('message_tpl', returnData['data']);
+			$('#contentwrapper').html(html);
+		}
+	});
+		
+
+</script>
+</block>

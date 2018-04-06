@@ -1,0 +1,114 @@
+<layout name="default_layout" />
+
+<div class="mainbar">
+    <!-- Page heading -->
+    <div class="page-head">
+        <h2 class="pull-left"><i class="icon-home"></i>前台权限管理</h2>
+        <div class="clearfix"></div>
+        <input type="button" value="添加前台权限" id="jumpToAdd">
+    </div>
+    <!-- Page heading ends -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget">
+                <div class="widget-head">
+                    <div class="pull-left">前台权限管理</div>
+                    <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                    </div>  
+                    <div class="clearfix"></div>
+                </div>             
+                <div class="widget-content">
+                    <div class="padd">
+                        <form class="form-horizontal" action="{:U('Cp/index')}" method="GET">
+                            <div class="form-group">
+                                <label class="control-label col-lg-3" for="title">controller_name：</label>
+                                <div class="col-lg-6"> 
+                                    <input type="text" name="controller_name" placeholder="输入controller_name进行搜索" class="form-control"><br>
+                                    <input type="submit" value="搜索">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="padd overfl-x-s">
+                        <form class="form-horizontal" id="saveControllerPowerForm">
+                            <table class="new-table-border">
+                                <thead>
+                                <tr class="text-c">
+                                    <th width="120" title=""><span class="c-red">*</span> controller_name</th>
+                                    <th width="120" title=""><span class="c-red">*</span> controller_function</th>
+                                    <th width="120" title=""><span class="c-red">*</span> need_login</th>
+                                    <th width="120" title=""><span class="c-red">*</span> need_page</th>
+                                    <th width="120" title=""><span class="c-red">*</span> need_cache</th>
+                                    <th width="120" title=""><span class="c-red">*</span> page_limit</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody-form">
+                                	<volist name="list" id="vo">
+									    <tr>
+									        <td>
+									            <input type="text" class="form-control" name="form[{$vo['id']}][controller_name]" value="{$vo['controller_name']}">
+									        </td>
+									        <td>
+									            <input type="text" class="form-control" name="form[{$vo['id']}][controller_function]" value="{$vo['controller_function']}"">
+									        </td>
+									        <td class="text-c">
+									            <div class="radio-box">
+									                <input type="text" class="form-control" name="form[{$vo['id']}][need_login]" value="{$vo['need_login']}">
+									            </div>
+									        <td class="text-c">
+									            <div class="radio-box">
+									                <input type="text" class="form-control" name="form[{$vo['id']}][need_page]" value="{$vo['need_page']}">
+									            </div>
+									        </td>
+									        <td class="text-c">
+									            <div class="radio-box">
+									                <input type="text" class="form-control" name="form[{$vo['id']}][need_cache]" value="{$vo['need_cache']}">
+									            </div>
+									        </td>
+									        <td class="text-c">
+									            <input type="text" class="form-control" name="form[{$vo['id']}][page_limit]" value="{$vo['page_limit']}">
+									        </td>
+									    </tr>
+                                        <input type="hidden" name="form[{$vo['id']}][id]" value="{$vo['id']}">
+									</volist>
+                                </tbody>
+                            </table>
+                        </form>
+                        <!-- Widget footer -->
+                        <div class="widget-foot">
+                            <button type="button" id="saveButton" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                    {$show}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	saveControllerPowerUrl = '{:U('Cp/edit')}';
+    jumpToAddUrl = '{:U('Cp/add')}';
+
+    $(function(){
+    	$(document).on('click', '#saveButton', function(){
+	    	$.ajax({
+	            url: saveControllerPowerUrl,
+	            type: 'POST',
+	            dataType: 'json',
+	            data: $('#saveControllerPowerForm').serialize()
+	        })
+	        .done(function(data) {
+	            if (data['status'] == '200000') {
+	                alert(data['message']);
+	            } else {
+	            	alert(data['message']);
+	            }
+	        });
+    	}).on('click', '#jumpToAdd', function(){
+            window.location.href = jumpToAddUrl;
+        });
+    })
+</script>

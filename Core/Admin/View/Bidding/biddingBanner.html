@@ -1,0 +1,177 @@
+<extend name="Common:base" />
+<block name="title">广告位竞价管理</block>
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+<block name="menu">
+	<include file="Goods:menu" />
+</block>
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	广告位竞价管理
+	    	<a href="{:U('Bidding/biddingBanner')}" class="btn btn_link" ><span style="font-size:14px">未审核</span></a>
+			<a href="{:U('Bidding/auditBiddingBanner')}" class="btn btn_link" ><span style="font-size:14px">已审核</span></a>
+	    	<a href="{:U('Ad/index')}" class="btn btn_link" style="float: right"><span style="font-size:14px">广告位管理</span></a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Bidding/biddingBanner')}" method="get" id="searchForm">
+            <p>
+            	<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+				&nbsp;&nbsp;
+            	<label>竞价类型：</label>
+				<select name="banner_type">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['banner_type'] eq '0'">selected</if>>店铺</option>
+					<option value="1" <if condition="$return['banner_type'] eq '1'">selected</if>>商品</option>
+				</select>&nbsp;&nbsp;
+             	<input type="submit" value="筛选"/>
+             	<input type="button" id="JcheckPass" value="通过" />
+             	<input type="button" id="JcheckRefuse" value="拒绝" />
+            </p>
+        </form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th width="3%">全选<input type="checkbox" id="ids"></th>
+				<th>店铺名称</th>
+				<th>竞价物品</th>
+				<th>竞价类型</th>
+				<th>竞价日期</th>
+				<th>竞价金额</th>
+				<th>操作</th>
+			</tr>
+			<if condition="empty($list)">
+				<tr>
+					<td colspan="7">暂无相关数据</td>
+				</tr>
+			<else />
+				<volist name="list" id="data">
+					<tr>
+						<td><input type="checkbox" class="ids" value="{$data['id']}"/></td>
+						<td>{$data['agent_name']}</td>
+						<td>
+							<if condition="$data['banner_type'] eq '0'">
+								{$data['agent_name']}
+							<else/>
+								{$data['goods_name']}
+							</if>
+						</td>
+						<td>
+							<if condition="$data['banner_type'] eq '0'">
+								店铺
+							<else/>
+								商品
+							</if>
+						</td>
+						<td>{$data['start_time']|date="Y-m-d", ###}</td>
+						<td>{$data['total']}</td>
+						<td class="center">
+							<if condition="checkActionAuth('Bidding-checkBidding', 'Goods-goodsDetail', 'Agent-agentDetail')">
+								<if condition="checkActionAuth('Goods-goodsDetail') && $data['banner_type'] eq '1'">
+									<a class="stdbtn btn_lime" href="{:U('Goods/goodsDetail', array('id'=> $data['goods_id']))}">查看</a>
+									&nbsp;&nbsp;
+								</if>
+								<if condition="checkActionAuth('Agent-agentDetail') && $data['banner_type'] eq '0'">
+									<a class="stdbtn btn_lime" href="{:U('Agent/agentDetail', array('id'=> $data['agent_id']))}">查看</a>
+									&nbsp;&nbsp;
+								</if>
+								<if condition="checkActionAuth('Bidding-checkBidding')">
+									<a class="stdbtn btn_lime" href="{:U('Bidding/checkBidding', array('ids'=>$data['id'], 'bidding_type'=> '3', 'status'=> '1'))}">通过
+								    </a>&nbsp;&nbsp;
+									<a class="stdbtn btn_lime" href="{:U('Bidding/checkBidding', array('ids'=>$data['id'], 'bidding_type'=> '3', 'status'=> '2'))}">拒绝
+									</a>&nbsp;&nbsp;
+								</if>
+							<else />
+								无权限操作
+							</if>
+						</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="7">
+						<if condition="$counting lt 25">
+						<else />
+						   <div class="page-box">{$show}</div>
+					    </if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+	var ids = "",
+		idsData = [];
+	$(function(){
+		// 全选
+		$("#contentwrapper").on("change", "#ids", function(){
+			if( !$(this).attr("checked") ){
+				$(".ids").attr("checked", false);
+				ids = "";
+				idsData = [];
+			} else {
+				$(".ids").attr("checked", true);
+				$(".ids").each(function(){
+					idsData.push($(this).val());
+				})
+				ids = idsData.join(",");
+			}
+		});
+
+		// 单选
+		$("#contentwrapper").on("change", ".ids", function(){
+			if( !$(this).attr("checked") ){
+				$(this).attr("checked", false);
+				for(var i = 0; i<idsData.length; i++) {
+					if ($(this).val() == idsData[i]) {
+						idsData.splice(i,1);
+					}
+				}
+			} else {
+				$(this).attr("checked", true);
+				idsData.push($(this).val());
+			}
+			ids = idsData.join(",");
+		});
+
+		// 通过
+		$('#JcheckPass').click(function(){
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			window.location.href = "{:U('Bidding/checkBidding')}?bidding_type=3&status=1" + '&ids=' + ids;
+		});
+
+		// 拒绝
+		$('#JcheckRefuse').click(function(){
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			window.location.href = "{:U('Bidding/checkBidding')}?bidding_type=3&status=2" + '&ids=' + ids;
+		});
+
+		$('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#staDatartTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#startTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+		$('#endDataTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#endTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+	})
+</script>
+</block>

@@ -1,0 +1,16 @@
+<!-- 底部固定菜单 -->
+<footer class="y-ycar-foot">
+	<a href="{:U('Agent/goodsCenter')}" <if condition="CONTROLLER_NAME eq 'Agent' AND ACTION_NAME eq 'goodsCenter'">class="on"</if>>
+		<em class="icon"><i></i>{$Think.lang._COMMON_FOOTER_PRODUCTS_}</em>
+	</a>
+	<a href="{:U('Order/orderList')}" <if condition="CONTROLLER_NAME eq 'Order'">class="on"</if>>
+		<em class="icon"><i></i>{$Think.lang._COMMON_FOOTER_ORDER_}</em>
+	</a>
+	<a href="{:U('Message/index')}" <if condition="CONTROLLER_NAME eq 'Message'">class="on"</if>>
+		<em class="icon"><i></i>{$Think.lang._COMMON_FOOTER_NOTIFICATION_}</em>
+		<p class="reddot">1</p>
+	</a>
+	<a href="{:U('Agent/agentCenter')}" <if condition="CONTROLLER_NAME eq 'Agent' AND ACTION_NAME eq 'agentCenter'">class="on"</if>>
+		<em class="icon"><i></i>{$Think.lang._COMMON_FOOTER_MYPROFILE_}</em>
+	</a>
+</footer>

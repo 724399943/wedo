@@ -1,0 +1,112 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="css/swiper.css">
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">商品详情</h1>
+		</header>
+		<div class="main">
+			<div class="goods_detail_wrap">
+				<div class="goods_img_wrap swiper-container" id="Goods_img_cont">
+					<div class="goods_img_cont swiper-wrapper">
+						<div class="goods_img_box swiper-slide" v-for="(item,index) in goodsImages"><img :src="item"></div>
+					</div>
+					<div class="slide_num">{{slideNum}}/{{goodsImages.length}}</div>
+					<!-- <span class="back"></span> -->
+				</div>
+				<div class="goods_msg">
+					<p class="name db-overflow">{{goodsInfo.goods_name}}<em>平台认证</em></p>
+					<p class="msgtt">{{goodsInfo.introduction}}</p>
+					<div class="g_msg_tt">
+						<span>{{goodsInfo.goods_price}}积分</span>
+						<p>热销{{goodsInfo.sale_number}}件, {{goodsInfo.browsing_number}}人浏览过</p>
+					</div>
+					<div class="o_re_detail" v-for="(item,index) in commentList">
+						<div class="imgbox">
+							<img :src="item.headimgurl">
+						</div>
+						<div class="o_re_store">
+							<p>{{item.nickname}}</p>
+							<div class="star_cont">
+								<div class="star_box" v-for="num in parseInt(item.star)"></div>
+							</div>
+							<span>{{agentInfo.distance}}km</span>
+						</div>
+					</div>
+				</div>
+				<div class="goods_detail">
+					<div class="g_de_t">
+						<em class="lf"></em>
+						<span>商品详情</span>
+						<em class="rt"></em>
+					</div>
+					<div class="gs_d" v-html="Detail"></div>
+				</div>
+				<a :href="'pointInfo?goods_id='+goods_id" class="exchange">
+					<p>立即兑换</p>
+					<span>{{goodsInfo.goods_price}} 积分</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript" src="__PUBLIC__/Wechat/js/swiper.min.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsInfo : [],
+				goods_id : {$_GET["goods_id"]},
+				slideNum : 1,
+				goodsImages : [],
+				agentInfo : {},
+				Detail : '',
+				longitude : '113.37763',
+				latitude : '23.13275',
+				is_collect : "",
+				commentList : []
+			},
+			created(){
+				this.getDetail();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getDetail : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Point/goodsDetail")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							goods_id : that.goods_id,
+							longitude : that.longitude,
+							latitude  : that.latitude
+						}
+					})
+					.done(function(data){
+						that.goodsInfo = data.data.goodsInfo;
+						that.goodsImages = data.data.goodsImages;
+						that.agentInfo = data.data.agentInfo;
+						that.Detail = data.data.goodsDesc;
+						that.is_collect = data.data.is_collect;
+						that.$nextTick(function(){
+			            var mySwiper = new Swiper('#Goods_img_cont', {
+			  					autoplayDisableOnInteraction : false, 
+			  					  onSlideChangeEnd: function(swiper){
+			       					 that.slideNum = swiper.activeIndex+1;
+			      				}
+			  				  })
+			            })
+			            that.commentList = data.data.commentList;
+					})	
+				}
+			}
+		})
+	</script>
+</block>

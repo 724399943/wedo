@@ -1,0 +1,81 @@
+<extend name="Public:base" />
+
+<block name="menu">
+	<include file="Goods/menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_GOODS_ADD_GOODS_MODEL_ATTR_}</h1>
+	    <span style="color:#ff0000;margin-left:30px">({$Think.lang._PC_GOODS_SEPAEATED_BY_LINE_BREAKS_})</span>
+	</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form action="{:U('Agent/addModelAttr')}" method="post">
+	<input type="hidden" name="id" id="id" value="{:I('get.id', '', 'int')}" />
+	<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+		<colgroup>
+            <col class="con0" />
+            <col class="con1" />
+            <col class="con0" />
+        </colgroup>
+		<thead>
+			<tr>
+				<th class="head0">{$Think.lang._PC_GOODS_ATTRIBUTE_NAME_}</th>
+				<th class="head1">{$Think.lang._PC_GOODS_ATTRIBUTE_VALUE_}</th>
+				<th class="head0">{$Think.lang._COMMON_OPERATE_}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<for start="0" end="5">
+		<tr>
+			<td><input type="text" name="attr_name[{$i}]"></td>
+			<td><textarea name="attr_value[{$i}]" id="attr_value[{$i}]"></textarea></td>
+			<td><input type="button" value="X" class="deleteAttr"></td>
+		</tr>
+		</for>
+
+		<tr>
+			<td colspan="5">
+				<input type="button" class="addAttr" value="+" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<input type="submit" value="{$Think.lang._COMMON_SAVE_}" />
+				<input type="button" onclick="window.history.back(-1);" value="{$Think.lang._COMMON_RETURN_}" class="stdbtn">
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	</form>
+</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		//console.log('222');
+		$(document).on('click', '.deleteAttrValue', function() {
+			$(this).parent().remove();
+		});
+
+		$(document).on('click', '.deleteAttr', function() {
+			$(this).parent().parent().remove();
+		});
+
+		$(".addAttrValue").click(function() {
+			var attrNameId = $(this).attr('data-attrId');
+			$(this).prev('ul').append('<li>新ID、<input type="text" name="newValue[' + attrNameId + '][]" value="" /><input type="button" class="deleteAttrValue" value="X"></li>');
+		});
+
+		var count = 5;
+		$(".addAttr").click(function() {
+			var html = [];
+			html.push('<tr><td><input type="text" name="attr_name[' + count + ']" /></td>');
+			html.push('<td><textarea name="attr_value[' + count + ']"></textarea></td>');
+			html.push('<td><input type="button" value="X" class="deleteAttr" /></td></tr>');
+			$(".stdtable tbody tr").eq(-2).before(html.join(''));
+			count++;
+		});
+	</script>
+</block>

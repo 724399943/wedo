@@ -1,0 +1,99 @@
+<extend name="Common:base" />
+
+<block name="title">发送消息</block>
+
+<block name="menu">
+	<include file="System:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">发送消息</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+	<form action="{:U('Message/sendMessage')}" method="post" class="stdform stdform2">
+		<div class="line-dete">
+			<label>消息标题</label>
+			<span class="field">
+				<input type="text" name="title" id="title" class="smallinput" />
+			</span>
+		</div>
+		<div class="line-dete">
+			<label>推送用户</label>
+            <span class="field">
+            	<input type="checkbox" name="condition[]" value="1">卖家
+            	<input type="checkbox" name="condition[]" value="0">买家
+            </span>
+	    </div>
+		<div class="line-dete">
+			<label>上传封面</label>
+	        <div class="field" id="JgoodsListWrap">
+				<input type="hidden" id="Jimage" name="image">
+				<div id="photoList" class="m-photo-list"></div>
+				<div class="upload-wrap">
+	        		<input type="file" id="fileToUpload" name="fileToUpload" class="f-upload" />
+	        	</div>
+	        </div>
+		</div>
+		<div class="line-dete">
+			<label>消息详情</label>
+			<span class="field">
+				<textarea id="content" name="content" style="width:800px;height:500px;"></textarea>
+			</span>
+		</div>
+		<div class="line-dete">
+			<label></label>
+			<span class="field">
+				<input type="submit" value="发布" class="stdbtn" />
+			</span>
+		</div>
+	</form>
+	</div>
+</block>
+
+<block name="script">
+<script charset="utf-8" src="__PUBLIC__/Admin/js/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/Admin/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Common/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="content"]', {
+			resizeType : 1,
+			allowPreviewEmoticons : false,
+			allowImageUpload : true,
+	        uploadJson : '{:U('Message/photoUpload')}',
+	        allowFileManager : false,
+			items : [
+				'source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+		});
+	});
+
+	$(function(){
+		$(document).on('change', '#fileToUpload', function() {
+			$.ajaxFileUpload({
+				url: "{:U('Message/photoUpload')}",
+				secureuri: false,
+				fileElementId: 'fileToUpload',
+				dataType: 'json',
+				success: function (data, status) {
+					if(typeof(data.error) != 'undefined') {
+						if(data.error != '') {
+							alert(data.error);
+						} else {
+							$('#photoList').html('<div class="pic-wrap"> <img src="'+data.url+'"/> </div>');
+							$('#Jimage').val(data.url);
+						}
+					}
+				},
+				error: function (data, status, e) {
+					alert(e);
+				}
+			});
+		});
+	});
+</script>
+</block>

@@ -1,0 +1,115 @@
+<extend name="Public:base" />
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Wechat/css/LCalendar.css">
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_BIDDING_APPLYFORABID_}</h1>
+		</header>
+		<div class="main">
+			<div class="integral_goods">
+				<div class="is_hgoods">
+					<div class="sel_goodsm">
+						<ul>
+							<li>
+								<div class="is_hhh">
+									<div class="imgbox">
+										<img src="{$goods['goods_image']}">
+									</div>
+									<div class="se_ggg">
+										<h1>{$goods['goods_name']}</h1>
+										<p class="db-overflow">{$goods['introduction']}</p>
+										<span>RM{$goods['goods_price']}</span>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="y-bindphone">
+					<ul>
+						<li class="bin">
+							<a href="javascript:;">
+								<span>{$Think.lang._WAP_BIDDING_BIDDATE_}</span>
+								<i></i>
+								<input id="Jcalendar" type="text" placeholder="请选择" v-model="start_time">
+							</a>
+							<b class="eff_time">{$Think.lang._WAP_BIDDING_STATETOFAILURE_}</b>
+						</li>
+						<!-- <li class="bin">
+							<a href="javascript:;">
+								<span>{$Think.lang._WAP_BIDDING_BIDDINGAMOUNT_}</span>
+								<i></i>
+								<input type="text" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}" v-model="total">
+							</a>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+			<a href="javascript:;" class="widup" @click="commitFun">{$Think.lang._WAP_BIDDING_APPLYFORBIDDING_}</a>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<if condition="$_COOKIE['think_language'] eq 'zh-cn'">
+		<script type="text/javascript" src="__PUBLIC__/Wechat/js/LCalendar.js"></script>
+	<else/>
+		<script type="text/javascript" src="__PUBLIC__/Wechat/js/LCalendar_en.js"></script>
+	</if>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goods_id : {$_GET["goods_id"]},
+				start_time : "{:date('Y/m/d', strtotime('+1 days'))}",
+				total : '',
+			},
+			created(){
+
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				commitFun :  function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Bidding/toBiddingIndexGoods")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							goods_id : that.goods_id,
+							start_time : that.start_time,
+							// total : that.total
+						}
+					})
+					.done(function(data){
+						if (data.status == 200000) {
+							// var url = "{:U('Bidding/payForBidding')}?order_sn=" + data['data']['order_sn'] + "&tab=0";
+							var url = "{:U('Bidding/biddingRecord', array('bidding_type'=>'0', 'tab'=>'0'))}";
+                            window.location.href = url;
+						}else{
+							automsgbox(data.message);
+						}
+					})
+				}
+			}
+		})
+		//初始化选择日期
+		var calendar = new LCalendar();
+	    calendar.init({
+	        'trigger': '#Jcalendar', //标签id
+	        'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+	        'minDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + (new Date().getDate() + 1), //最小日期
+	        'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 5) + '-' + new Date().getDate(), //最大日期,
+	        'callback': function() {
+	        	var start_time = $('#Jcalendar').val();
+	            var time = start_time.split('-');
+	            time = time.join('/');
+	            vm.start_time = time;
+	        }
+	    });
+	</script>
+</block>

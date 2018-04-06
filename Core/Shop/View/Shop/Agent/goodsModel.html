@@ -1,0 +1,113 @@
+<extend name="Public:base" />
+
+<block name="menu">
+	<include file="Goods/menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_GOODS_EDIT_GOODS_MODEL_}
+			<a href="{:U('Agent/addModelAttr', array('id'=> I('get.id', '', 'string')))}" class="stdbtn add-gs-md">{$Think.lang._PC_GOODS_ADD_GOODS_MODEL_ATTR_}</a>
+		</h1> 
+	</if>
+	</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form action="{:U('Agent/goodsModel')}" method="post">
+		<input type="hidden" name="id" id="id" value="{:I('get.id', '', 'int')}" />
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tbody>
+			<tr>
+				<th width="50px">ID</th>
+				<th width="200px">{$Think.lang._PC_GOODS_ATTRIBUTE_NAME_}</th>
+				<th>{$Think.lang._PC_GOODS_ATTRIBUTE_VALUE_} </th>
+				<th>{$Think.lang._COMMON_OPERATE_}</th>
+			</tr>
+			<volist name="attrInfo" id="attr">
+				<tr>
+					<td>
+						<input type="hidden" name="attr_id[]" value="{$attr['id']}" />
+						{$attr['id']}
+					</td>
+					<td>
+						<input type="text" name="attr_name[{$attr['id']}]" value="{$attr['attr_name']}" />
+					</td>
+					<td>
+						<a href="javascript:;" class="JattrUlMore stdbtn">{$Think.lang._PC_GOODS_VIEW_MORE_}</a>
+						<if condition="!empty($attr['attrValue'])">
+							<div class="attr-ul-box hide">
+								<table>
+									<tr>
+										<th>{$Think.lang._PC_GOODS_ATTRIBUTE_VALUE_} ID</th>
+										<th>{$Think.lang._PC_GOODS_ATTRIBUTE_NAME_}</th>
+										<th>{$Think.lang._COMMON_OPERATE_}</th>
+									</tr>
+									<volist name="attr['attrValue']" id="item">
+									<tr>
+										<td>{$item['id']}</td>
+										<td>
+											<input type="text" name="attr_value[{$attr['id']}][{$item['id']}]" value="{$item['attr_value']}" />
+										</td>
+										<td>
+											<input type="button" class="deleteAttrValue" value="{$Think.lang._COMMON_DELETE_}" />
+										</td>
+									</tr>
+									</volist>
+								</table>
+								<!-- <a href="javascript:;" class="addAttrValue" data-attrId="{$attr['id']}" >添加</a> -->
+								<input type="button" class="addAttrValue" data-attrId="{$attr['id']}" value="{$Think.lang._COMMON_ADD_}">
+								<input type="button" class="hideAttrUl" data-attrId="{$attr['id']}" value="{$Think.lang._PC_GOODS_PACK_UP_}" >
+							</div>						
+						</if>
+					</td>
+					<td><input type="button" value="{$Think.lang._COMMON_DELETE_}" class="deleteAttr" style="padding:7px 10px"/></td>
+				</tr>
+			</volist>
+			<tr>
+				<td colspan="6">
+					<input type="submit" value="{$Think.lang._COMMON_SAVE_}" style="padding:7px 10px"/>
+					<input type="button" onclick="window.history.back(-1);" value="{$Think.lang._COMMON_RETURN_}" class="stdbtn">
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		$(document).on('click', '.deleteAttrValue', function() {
+			$(this).parent().parent().remove();
+		});
+
+		$(document).on('click', '.deleteAttr', function() {
+			$(this).parent().parent().remove();
+		});
+
+		$('.addAttrValue').click(function() {
+			var attrNameId = $(this).attr('data-attrId');
+
+			var str = [];
+			str.push('<tr><td>ID</td><td>');
+			str.push('<input type="text" name="newValue[' + attrNameId + '][]" value="" />');
+			str.push('</td><td>');
+			str.push('<input type="button" class="deleteAttrValue" value="{$Think.lang._COMMON_DELETE_}" /></td></tr>');
+
+			$(this).prev('table').append(str.join(''));
+		});
+
+		$('.hideAttrUl').click(function(){
+			var that = $(this).parents('.attr-ul-box');
+			that.addClass('hide');
+			that.prev().removeClass('hide');
+		});
+
+		$('.JattrUlMore').click(function(){
+			$(this).addClass('hide');
+			$(this).next().removeClass('hide');
+		})
+
+	</script>
+</block>

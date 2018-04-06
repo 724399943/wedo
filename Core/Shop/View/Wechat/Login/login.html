@@ -1,0 +1,181 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content loginbg" id="content">
+		<div class="logoBox">
+			<img src="__PUBLIC__/Wechat/images/wedo_logo.png">
+		</div>
+		<div class="login_input">
+			<form>
+				<ul>
+					<li>
+						<div class="linput account line" @click="onceLogin" id="Linput">
+							<span>{$Think.lang._WAP_LOGIN_ID_}</span>
+							<input type="text" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_LOGIN_ID_}" v-bind:value="dataJson.account" v-model="dataJson.account">
+							<em></em>
+						</div>
+						<div class="userbox" id="Userbox">
+							<p v-for="(item,index) in usr" @click="selectOnce(index)">{{item}}</p>
+						</div>
+					</li>
+					<li>
+						<div class="linput lgo line" id="Pass">
+							<span>{$Think.lang._WAP_LOGIN_PASSWORD_}</span>
+							<input type="password" name="" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_LOGIN_PASSWORD_}" v-model="dataJson.password">
+						</div>
+					</li>
+					<li>
+						<div class="linput">
+							<a href="{:U('Login/register')}" class="lset">{$Think.lang._WAP_LOGIN_SIGNUP_}</a>
+							<a href="{:U('Login/forgetPassword')}" class="lpass">{$Think.lang._WAP_LOGIN_FORGETPASSWORD_}</a>
+						</div>
+					</li>
+					<li>
+						<div class="linput">
+							<p>{$Think.lang._WAP_LOGIN_LOGINTIPS_}{:C('telphone')}</p>
+						</div>
+					</li>
+					<li>
+						<a href="javascript:;" class="login_btn" @click="sginUp">{$Think.lang._WAP_LOGIN_SIGNIN_}</a>	
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				dataJson : {},
+				currentAccount : '',
+				usr : [],//登录
+				psw : [],//登录密码
+				onusr : true,
+			},
+			created(){
+				this.getAccount();
+				this.outinput();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				sginUp : function(){
+					var that = this;
+					if ( !that.dataJson.account ) {
+						automsgbox('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_LOGIN_ID_}');
+						return;
+					}
+					if ( !that.dataJson.password ) {
+						automsgbox('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._WAP_LOGIN_PASSWORD_}');
+						return;
+					}
+
+					$.ajax({
+						url : '{:U('Login/login')}',
+						type : 'POST',
+						dataType : 'json',
+						data : that.dataJson,
+					})
+					.done(function(returnData){
+						if (returnData['status'] == 200000) {
+							that.initializeStorage();
+							automsgbox(returnData['message'],function(){
+                                window.location.href = "{:U('Agent/agentCenter')}";
+                            });
+                        } else if (returnData['status'] == '400025') {
+                        	window.location.href = "{:U('Agent/completeAgent')}?user_id="+returnData['data']['userId'];
+						} else{
+							automsgbox(returnData.message);
+							$('input').val('');
+						}	
+					})
+				},
+				getAccount : function(){
+					var that = this;
+					// localStorage.clear();//清除所有数据
+					for(var i = 1;i <= 11; i++){
+						var username = window.localStorage['account_' + i];
+						var password = window.localStorage['password_' + i];
+						if( typeof(username) != "undefined" && typeof(password) != "undefined"){
+							that.usr.push(username);
+							that.psw.push(password);							
+						}
+					}
+				},
+				initializeStorage : function() {
+					var that = this;
+					var account = '';
+					var password = '';
+					var save = true;
+					for (var i = 1; i <= 11; i++) {
+						account = window.localStorage['account_' + i];
+						if ( !account ) {
+							that.currentAccount = i;
+							break;
+						} else {
+							if ( account == that.dataJson.account ) {
+								save = false;
+							}
+							continue;
+						}
+					}
+
+					if ( that.currentAccount == 11 ) {
+						that.currentAccount = 10;
+						that.resetStorage();
+					}
+
+					if ( save === true ) {
+						localStorage.setItem('account_' + that.currentAccount, that.dataJson.account);
+						localStorage.setItem('password_' + that.currentAccount, that.dataJson.password);
+					}
+				},
+				resetStorage : function() {
+					for (var i = 1; i < 10; i++) {
+						account = window.localStorage['account_' + (i+1)];
+						password = window.localStorage['password_' + (i+1)];
+						localStorage.setItem('account_' + i, account);
+						localStorage.setItem('password_' + i, password);
+					}
+				},
+				outinput : function(){
+					var that = this;
+					$(document).ready(function(){
+						$("#Linput").find("input").blur(function(){
+							$("#Userbox").slideUp(200);
+							$("#Linput").find("em").removeClass("on");
+							that.onusr = true;
+						})
+					})
+				},
+				onceLogin : function() {
+					var that = this;
+					if(that.onusr){
+						$('#Userbox').slideDown(200);
+						$('#Linput').find('em').addClass('on');
+						that.onusr = false;	
+					}else{
+						$('#Userbox').slideUp(200);
+						$('#Linput').find('em').removeClass('on');
+						that.onusr = true;
+					}
+
+				},
+				selectOnce : function(index) {
+					var that = this;
+					var txt = $('#Userbox').find('p').eq(index).text();
+					var pass = '';
+					$('#Linput').find('input').val(txt);
+					pass = that.psw[index];
+					$('#Pass').find('input').val(pass);
+					$("#Userbox").slideUp(200);
+					$("#Linput").find("em").removeClass("on");
+					that.dataJson.account = that['usr'][index];
+					that.dataJson.password = pass;
+				}
+			}
+		})
+	</script>
+</block>

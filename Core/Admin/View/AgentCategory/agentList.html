@@ -1,0 +1,337 @@
+<extend name="Common:base" />
+
+<block name="title">商品管理列表</block>
+
+<block name="menu">
+	<include file="Goods:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	店铺分类管理
+	    	<if condition="checkActionAuth('Agent-agentAdd')">
+	    		<a href="{:U('Agent/agentAdd')}" class="btn btn_link" style="float: right"><span style="font-size:14px">添加</span></a>
+	    	</if>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+        <form  action="{:U('Goods/import')}" method="post" enctype="multipart/form-data" onsubmit="return checked()">
+            <span style="float:right;margin-right: 20px;">
+			
+        	</span>
+        </form>
+		<form action="{:U('Agent/agentList')}" method="get" id="searchForm">
+            <div>
+            
+              分类名称：<input type="text" name="keywords" style="width:20%" placeholder="请输入分类名称"  onfocus="if(this.value == ''){ this.value = '';this.style.color='#00000';}"/>&nbsp;&nbsp;&nbsp;
+             	
+
+             	<input type="submit" value="筛选"/>
+             	
+             	<input type="button" id="JdeleteAll" value="删除" />
+            </div>
+            <br>
+            <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+               
+                 <tr>
+                    <th><input type="checkbox" id = "ids" /></th>
+					<!-- <th>ID</th> -->
+					<th>分类名称</th>
+					<th>店铺数</th>
+					<th>排序</th>
+					<th>icon</th>
+					<th>操作</th>
+				</tr>
+
+          
+				<if condition="empty($cateNameInfo)">
+					<tr>
+						<td colspan="13">没有商品列表~！</td>
+					</tr>
+				<else />
+					<volist name="cateNameInfo" id="agent" >
+						<tr>
+                            <td><input type="checkbox" name="checkbox"  class="ids" value="{$agent.id}"/></td>
+							<!-- <td>{$agent['id']}</td> -->
+							<td>&nbsp;&nbsp;&nbsp;{$agent['category_name']|mySubstr=###,43}</td>
+							<td>{$agent['count']}</td>
+							<td>{$agent['sort']}</td>
+							<td>{$agent['app_icon']}</td>
+							
+						
+							<td class="center">
+								<if condition="checkActionAuth('Agent-agentEdit') ||checkActionAuth('Agent-delAgent')">
+									<a class="stdbtn btn_lime" href="{:U('Agent/agentEdit', array('id'=>$agent['id']))}">编辑</a>&nbsp;&nbsp;
+								</if>
+								<!-- <if condition="checkActionAuth('Agent-setOnSale')">
+									<if condition="$agent['is_on_sale'] eq '1'">
+										<a class="stdbtn btn_lime" href="{:U('Agent/psetOnSale', array('id'=>$agent['id'], 'is_on_sale'=> 0))}">下架</a>&nbsp;&nbsp;
+									<else />
+										<a class="stdbtn btn_lime" href="{:U('Agent/psetOnSale', array('id'=>$agent['id'], 'is_on_sale'=> 1))}">上架</a>&nbsp;&nbsp;
+									</if>
+								</if> -->
+								<if condition="checkActionAuth('Agent-pdelAgent')">
+									<a class="stdbtn btn_lime" href="{:U('Agent/pdelAgent', array('id'=>$agent['id']))}">删除</a>&nbsp;&nbsp;
+								</if>
+							</td>
+						</tr>
+					</volist>
+					<tr>
+						<td colspan="13">
+							<div class="page-box">{$show}</div>
+						</td>
+					</tr>
+				</if>
+			</table>
+		</form>
+		<!-- <input type="hidden" name="keyword" value="{$keywords}" id="keyword" /> -->
+	</div>
+</block>
+
+<block name="script">
+
+
+    <script type="text/javascript">
+        $(function() {
+            // 导入/导出弹窗
+            //var popupImport = $('#popup-import');
+            var popupExport = $('#popup-export');
+            var allsExport = $('#alls-export');
+
+           /* $('#btn-import').on('click', function() {
+                popupImport.show();
+            });*/
+            $('#btn-export').on('click', function() {
+                popupExport.show();
+            });
+            $('#all-export').on('click',function(){
+                allsExport.show();
+            });
+           /* popupImport.on('click', '.js-close', function() {
+                popupImport.hide();
+            });*/
+            popupExport.on('click', '.js-close', function() {
+                popupExport.hide();
+            });
+            allsExport.on('click', '.js-close', function() {
+                allsExport.hide();
+            });
+
+            $('#btnok').click(function(){
+                var len = $('#Echeckbox .select-item');
+                if($(len[0]).find('input').is(":checked"))
+                {
+                    var flag = true;
+                }else{
+                    var flag = false;
+                }
+                for(var i=0;i<len.length;i++)
+                {
+                    if(flag)
+                    {
+                        $(len[i]).find('input').prop('checked','');
+                    }else{
+                        $(len[i]).find('input').prop('checked','checked');
+                    }
+                }
+            });
+        });
+
+
+	$(function(){
+		$('.btn').click(function(){
+			var val = $('.text').val();
+			var p = $('.text').attr('name');
+			var url = window.location.href;
+			var txt = $('.txt').html();
+			var num = txt.substring (1,txt.indexOf('，')-1);
+			var num = parseInt(num);
+			if ( val=='' ) {
+				window.location.href = window.location.href;
+			} else if ( val > num) {
+				alert('查无此页');
+			} else if ( parseInt(val) == val && val > 0 ) {
+				if (val.indexOf('.') == true) {
+						var oL=val.lastIndexOf(".");
+						var val=val.substr(0,oL);
+					} 
+					var url = url.replace('.html','');
+					// alert(url.indexOf('/p/'))
+					if ( url.indexOf('/p/') != -1) {
+						var url = url.substring(0,url.indexOf('/p/'));
+						if (val == 1) {
+							window.location.href = url+'.html'
+						} else {
+							window.location.href = url+'/'+p+'/'+val+'.html'
+						}
+					} else {
+						if (val == 1) {
+							window.location.href = url+'.html'
+						} else {
+							window.location.href = url+'/'+p+'/'+val+'.html'
+						}
+					}
+
+			} else {
+				alert('查无此页');
+			}
+			
+		})
+
+		
+		/*设置热门商品*/
+		$('.contentwrapper').on('click', '.Jhot', function(){
+			var _thisObj = $(this);
+			var _goodsId = _thisObj.attr('data-goods');
+			var _isHot = _thisObj.attr('data-id');
+
+			if (_isHot == 1) {
+				_isHot = 0; 
+			} else {
+				_isHot = 1;
+			}
+			
+			$.ajax({
+            url: "{:U('Agent/setGoodsHot')}",
+	            type: 'POST',
+	            dataType: 'json',
+	            data: {
+	            	'is_hot' 	: _isHot,
+	            	'goods_id'	: _goodsId
+	            }
+	        })
+	        .done(function(data) {
+	        	if (data.error == 1) {
+					_thisObj.attr('data-id', data.is_hot);
+
+					if (data.is_hot == 1) {
+						_thisObj.removeClass();
+						_thisObj.addClass('Jhot ic-taf ic-true');
+					} else {
+						_thisObj.removeClass();
+						_thisObj.addClass('Jhot ic-taf ic-false');
+					}
+	        	} else {
+	        		alert(data.msg);
+	        	}
+	        });	
+		});
+
+		/*设置推荐商品*/
+		$('.contentwrapper').on('click', '.Jrecommend', function(){
+			var _thisObj = $(this);
+			var _goodsId = _thisObj.attr('data-goods');
+			var _isRecommend = _thisObj.attr('data-id');
+
+			if (_isRecommend == 1) {
+				_isRecommend = 0; 
+			} else {
+				_isRecommend = 1;
+			}
+			
+			$.ajax({
+            url: "{:U('Goods/setGoodsRecommend')}",
+	            type: 'POST',
+	            dataType: 'json',
+	            data: {
+	            	'is_recommend' 	: _isRecommend,
+	            	'goods_id'		: _goodsId
+	            }
+	        })
+	        .done(function(data) {
+	        	if (data.error == 1) {
+					_thisObj.attr('data-id', data.is_recommend);
+
+					if (data.is_recommend == 1) {
+						_thisObj.removeClass();
+						_thisObj.addClass('Jrecommend ic-taf ic-true');
+					} else {
+						_thisObj.removeClass();
+						_thisObj.addClass('Jrecommend ic-taf ic-false');
+					}
+	        	} else {
+	        		alert(data.msg);
+	        	}
+	        });	
+		});
+
+		
+	
+	function searchForm(){
+		var searchForm = document.getElementById('searchForm');
+		searchForm.submit();
+	}
+
+
+	    $('#btn-export').click(function(){
+				var objs = $('.ids');
+				var ids = '';
+				for(var j=0;j<objs.length;j++)
+				{   
+					if ($(objs[j]).is(':checked'))
+					{
+				    	ids += $(objs[j]).val()+',';
+					}
+				}
+				if (ids == '') {
+					alert('请选择导出的数据');
+					return false;
+				}
+				window.location.href="{:U('Goods/exportGoods')}"+"?ids="+ids;
+		});
+     
+
+
+    //全选
+        $('#ids').click(function(){
+            if($(this).is(":checked"))
+            {
+                $('.ids').prop('checked',true);
+            }else{
+                $('.ids').prop('checked',false);
+            }
+        }); 
+
+	//批量删除
+	$("#JdeleteAll").click(function () {
+		var objs = $('.ids');
+		var ids = '';
+		for(var j=0;j<objs.length;j++)
+		{   
+			if ($(objs[j]).is(':checked'))
+			{
+		    	ids += $(objs[j]).val()+',';
+			}
+		}
+		var jumpUrl = "{:U('Agent/delAgent')}" + '?ids=' + ids;
+		window.location.href = jumpUrl;
+	});
+
+
+
+
+//批量下架
+	$("#JsetOnSale").click(function () {
+		var objs = $('.ids');
+		var ids = '';
+        var is_on_sale = '0';
+        
+		for(var j=0;j<objs.length;j++)
+		{   
+			if ($(objs[j]).is(':checked'))
+			{
+		    	ids += $(objs[j]).val()+',';
+			}
+		}
+		var jumpUrl = "{:U('Agent/setOnSale')}" + '?ids=' + ids + '&is_on_sale=' + is_on_sale;
+		window.location.href = jumpUrl;
+	});
+
+
+
+	
+	});
+</script>
+</block>

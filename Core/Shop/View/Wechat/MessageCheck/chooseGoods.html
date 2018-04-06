@@ -1,0 +1,87 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">选择商品</h1>
+		</header>
+		<div class="main">
+			<div class="sel_goodsm">
+				<ul>
+					<li v-for="(item, index) in goodsList" @click="chooseGoods(item['id'])">
+						<div class="imgbox">
+							<img :src="item['goods_image']">
+						</div>
+						<div class="se_ggg">
+							<h1>{{item['goods_name']}}</h1>
+							<p class="db-overflow">{{item['introduction']}}</p>
+							<span>RM{{item['goods_price']}}</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			goodsList : [],
+			page : 1,
+		},
+		created(){
+			this.loadGoods();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadGoods : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Agent/agentGoods')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						page : that.page
+					}
+				})
+				.done(function(returnData) {
+					if( returnData['data']['list'].length > 0 ){
+						if( that.goodsList.length == 0 ){
+							that.goodsList = returnData['data']['list'];
+						}else{
+							that.goodsList = that.goodsList.concat(returnData['data']['list']);
+						}
+						that.goscroll = 1;
+					}else{
+						that.goscroll = 0;
+					}
+				});
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page++;
+							that.goscroll = 0;
+							that.loadGoods();
+						}
+					}
+				})
+			},
+			chooseGoods(id) {
+				window.location.href = "{:U('MessageCheck/issuingMessage')}";
+			}
+		}
+	})
+</script>
+</block>

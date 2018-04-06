@@ -1,0 +1,79 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._WAP_POINT_POINTSSTATEMENT_}</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_POINT_WEDO_POINT_STATEMENT_}</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="pointlog_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._PC_POINT_WEDO_POINT_DETAILS_}</th>
+	<th>{$Think.lang._PC_POINT_DATE_}</th>
+	<th>{$Think.lang._PC_POINT_GET_WEDO_POINTS_}</th>
+	<th>{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			symbol = ( data['type'] == '1' ) ? '+' : '-';
+			date = new Date(data['add_time'] * 1000);
+	%>
+	<tr>
+		<td><%=data['id']%></td>
+		<td><%=data['event']%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td><%=symbol%><%=data['num']%></td>
+		<td class="center">
+			<%if ( data['event_type'] == '7' ) {%>
+				<a class="stdbtn btn_lime" href="<%=jumpUrl%>?order_sn=<%=data['order_sn']%>"><%=redeemDetail%></a>
+			<%}else{%>
+				none
+			<%}%>
+		</td>
+	</tr>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Point/pointLog')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				type : '1'
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['jumpUrl'] = "{:U('Point/orderDetail')}";
+				returnData['data']['redeemDetail'] = "{$Think.lang._PC_POINT_REDEEM_DETAILS_}";
+				var html = bt('pointlog_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+</script>
+</block>

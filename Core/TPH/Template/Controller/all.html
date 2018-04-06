@@ -1,0 +1,14 @@
+public function all(){
+{$startCode}
+	${$tableName}Model = M('{$TableName}');
+	$count = ${$tableName}Model->where($where)->count();
+	$Page = new \Think\Page($count,15);	//实例化分页类 传入总记录数和每页显示的记录数(15)
+	$show = $Page->show();	//分页显示输出
+	${$tableName}List = ${$tableName}Model->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();	//分页查询
+	$return = array();
+{$endCode}
+	$this->assign('page', $show);	//赋值分页输出
+	$this->assign('return', $return);	
+	$this->assign('{$tableName}List', ${$tableName}List);
+	$this->display();
+}

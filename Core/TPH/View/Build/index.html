@@ -1,0 +1,409 @@
+<layout name="default_layout" />
+
+<div class="mainbar">
+    <!-- Page heading -->
+    <div class="page-head">
+        <h2 class="pull-left"><i class="icon-home"></i>生成代码</h2>
+        <div class="clearfix"></div>
+    </div>
+    <!-- Page heading ends -->
+    
+    <div class="matter">
+        <div class="container">
+            <div class="row rowmargin0">
+                <div class="col-md-12">
+                    <div class="widget">
+                        <div class="widget-head">
+                            <div class="pull-left">生成代码</div>
+                            <div class="widget-icons pull-right">
+                                <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                                <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                            </div>  
+                            <div class="clearfix"></div>
+                        </div>             
+                        <div class="widget-content">
+                            <div class="padd overfl-x-s">
+                                <form class="form-horizontal" id="createFilesForm">
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">选择模块：</label>
+                                        <div class="col-lg-6"> 
+                                            <select class="form-control" id="moduleName" name="moduleName">
+                                                <volist name="moduleNameList" id="moduleName" >
+                                                    <option value="{$moduleName}">{$moduleName}</option>
+                                                </volist>
+                                            </select> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">从数据表生成：</label>
+                                        <div class="col-lg-6"> 
+                                            <select class="form-control" id="selectTables" name="tableName">
+                                                <option value="">请选择数据表</option>
+                                                <volist name="tableNameList" id="table">
+                                                    <option value="{$table}">{$table}</option>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">关联数据表：</label>
+                                        <div class="col-lg-6"> 
+                                            <select class="form-control" id="selectTables2" name="tableName2">
+                                                <option value="">请选择数据表</option>
+                                                <volist name="tableNameList" id="table">
+                                                    <option value="{$table}">{$table}</option>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div id="selectTablesInfo2" class="form-group"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">数据表字段：</label>
+                                        <div class="col-lg-6"> 
+                                            <select class="form-control" id="viewModuleOn1" name="viewModuleOn1">
+                                            </select> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">关联表字段：</label>
+                                        <div class="col-lg-6"> 
+                                            <select class="form-control" id="viewModuleOn2" name="viewModuleOn2">
+                                            </select> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title"></label>
+                                        <div class="col-lg-6"> 
+                                            <a class="btn btn-success" id="readOnColum" href="javascript:;">读取关联条件字段</a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">关联类型：</label>
+                                        <div class="col-lg-6"> 
+                                            <select class="form-control" id="joinType" name="joinType">
+                                                <option value="JOIN">(JOIN)</option>
+                                                <option value="INNER">INNER</option>
+                                                <option value="LEFT">LEFT</option>
+                                                <option value="RIGHT">RIGHT</option>
+                                                <option value="FULL">FULL</option>
+                                            </select> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-3" for="title">模板标题：</label>
+                                        <div class="col-lg-6"> 
+                                            <input type="text" name="titleName" class="form-control" placeholder="例：文章管理" id="titleName">
+                                        </div>
+                                    </div>
+                                    <table class="new-table-border table1400">
+                                        <thead>
+                                        <tr class="text-c">
+                                            <th width="1490" colspan="13" title="数据表">数据表</th>
+                                        </tr>
+                                        <tr class="text-c">
+                                            <th width="660" colspan="5" title="字段配置信息">字段</th>
+                                            <th width="220" colspan="2" title="自动生成搜索项">视图</th>
+                                            <th width="220" colspan="2" title="自动生成搜索项">搜索</th>
+                                            <th width="390" colspan="4" title="如何使用请看该插件文档">ValidForm 验证</th>
+                                        </tr>
+                                        <tr class="text-c">
+                                            <th width="120" title="中文描述，编辑页为对应label标签内容，首页对应表头内容"><span class="c-red">*</span> 标题</th>
+                                            <th width="120" title="一般为对应数据库字段的名称"><span class="c-red">*</span> 名称</th>
+                                            <th width="130" title="自动生成编辑页相应的表单控件"><span class="c-red">*</span> 类型</th>
+                                            <th width="170" title="只针对select,radio,checkbox控件,支持变量和配置值，例如 1:值一#2:值二#3:值三 （-1:请选择#0:否#1:是）">
+                                                选项值
+                                            </th>
+                                            <th width="120" title="字段编辑页默认值">默认值</th>
+                                            <th width="90" title="勾选后在首页表单中显示">首页</th>
+                                            <th width="130" title="勾选后在新增编辑表单中显示">新增编辑</th>
+                                            <th width="90" title="勾选后自动生成控制器筛选项和前端搜索框">表单搜索</th>
+                                            <th width="130" title="select的取值为字段中的选项值">搜索类型</th>
+                                            <th width="90" title="勾选后在验证器和前端生成必填校验规则">是否必填</th>
+                                            <th width="130" title="插件的datatype配置项">datatype</th>
+                                            <th width="130" title="插件的nullmsg配置项">nullmsg</th>
+                                            <th width="130" title="插件的errormsg配置项">errormsg</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody-form"></tbody>
+                                    </table>
+                                    <table class="new-table-border">
+                                        <thead>
+                                        <tr class="text-c">
+                                            <th width="1100" colspan="7" title="关联表">关联表</th>
+                                        </tr>
+                                        <tr class="text-c">
+                                            <th width="660" colspan="4" title="字段配置信息">字段</th>
+                                            <th width="220" colspan="1" title="自动生成搜索项">视图</th>
+                                            <th width="220" colspan="2" title="自动生成搜索项">搜索</th>
+                                        </tr>
+                                        <tr class="text-c">
+                                            <th width="120" title="中文描述，编辑页为对应label标签内容，首页对应表头内容"><span class="c-red">*</span> 标题</th>
+                                            <th width="120" title="一般为对应数据库字段的名称"><span class="c-red">*</span> 名称</th>
+                                            <th width="120" title="字段输出别名">别名</th>
+                                            <th width="170" title="只针对select,radio,checkbox控件,支持变量和配置值，例如 1:值一#2:值二#3:值三 （-1:请选择#0:否#1:是）">
+                                                选项值
+                                            </th>
+                                            <th width="90" title="勾选后在首页表单中显示">首页</th>
+                                            <th width="90" title="勾选后自动生成控制器筛选项和前端搜索框">表单搜索</th>
+                                            <th width="130" title="select的取值为字段中的选项值">搜索类型</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody-form2"></tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Widget footer -->
+                        <div class="widget-foot">
+                            <button type="button" id="createFilesBtn" class="btn btn-primary">生成文件</button>
+                            <button type="button" id="gogogo" class="btn btn-primary">生成代码</button>
+                        </div>
+                        <!-- Widget footer end-->
+                        <div class="widget-foot" id="fileMsg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+
+                  <div class="widget">
+
+                    <div class="widget-head">
+                      <div class="pull-left">所有记录列表View代码</div>
+                      <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                      </div>  
+                      <div class="clearfix"></div>
+                    </div>             
+
+                    <div class="widget-content">
+                      <div class="padd">
+                        <textarea class="form-control" id="allPageCode" rows="12">  
+                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>  
+                <div class="col-md-6">
+
+                  <div class="widget">
+
+                    <div class="widget-head">
+                      <div class="pull-left">所有记录列表Controller代码</div>
+                      <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                      </div>  
+                      <div class="clearfix"></div>
+                    </div>             
+
+                    <div class="widget-content">
+                      <div class="padd">
+                        <textarea class="form-control" id="allCode" rows="12">  
+                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <div class="widget">
+                    <!-- Widget title -->
+                    <div class="widget-head">
+                      <div class="pull-left">新建-View代码</div>
+                      <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                      </div>  
+                      <div class="clearfix"></div>
+                    </div>
+
+                    <div class="widget-content">
+                        <div class="padd">
+                            <textarea class="form-control" id="addPageCode" rows="12">  
+                            </textarea>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="widget">
+                    <!-- Widget title -->
+                    <div class="widget-head">
+                      <div class="pull-left">编辑View代码</div>
+                      <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                      </div>  
+                      <div class="clearfix"></div>
+                    </div>
+
+                   <div class="widget-content" >
+                        <div class="padd">
+                            <textarea class="form-control" id="editPageCode" rows="12"> 
+                            </textarea>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <div class="widget">
+                    <!-- Widget title -->
+                    <div class="widget-head">
+                      <div class="pull-left">新建-Model代码</div>
+                      <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a> 
+                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                      </div>  
+                      <div class="clearfix"></div>
+                    </div>
+
+                    <div class="widget-content">
+                        <div class="padd">
+                            <textarea class="form-control" id="modelCode" rows="12">    
+                            </textarea>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    createTbodyFormUrl = '{:U('Build/createTbodyFormCode')}';
+    createTbodyFormUrl2 = '{:U('Build/createTbodyForm2Code')}';
+    createFilesUrl = '{:U('Build/createFiles')}';
+    createFile = '{:U('Build/getViewTableInfo')}';
+    createAllCodeUrl = '{:U('Build/createAllCode')}';
+    createColum = '{:U('Build/readOnColum')}';
+    db_prefix = '{$db_prefix}';
+    selectTables = '';
+    selectTables2 = '';
+
+    function readOnColum(){
+        var selectTables = $('#selectTables').val();
+        var selectTables2 = $('#selectTables2').val();
+        if(db_prefix != ''){
+            selectTables = selectTables.replace(db_prefix,'');
+            selectTables2 = selectTables2.replace(db_prefix,'');
+        }
+        $.post(createColum, 
+            {'tableName' : selectTables},
+            function(data){
+                $('#viewModuleOn1').html(data);
+            }
+        );
+        $.post(createColum, 
+            {'tableName' : selectTables2},
+            function(data){
+                $('#viewModuleOn2').html(data);
+            }
+        );
+    }
+
+    function getViewCode(){ //生成视图模型代码
+        checkedBox = $('#viewColum input:checked');
+        // selectColumName = [];
+        // asColumName = [];
+        joinColumName = '';
+        joinAsColumName = '';
+        checkedBox.each(function(index){
+            joinColumName += '<input type="hidden" name="joinColumName['+index+']" value="'+$(this).val()+'" />' + "\n";
+            joinAsColumName += '<input type="hidden" name="joinAsColumName['+index+']" value="'+$('#as_' + $(this).val()).val()+'" />' + "\n";
+            // selectColumName.push($(this).val());
+            // asColumName.push($('#as_' + $(this).val()).val());
+        }); 
+
+        $('#createFilesForm').append(joinColumName);
+        $('#createFilesForm').append(joinAsColumName);
+    }
+
+    $(function(){
+        $(document).on("change", '#selectTables', function(){
+            selectTables = $(this).val();
+            if (selectTables) {
+                if(db_prefix != ''){
+                    selectTables = selectTables.replace(db_prefix,'');
+                }
+                $.post(createTbodyFormUrl, {"table":selectTables}, function(data){
+
+                    $("#tbody-form").html(data);
+                });
+            } else {
+                $("#tbody-form").html('');
+            }
+        }).on("click", '#createFilesBtn', function(){
+            if (!selectTables) {
+                show_error('请选择要生成的数据表');
+                return;
+            }
+            // getViewCode();
+
+            $.ajax({
+                url: createFilesUrl,
+                type: 'POST',
+                dataType: 'json',
+                data: $('#createFilesForm').serialize()
+            })
+            .done(function(data) {
+                if (data['status'] == '200000') {
+                    show_success('生成文件成功');
+                }
+            });
+        }).on("click", '#gogogo', function(){
+            if (!selectTables) {
+                show_error('请选择要生成的数据表');
+                return;
+            }
+            getViewCode();
+            
+            $.ajax({
+                url: createAllCodeUrl,
+                type: 'POST',
+                dataType: 'json',
+                data: $('#createFilesForm').serialize()
+            })
+            .done(function(data) {
+                if (data['status'] == '200000') {
+                    $('#allPageCode').val(data['index']);
+                    $('#allCode').val(data['controller']);
+                    $('#addPageCode').val(data['add']);
+                    $('#editPageCode').val(data['edit']);
+                    $('#modelCode').val(data['model']);
+                    show_success('生成代码成功');
+                }
+            });
+        }).on("change", '#selectTables2', function(){
+            selectTables2 = $(this).val();
+            if (selectTables2) {
+                if(db_prefix != ''){
+                    selectTables2 = selectTables2.replace(db_prefix,'');
+                }
+                $.post(createTbodyFormUrl2, {"table":selectTables2}, function(data){
+
+                    $("#tbody-form2").html(data);
+                });
+            } else {
+                $("#tbody-form2").html('');
+            }
+        }).on('click','#readOnColum',function(){
+            if (!selectTables) {
+                show_error('请选择要生成的数据表');
+                return;
+            }
+            if (!selectTables2) {
+                show_error('请选择要关联的数据表');
+                return;
+            }
+            readOnColum();
+        });
+    })
+</script>

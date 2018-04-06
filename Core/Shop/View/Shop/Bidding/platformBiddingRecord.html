@@ -1,0 +1,207 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_USER_WEDO_BIDDING_RECORD_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+		<h1 class="pagetitle">
+			{$Think.lang._PC_USER_WEDO_BIDDING_RECORD_}
+			<a href="javascript:history.go(-1);" class="btn btn_link" style="float:right;margin-right:15px;">
+				<span style="font-size:14px;">{$Think.lang._COMMON_RETURN_}</span>
+			</a>
+		</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<switch name="bidding_type">
+				<case value="0|1">
+					<p>
+						<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+						<input type="text" name="goods_name" value="{$return['goods_name']}" placeholder="{$Think.lang._COMMON_SEARCH_GOODS_NAME_}">
+						&nbsp;&nbsp;
+						<label>{$Think.lang._COMMON_PLATFORM_CATEGORY_}：</label>
+						<select name="category_id">
+							<option value="">{$Think.lang._COMMON_ALL_}</option>
+							<volist name="categoryList" id="data">
+								<option value="{$data['id']}" <if condition="$return['category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+							</volist>
+						</select>
+						&nbsp;&nbsp;
+						<label>{$Think.lang._COMMON_AGENT_NAME_}：</label>
+						<select name="agent_category_id">
+							<option value="">{$Think.lang._COMMON_ALL_}</option>
+							<volist name="agentCategoryList" id="data">
+								<option value="{$data['id']}"  <if condition="$return['agent_category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+							</volist>
+						</select>
+						&nbsp;&nbsp;
+						<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+					</p>
+				</case>
+				<case value="3">
+					<p>
+						<label>{$Think.lang._COMMON_MERCHANT_NAME_}：</label>
+						<input type="text" name="agent_name" value="{$return['agent_name']}" placeholder="{$Think.lang._COMMON_PLEASE_SEARCH_}{$Think.lang._COMMON_MERCHANT_NAME_}">
+						&nbsp;&nbsp;
+						<label>{$Think.lang._PC_USER_BIDDING_TYPE_}：</label>
+						<select name="banner_type">
+							<option value="-1" <if condition="$banner_type eq '-1'">selected</if>>{$Think.lang._COMMON_ALL_}</option>
+							<option value="0" <if condition="$banner_type eq '0'">selected</if>>{$Think.lang._PC_USER_BIDDING_MERCHANT_}</option>
+							<option value="1" <if condition="$banner_type eq '1'">selected</if>>{$Think.lang._PC_USER_BIDDING_GOODS_}</option>
+						</select>
+						&nbsp;&nbsp;
+						<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+					</p>
+				</case>
+			</switch>
+		</form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template">
+                 
+		</table>
+		<div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="biddingIndexGoods_tpl" type="text/html">
+	<tr>
+		<th>{$Think.lang._COMMON_NO_}</th>
+		<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+		<th>{$Think.lang._COMMON_GOODS_INTRODUCTION_}</th>
+		<th>{$Think.lang._COMMON_PLATFORM_CATEGORY_}</th>
+		<th>{$Think.lang._COMMON_AGENT_NAME_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_SUCCESS_MERCHANTS_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_DATE_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_AMOUNT_}</th>
+	</tr>
+	<%for(var i = 0;i < list.length;i++){
+		var data = list[i],
+			date = new Date(data['start_time'] * 1000);%>
+		<tr>
+			<td><%=data['id']%></td>
+			<td><%=data['goods_name']%></td>
+			<td><%=data['introduction']%></td>
+			<td><%=data['category_name']%></td>
+			<td><%=data['agent_category_name']%></td>
+			<td><%=data['agent_name']%></td>
+			<td><%=date.pattern('yyyy-MM-dd')%></td>
+			<td><%=data['total']%></td>
+		</tr>
+	<%}%>
+</script>
+<script id="biddingAgent_tpl" type="text/html">
+	<tr>
+		<th>{$Think.lang._COMMON_NO_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_SUCCESS_MERCHANTS_}</th>
+		<th>{$Think.lang._PC_USER_MERCHANT_CATEGORIES_}</th>
+		<th width="60%">{$Think.lang._PC_USER_MERCHANT_INTRODUCTION_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_DATE_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_AMOUNT_}</th>
+	</tr>
+	<%for(var i = 0;i < list.length;i++){
+		var data = list[i],
+			date = new Date(data['start_time'] * 1000);%>
+		<tr>
+			<td><%=data['id']%></td>
+			<td><%=data['agent_name']%></td>
+			<td><%=data['agent_category_name']%></td>
+			<td><%=data['introduction']%></td>
+			<td><%=date.pattern('yyyy-MM-dd')%></td>
+			<td><%=data['total']%></td>
+		</tr>
+	<%}%>
+</script>
+<script id="biddingBanner_tpl" type="text/html">
+	<tr>
+		<th>{$Think.lang._COMMON_NO_}</th>
+		<th>{$Think.lang._COMMON_MERCHANT_NAME_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_PRODUCTS_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_TYPE_}</th>
+		<th>竞价期限</th>
+		<th>{$Think.lang._PC_USER_BIDDING_AMOUNT_}</th>
+	</tr>
+	<%for(var i = 0;i < list.length;i++){
+		var data = list[i],
+			date = new Date(data['start_time'] * 1000);%>
+		<tr>
+			<td><%=data['id']%></td>
+			<td><%=data['agent_name']%></td>
+			<td>
+				<%if (data['banner_type'] == '0') {%>
+					<%=data['agent_name']%>
+				<%}else{%>
+					<%=data['goods_name']%>
+				<%}%>
+			</td>
+			<td>
+				<%if (data['banner_type'] == '0') {%>
+					<%=merchant%>
+				<%}else{%>
+					<%=products%>
+				<%}%>
+			</td>
+			<td><%=date.pattern('yyyy-MM-dd')%></td>
+			<td><%=data['total']%></td>
+		</tr>
+	<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+	var bt = baidu.template;
+	var bidding_type = "{$bidding_type}";
+	var agent_name = "{$return['agent_name']}",
+		goods_name = "{$return['goods_name']}",
+		category_id = "{$return['category_id']}",
+		agent_category_id = "{$return['agent_category_id']}",
+		banner_type = "{$banner_type}";
+	function loadData(page) {
+		popupWin.show('{$Think.lang._COMMON_LOADING_}');
+		$.ajax({
+			url : "{:U("Bidding/platformBiddingRecord")}",
+			type : "POST",
+			dataType : "json",
+			data : {
+				agent_name : agent_name,
+				goods_name : goods_name,
+				category_id : category_id,
+				agent_category_id : agent_category_id,
+				banner_type : banner_type,
+				page : page,
+				bidding_type : bidding_type,
+				type : 1
+			}
+		})
+		.done(function(returnData){
+			if ( returnData["data"]["list"].length ){
+				returnData['data']['products'] = "{$Think.lang._PC_USER_BIDDING_GOODS_}";
+				returnData['data']['merchant'] = "{$Think.lang._PC_USER_BIDDING_MERCHANT_}";
+				switch ( bidding_type ) {
+					case '0' : 
+						var html = bt('biddingIndexGoods_tpl', returnData['data']);
+						break;
+					case '1' : 
+						var html = bt('biddingIndexGoods_tpl', returnData['data']);
+						break;
+					case '2' : 
+						var html = bt('biddingAgent_tpl', returnData['data']);
+						break;
+					case '3' : 
+						var html = bt('biddingBanner_tpl', returnData['data']);
+						break;
+				}
+				$("#template").html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}	
+			popupWin.hide();
+		});
+	}
+	loadData(1);
+</script>
+</block>

@@ -1,0 +1,133 @@
+<extend name="Common:base" />
+
+<block name="title">消息推送集成</block>
+
+<block name="menu">
+	<include file="System:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	消息推送集成
+	    	<a href="{:U('Message/sendMessage')}" class="btn btn_link" style="float: right"><span style="font-size:14px">添加</span></a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Message/messageList')}" method="get" id="searchForm">
+            <p>
+            	<label>关键字：</label>
+				<input type="text" name="title" placeholder="输入搜索关键字" value="{$title}">
+				&nbsp;&nbsp;
+             	<input type="submit" value="筛选"/>
+            </p>
+        </form>
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th>ID</th>
+				<th>标题</th>
+				<th>主要内容</th>
+				<th>封面图</th>
+				<th>推送用户类型</th>
+				<th>发布时间</th>
+				<th width="13%">操作</th>
+			</tr>
+			<volist name="list" id="data">
+				<tr>
+					<td>{$data['id']}</td>
+					<td>{$data['title']}</td>
+					<td>{$data['content']}</td>
+					<td><img src="{$data['image']}" width="100px" height="100px"></td>
+					<td>
+						<if condition="strpos($data['condition'], '0') !== false && strpos($data['condition'], '1') !== false">
+							买家+卖家	
+						<elseif condition="strpos($data['condition'], '0') !== false"/>
+							买家
+						<else />
+							卖家
+						</if>
+					</td>
+					<td>{:time_format($data['add_time'])}</td>
+					<td>
+						<if condition="checkActionAuth(array('Message-messageDetail', 'Message-delMessage'))">
+							<if condition="checkActionAuth('Message-messageDetail')">
+								<a class="stdbtn btn_lime" href="{:U('Message/messageDetail', array('id'=> $data['id']))}">查看</a>
+							</if>
+							<if condition="checkActionAuth('Message-delMessage')">
+								<a class="stdbtn btn_lime" href="{:U('Message/delMessage', array('id'=> $data['id']))}">删除</a>
+							</if>
+						<else />
+							无此权限
+						</if> 
+					</td>
+				</tr>
+			</volist>
+			<tr>
+				<td colspan="13">
+					<if condition="$counting lt 25">
+					<else/>
+						<div class="page-box">{$show}</div>
+					</if>
+				</td>
+			</tr>
+		</table>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+	var ids = "",
+		idsData = [];
+	$(function(){
+		// 全选
+		$("#contentwrapper").on("change", "#ids", function(){
+			if( !$(this).attr("checked") ){
+				$(".ids").attr("checked", false);
+				ids = "";
+				idsData = [];
+			} else {
+				$(".ids").attr("checked", true);
+				$(".ids").each(function(){
+					idsData.push($(this).val());
+				})
+				ids = idsData.join(",");
+			}
+		});
+
+		// 单选
+		$("#contentwrapper").on("change", ".ids", function(){
+			if( !$(this).attr("checked") ){
+				$(this).attr("checked", false);
+				for(var i = 0; i<idsData.length; i++) {
+					if ($(this).val() == idsData[i]) {
+						idsData.splice(i,1);
+					}
+				}
+			} else {
+				$(this).attr("checked", true);
+				idsData.push($(this).val());
+			}
+			ids = idsData.join(",");
+		});
+
+		// 通过
+		$('#JallPass').click(function(){
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			window.location.href = "{:U('Message/checkMessage')}?status=1&ids=" + ids;
+		});
+
+		// 拒绝
+		$('#JallRefuse').click(function(){
+			if ( !ids ) {
+				alert('请选择要审核的数据');
+				return;
+			}
+			window.location.href = "{:U('Message/checkMessage')}?status=2&ids=" + ids;
+		});
+	})
+</script>
+</block>

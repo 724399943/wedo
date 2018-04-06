@@ -1,0 +1,124 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_POINT_REDEEM_DETAILS_}</block>
+<block name='style'>
+	<style type="text/css">
+		.g_imgmain{position:absolute;top:10px;right:25%;}
+		.g_imgmain span{display:block;}
+		.g_imgmain .g_imgbox{width:200px;position:relative;}
+		.g_imgmain .g_imgbox:before{content:'';display:block;padding:50% 0;}
+		.g_imgmain .g_imgbox img{width:100%;height:100%;position:absolute;top:0;left:0;}
+		.pgbtn{display:block;width:180px;margin:20px 0 20px 80px;line-height:40px;text-align:center;color:#333;border-radius:5px;background:rgba(0,0,0,.3);color:#fff;}
+		.pgbtn:hover{background:#967bdc;}
+		.smallinput.on{border:none;box-shadow: none;-webkit-box-shadow: none;-moz-box-shadow: none;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_POINT_REDEEM_DETAILS_}
+	    	<a href="{:U('PointOrder/pointOrder')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper" style="position:relative;padding-bottom:50px;">
+		<form action="{:U('Point/pointInfo')}" method="post" class="stdform" id="template">
+
+		</form>
+	</div>
+
+</block>
+
+<block name="script">
+<script id="orderDetail_tpl" type="text/html">
+    <p style="width:50%;"><label style="font-size:18px;">{$Think.lang._PC_POINT_REDEEM_PRODUCT_INFORMATION_}</label></p>
+	<p style="width:50%;">
+		<label><%=productsName%>：</label>
+		<span class="field"><%=list['goodsList'][0]['goods_name']%></span>
+	</p>
+	<p style="width:50%;">
+		<label>{$Think.lang._COMMON_AGENT_NAME_}：</label>
+		<span class="field"><%=list['agent_name']%></span>
+	</p>
+	<p style="width:50%;">
+		<label>{$Think.lang._COMMON_REDEEM_WEDO_POINTS_}：</label>
+		<span class="field"><%=list['goodsList'][0]['price']%></span>
+	</p>
+	<div class="g_imgmain">
+		<span><%=productsPicture%>：</span>
+		<div class="g_imgbox">
+			<img src="<%=list['goodsList'][0]['goods_image']%>">
+		</div>
+	</div>
+	<div class="line-order">{$Think.lang._PC_POINT_DELIVERY_INFORMATION_}</div>
+	<%if(list['express_type'] == '0'){%>
+		<p>
+			<label><%=receiver%>：</label>
+			<span class="field">
+				<input type="text" name="consignee" class="smallinput" value="<%=list['consignee']%>" readonly="readonly" id="consignee" />
+			</span>
+		</p>
+		<p>
+			<label><%=contactNumber%>：</label>
+			<span class="field">
+				<input type="text" name="telephone" class="smallinput" value="<%=list['telephone']%>" readonly="readonly" id="telephone" />
+			</span>
+		</p>
+		<p>
+			<label><%=reliveryAddress%>：</label>
+			<span class="field">
+				<input type="text" name="address" class="smallinput" value="<%=list['address']%>" readonly="readonly" id="address" />
+			</span>
+		</p>
+	<%}%>
+	<div class="stype" style="padding-left:80px;overflow:hidden;">
+		<span style="margin-right:30px;">{$Think.lang._PC_POINT_RECEIVING_METHOD_}：</span>
+		<span>
+			<%if( list['express_type'] == '0' ){%>
+				<%=byDelivery%>
+			<%}else{%>
+				<%=collectFromMerchant%>
+			<%}%>
+		</span>
+	</div>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    function loadData() {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('PointOrder/pointOrderDetail')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				order_sn : {$_GET["order_sn"]}
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData.status == '200000') {
+				returnData['data']['productsName'] = "{$Think.lang._COMMON_PRODUCTS_NAME_}";
+				returnData['data']['productsPicture'] = "{$Think.lang._COMMON_PRODUCTS_PICTURE_}";
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				returnData['data']['collectFromMerchant'] = "{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}";
+				returnData['data']['receiver'] = "{$Think.lang._PC_POINT_RECEIVER_}";
+				returnData['data']['contactNumber'] = "{$Think.lang._PC_POINT_CONTACT_NUMBER_}";
+				returnData['data']['reliveryAddress'] = "{$Think.lang._PC_POINT_DELIVERY_ADDRESS_}";
+				var html = bt('orderDetail_tpl', returnData['data']);
+				$('#template').html(html);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData();
+</script>
+</block>

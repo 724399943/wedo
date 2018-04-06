@@ -1,0 +1,179 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">购买评价</h1>
+		</header>
+		<div class="main">
+			<div class="goods_assess">
+				<div class="eva_list_box"  v-for="(item,index) in commentList">
+					<div class="user_eva">
+						<div class="eva_top">
+							<div class="eva_user">
+								<img :src="item.headimgurl">
+								<span>{{item.nickname}}</span>
+							</div>
+							<div class="eva_star_cont">
+								<div class="eva_star_box" :class="{on:item.star>=1}"></div>
+								<div class="eva_star_box" :class="{on:item.star>=2}"></div>
+								<div class="eva_star_box" :class="{on:item.star>=3}"></div>
+								<div class="eva_star_box" :class="{on:item.star>=4}"></div>
+								<div class="eva_star_box" :class="{on:item.star>=5}"></div>
+							</div>
+						</div>
+						<p>{{item.contain}}</p>
+						<div class="eva_goodsimg">
+							<div class="imgbox" v-for="(image, thatIndex) in item.images">
+								<img :src="image" @click="showBigImage(image)">
+							</div>
+						</div>
+						<div class="eva_goods_cont">
+							<span>{{item.add_time|time("yyyy-MM-dd")}}</span>
+							<span>{{item.add_time|time("hh:mm:ss")}}</span>
+							<span>{{item.attr_list}}</span>
+							<em @click="showReplyBox(item['id'], item['reply_contain'])">{$Think.lang._WAP_AGENT_REPLY_}</em>
+						</div>
+					</div>
+					<div v-if="!!item.reply_contain" class="business_reply">
+						<p><span>{$Think.lang._WAP_AGENT_MERCHANT_RESPOND_}：</span>{{item.reply_contain}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+			<!-- 弹窗 -->
+			<div class="mask" @click="hideBigImage"></div>
+			<div class="bigevaimg">
+				<div class="msevaimg">
+					<img src="" id="JshowBigImage">
+				</div>
+			</div>
+			<div class="evasim">
+				<div class="add_eva">
+					<input type="text" id="JreplyContain" placeholder="{$Think.lang._WAP_AGENT_CONTENT_}">
+					<div class="btn_wrap">
+						<a href="javascript:;" @click="replyComment">{$Think.lang._COMMON_CONFIRM_}</a>
+						<a href="javascript:;" @click="hideReplyBox">{$Think.lang._COMMON_CANCEL_}</a>
+					</div>
+				</div>
+			</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			commentList : [],
+			page : 1,
+			goscroll : 1,
+			id : '',
+		},
+		created(){
+			this.loadComment();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadComment : function() {
+				var that = this;
+				console.log(that.page);
+				$.ajax({
+					url: '{:U('Agent/agentGoodsComment')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						page : that.page
+					}
+				})
+				.done(function(returnData) {
+					if( returnData['data']['list'].length > 0 ){
+						if( that.commentList.length == 0 ){
+							that.commentList = returnData['data']['list'];
+						}else{
+							that.commentList = that.commentList.concat(returnData['data']['list']);
+						}
+						vm.goscroll = 1;
+					}else{
+						vm.goscroll = 0;
+					}
+				});
+			},
+			loadmore(){
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(vm.goscroll){
+							vm.page++;
+							vm.goscroll = 0;
+							vm.loadComment();
+						}
+					}
+				})
+			},
+			showBigImage(image) {
+				$('.mask').fadeIn();
+				$('.bigevaimg').fadeIn();
+				$('#JshowBigImage').attr('src', image);
+			},
+			hideBigImage(){
+				$('.mask').fadeOut();
+				$('.bigevaimg').fadeOut();
+			},
+			showReplyBox(id, reply_contain) {
+				if ( !reply_contain ) {
+					this.id = id;
+					$('.mask').fadeIn();
+					$('.evasim').fadeIn();
+				} else {
+					automsgbox('您已回复该评论');
+				}
+			},
+			hideReplyBox() {
+				$('.mask').fadeOut();
+				$('.evasim').fadeOut();
+			},
+			replyComment() {
+				var reply_contain = $('#JreplyContain').val();
+				if ( !reply_contain ) {
+					automsgbox('请输入回复内容');
+					return;
+				}
+				$.ajax({
+					url: '{:U('Agent/replyComment')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						id : this.id,
+						reply_contain : reply_contain
+					}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox('回复成功', function(){
+							window.location.href = window.location.href;
+						});
+					} else {
+						automsgbox(returnData['message'])
+					}
+				});
+			}
+		}
+	})
+
+	$(document).click(function(e){ 
+		e = window.event || e; 
+		obj = $(e.srcElement || e.target);
+	 	if ($(obj).is(".mask")) { 
+	 		$('.mask').fadeOut();
+			$('.bigevaimg').fadeOut();
+			$('.evasim').fadeOut();
+	  	}
+	});
+</script>
+</block>

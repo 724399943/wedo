@@ -1,0 +1,19 @@
+<ul>
+	<if condition="checkControllerAuth(array('User'))">
+		<li <if condition="in_array(CONTROLLER_NAME, array('User'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('User-userList'))}" class="addons">用户管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('User-userList')">
+					<li <if condition="in_array(ACTION_NAME, array('userList', 'editUser'))">{:chr(32)}class="on"</if>>
+						<a href="{:U('User/userList')}">顾客信息管理</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('User-agentList')">
+					<li <if condition="in_array(ACTION_NAME, array('agentList', 'editAgent'))">{:chr(32)}class="on"</if>>
+						<a href="{:U('User/agentList')}">商家信息管理</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

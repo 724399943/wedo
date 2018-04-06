@@ -1,0 +1,197 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_MERCHANDISE_}</h1>
+			<a href="{:U('PointOrder/pointOrder')}" class="mail">{$Think.lang._WAP_POINTORDER_HISTORY_}</a>
+		</header>
+		<div class="main">
+			<div class="integral_goods">
+				<div class="order_nav">
+					<div class="o_nav">
+						<span class="on" @click="ontab(0)">{$Think.lang._WAP_AGENT_NOTLIST_}</span>
+						<em></em>
+					</div>
+					<div class="o_nav">
+						<span @click="ontab(3)">{$Think.lang._WAP_AGENT_TOBELIST_}</span>
+						<em style="display:none;"></em>
+					</div>
+				</div>
+				<div class="isgoods_main" v-if="nothing == 0 && type == 0">
+					<!-- 未申请 -->
+					<div class="is_hgoods">
+						<div class="sel_goodsm">
+							<ul>
+								<li v-for="(item,index) in goodsList">
+									<div class="s_goods_wrap">
+										<div class="s_cbox">
+											<input type="checkbox" name="" :id="item.goods_id" @change="selfun">
+											<label :for="item.goods_id"></label>
+										</div>
+									</div>
+									<a :href="'/Goods/goodsDetail?goods_id='+item.goods_id">
+										<div class="imgbox">
+											<img :src="item.goods_image">
+										</div>
+										<div class="se_ggg sexiao">
+											<h1>{{item.goods_name}}</h1>
+											<p class="db-overflow">{{item.introduction}}</p>
+											<span>RM{{item.goods_price}}</span>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<a href="javascript:;" class="widup" @click="goodsToPoint">{$Think.lang._WAP_AGENT_APPLYFORMERCHANDISE_}</a>
+					</div>
+				</div>
+				<!-- 没有内容 -->
+				<div class="no_igoods" v-else-if="nothing == 1 && type == 0">
+					<p>{$Think.lang._WAP_AGENT_ZEROPRODUCTAPPLIED_}</p>
+				</div>
+				<div class="isgoods_main" v-if="nothing == 0 && type == 3">
+					<!-- 已申请 -->
+					<div class="is_hgoods">
+						<div class="sel_goodsm">
+							<ul>
+								<li v-for="(item,index) in goodsList">
+									<div class="is_hhh">
+										<a :href="'/Goods/goodsDetail?goods_id='+item.goods_id">
+											<div class="imgbox">
+												<img :src="item.goods_image">
+											</div>
+											<div class="se_ggg">
+												<h1>{{item.goods_name}}</h1>
+												<p class="db-overflow">{{item.introduction}}</p>
+												<span v-if="item.status == 1">{{item.goods_price}}积分</span>
+											</div>
+										</a>
+									</div>
+									<span class="tips" v-if="item.status == 0">申请中</span>
+									<span class="tips" v-else-if="item.status == 1">已通过</span>
+									<span class="tips" v-else>未通过</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- 没有内容 -->
+				<div class="no_igoods" v-else-if="nothing == 1 && type == 3">
+					<p>{$Think.lang._WAP_AGENT_ZEROPRODUCT_}</p>
+				</div>
+			</div>
+			<!-- 提示 -->
+			<div class="istips" id="closeTips" @click="closetips">
+				<div class="is_box">
+					<p class="tit">{$Think.lang._WAP_AGENT_NOTICE_}</p>
+					<p class="tp">{$Think.lang._WAP_AGENT_NOTICECONT_}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			type : 0, // 0：未申请，1：审核中，2：已审核，3：1,2共存
+			goodsList : [],
+			page : 1,
+			goscroll:1,
+			goods_id : '',
+			nothing : 0
+		},
+		created(){
+			this.getGoods();
+			this.loadmore();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			getGoods : function(){
+				var that = this;
+				$.ajax({
+					url: "{:U("Agent/myPointGoods")}",
+					type: "POST",
+					dataType: "json",
+					data: {
+						type : that.type
+					}
+				})
+				.done(function(data) {
+					if(data.data.list.length > 0){
+						if(that.goodsList.length == 0){
+							that.goodsList = data.data.list;
+						}else{
+							that.goodsList = that.goodsList.concat(data.data.list);
+						}
+						that.goscroll = 1;
+						that.nothing = 0;
+					}else{
+						that.goscroll = 0;
+						if(that.goodsList.length == 0){
+							that.nothing = 1;
+						}
+					}
+				})
+			},
+			goodsToPoint : function(){
+				var that = this;
+				$.ajax({
+					url : "{:U("Agent/goodsToPoint")}",
+					type : "POST",
+					dataType : "json",
+					data : {
+						goods_id : that.goods_id
+					}
+				})
+				.done(function(data){
+					if(data.status == 200000){
+						automsgbox('{$Think.lang._WAP_AGENT_GOODS_TO_POINT_}', function(){
+							window.location.href = window.location.href;
+						});
+					}else{
+						automsgbox(data.message);
+					}
+				})
+			},
+			selfun : function(){
+				var that = this;
+				that.goods_id = $(event.target).attr('id');
+			},
+			ontab : function(index){
+				var that = this;
+				$(".o_nav").find('span').removeClass("on");
+				$(".o_nav").find("em").fadeOut();
+				$(event.target).addClass('on');
+				$(event.target).siblings('em').show();
+				that.goodsList = [];
+				that.type = index;
+				that.getGoods();
+			},
+			closetips : function(){
+				$(event.target).fadeOut();
+			},
+			loadmore(){
+				var that = this;
+				document.addEventListener("scroll",function(){
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(that.goscroll){
+							that.page ++;
+							that.goscroll = 0;
+							that.getGoods();
+						}
+					}
+				})
+			}
+		}
+	})
+</script>
+</block>

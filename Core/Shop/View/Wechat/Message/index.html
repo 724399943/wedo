@@ -1,0 +1,223 @@
+<extend name="Public:base" />
+<block name="style">
+	<style type="text/css">
+	.dot{width:20px;height:20px;text-align:center;color:#fff;border-radius:50%;position:absolute;top:-5px;right:-5px;background:#ff3838;font-size:12px;transform:scale(0.75);-webkit-transform:scale(0.75);}
+
+	</style>
+</block>
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._COMMON_FOOTER_NOTIFICATION_}</h1>
+			<a href="{:U('Chat/addressList')}" class="mail">{$Think.lang._PC_MESSAGE_CONTACTS_}</a>
+		</header>
+		<div class="main">
+			<div class="news_wrap">
+				<div class="system_news" @click="jumpToSystem">
+					<div class="imgbox">
+						<img src="__PUBLIC__/Wechat/images/system_ico.png">
+						<em class="dot" v-if="systemCount > 0">{{systemCount}}</em>
+					</div>
+					<div class="s_new_m">
+						<p>{$Think.lang._PC_MESSAGE_SYSTEM_}</p>
+						<div class="nmt"><span>{{message['title']}}</span><em v-if="message.add_time != null">{{message['add_time']|time("yyyy-MM-dd")}}</em></div>
+					</div>
+				</div>
+				<div class="chat_news">
+					<ul>
+						<li v-for="(item, index) in historyList">
+							<a @click="jumpToConsultion(item['id'])">
+							<!-- <a :href="'{:U('Message/consultation')}?id='+item['id']"> -->
+								<div class="cnews">
+									<div class="imgbox">
+										<img :src="item['headimgurl']">
+										<em class="dot" v-if="item.count>0">{{item.count}}</em>
+									</div>
+									<div class="s_new_m">
+										<p class="stt"><span>{{item['nickname']}}</span><em>{{item['add_time']|time("yyyy-MM-dd")}}</em></p>
+										<p class="nmt" v-if="item['content'] && item['content']['type'] == '1'">{{item['content']['content']}}</p>
+										<p class="nmt" v-else-if="item['content'] && item['content']['type'] == '2'">[图片]</p>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="footer">
+	<include file="Public:footer" />
+</block>
+<block name="curScript">
+<script type="text/javascript" src="__PUBLIC__/ImApi/js/webim.config.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ImApi/js/strophe-1.2.8.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ImApi/js/websdk-1.4.10.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Common/js/json2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wechat/js/chat.js"></script>
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			// messageData2 : window.messageInfo,
+			systemCount : 0,
+			message : {},
+			historyList : [],
+			page : 1,
+			goscroll : 1,
+			nothing : 1,
+			count : 0,
+		},
+		created(){
+			this.loadMessage();
+			window.initMessage = this.initMessage;
+			this.loadUserChat();
+			this.loadMore();
+			this.getSystemMsgCount();
+		},
+		watch : {
+			// 'messageData2' : 'initMessage',
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadMessage : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Message/index')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.message = returnData['data']['system'];
+						that.count = parseInt(returnData['data']['count']);
+						var username = "wedo{$Think.session.userId}";
+						var password = "wedo{$Think.session.userId}";
+						chatLogin(username, password);
+						that.$nextTick(function(){
+							this.initMessage();
+						});
+					}
+				});
+			},
+			getSystemMsgCount(){
+				var that = this;
+				$.ajax({
+					url: '{:U('Message/systemMessage')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						page : that.page,
+						status : '1'
+					}
+				})
+				.done(function(returnData) {
+					var list = returnData['data']['list'];
+					for(var i=0; i<list.length; i++){
+						if( list[i].is_read === 0)
+							++that.systemCount;
+					}
+				});
+			},
+			loadUserChat() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Chat/chatHistory')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {page:that.page}
+				})
+				.done(function(returnData) {
+					if(returnData['data']['list'].length>0){
+			        	if(that.historyList.length == 0){
+			        		that.historyList = returnData['data']['list'];
+			        	}else{
+			        		that.historyList = that.historyList.concat(returnData['data']['list']);
+			        	}
+		        		vm.goscroll = 1;
+		        		vm.nothing = 0;
+		        	}else{
+		        		vm.goscroll = 0;
+		        		if( that.historyList.length == 0 ){
+							vm.nothing = 1;
+						}
+		        	}
+				});
+			},
+			loadMore(){
+		        document.addEventListener('scroll', function() {	
+					var scrollTop = window.pageYOffset 
+						|| document.documentElement.scrollTop 
+						|| document.body.scrollTop 
+						|| 0;
+					if(scrollTop + window.innerHeight >= document.body.clientHeight){
+						if(vm.goscroll){
+							vm.page++;
+							vm.goscroll=0;
+							vm.loadUserChat();
+						}
+					}
+		        })
+		    },
+			jumpToSystem() {
+				window.location.href = '{:U('Message/systemMessage')}';
+			},
+			//处理信息显示
+			initMessage(){
+				var messageList = localStorage.messageList;
+				if ( messageList ) {
+					var messageList = JSON.parse(messageList);
+					/****处理显示列表信息*****/
+					for(var i=0; i<this.historyList.length; i++){
+						for(var j=0; j<messageList.length; j++){
+							var list_from = 'wedo' + this.historyList[i].id,
+								messageData = messageList[j];
+							if( list_from == messageData.id ){
+								this.historyList[i].content = {type:messageData['type'],content:messageData['content']};
+								this.historyList[i].count = messageData.total;
+								this.historyList[i].add_time = messageData.time / 1000;
+								this.count += parseInt(messageData.total);
+								break;
+							}
+						}
+					}
+				}
+				this.labelCount();
+			},
+			//重置本地信息的total
+			resetTotal(fromId){
+				fromId = 'wedo' + fromId;
+				var messageList =  localStorage['messageList'];
+				if ( messageList ) {
+					var messageList = JSON.parse(messageList);
+					for(var i=0; i<messageList.length; i++){
+						if( messageList[i].id == fromId ){
+							messageList[i].total = 0;
+							break;
+						}
+					}
+					localStorage['messageList'] = JSON.stringify(messageList);
+				}
+				this.initMessage();
+			},
+			jumpToConsultion(id){
+				 // <a :href="'{:U('Message/consultation')}?id='+item['id']"> 
+				 this.resetTotal(id);
+				 window.location.href = '{:U('Message/consultation')}?id=' + id;
+			},
+			labelCount(){
+				if ( this.count > 0 ) {
+					$('.reddot').text(this.count);
+				} else {
+					$('.reddot').remove();
+				}
+			}
+		}
+	})
+</script>
+</block>

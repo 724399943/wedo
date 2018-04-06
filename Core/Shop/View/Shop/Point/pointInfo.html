@@ -1,0 +1,252 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_POINT_REDEEM_}</block>
+<block name='style'>
+	<style type="text/css">
+		.g_imgmain{position:absolute;top:75px;right:25%;}
+		.g_imgmain span{display:block;}
+		.g_imgmain .g_imgbox{width:200px;position:relative;}
+		.g_imgmain .g_imgbox:before{content:'';display:block;padding:50% 0;}
+		.g_imgmain .g_imgbox img{width:100%;height:100%;position:absolute;top:0;left:0;}
+		.pgbtn{display:block;width:180px;margin:20px 0 20px 80px;line-height:40px;text-align:center;color:#333;border-radius:5px;background:rgba(0,0,0,.3);color:#fff;}
+		.pgbtn:hover{background:#967bdc;}
+		.smallinput.on{border:none;box-shadow: none;-webkit-box-shadow: none;-moz-box-shadow: none;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_POINT_REDEEM_}
+	    	<a href="{:U('Point/pointGoods')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper" style="position:relative;padding-bottom:50px;">
+		<form action="{:U('Point/pointInfo')}" method="post" class="stdform" id="template">
+
+		</form>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Shop/js/ajaxZone.js"></script>
+<script id="region_tpl" type="text/html">
+<option value="">请选择</option>
+<%for (var i = 0; i < list.length; i++) {%>
+	<%var data = list[i];%>
+	<option value="<%=data['id']%>"><%=data['region_name']%></option>
+<%}%>
+</script>
+<script id="point_tpl" type="text/html">
+	<div class="line-order">{$Think.lang._PC_TOP_MENU_MY_POINT_}：
+			<span><%=list['point']%></span>
+    </div>
+</script>
+<script id="pointInfo_tpl" type="text/html">
+    <p style="width:50%;"><label style="font-size:18px;">{$Think.lang._PC_POINT_REDEEM_PRODUCT_INFORMATION_}</label></p>
+	<p style="width:50%;">
+		<label><%=productsName%>：</label>
+		<span class="field"><%=goodsInfo['goods_name']%></span>
+	</p>
+	<p style="width:50%;">
+		<label>{$Think.lang._COMMON_AGENT_NAME_}：</label>
+		<span class="field"><%=goodsInfo['agent_name']%></span>
+	</p>
+	<p style="width:50%;">
+		<label>{$Think.lang._COMMON_REDEEM_WEDO_POINTS_}：</label>
+		<span class="field"><%=goodsInfo['goods_price']%></span>
+	</p>
+	<div class="g_imgmain">
+		<span><%=productsPicture%>：</span>
+		<div class="g_imgbox">
+			<img src="<%=goodsInfo['goods_image']%>">
+		</div>
+	</div>
+	<div class="line-order">{$Think.lang._PC_POINT_FILL_IN_DELIVERY_}</div>
+	<p>
+		<label>收货人：</label>
+		<span class="field">
+			<input type="text" name="consignee" class="smallinput" id="consignee" />
+		</span>
+	</p>
+	<p>
+		<label>联系电话：</label>
+		<span class="field">
+			<input type="text" name="telephone" class="smallinput" id="telephone" />
+		</span>
+	</p>
+	<p class="KregionBox">
+        <label>店铺地区：</label>
+        <span class="field">
+            <select class="province" name="province" id="JConsigneeProvince">
+ 
+            </select>
+        </span>
+    </p>
+	<p>
+		<label>收货地址：</label>
+		<span class="field">
+			<input type="text" name="address" class="smallinput" id="address" />
+		</span>
+	</p>
+	<div class="stype" style="padding-left:80px;overflow:hidden;">
+		<span style="float:left;margin-right:30px;">{$Think.lang._PC_POINT_RECEIVING_METHOD_}：</span>
+		<div class="it" style="float:left;margin-right:20px;">
+			<input type="radio" name="express_type" value="1" data-type="1">
+			<i><%=collectFromMerchant%></i>
+		</div>
+		<div class="it" style="float:left;margin-right:20px;">
+			<input type="radio" name="express_type" value="0" data-type="0" checked>
+			<i><%=byDelivery%></i>
+		</div>
+		<span id="stp"></span>
+	</div>
+	<input type="hidden" name="goods_id" value="<%=goods_id%>">
+	<a href="javascript:;" class="pgbtn" id="sureChange">{$Think.lang._PC_POINT_CONFIRM_REDEEM_}</a>
+</script>
+<script type="text/javascript">
+	var express_type = '';//收货方式  0上门自取  1送货上门
+	var ratxt = '';
+	var getZoneAddress = "/Public/getChildZone";
+	var _goodsId = "{$_GET['goods_id']}";
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    function loadData() {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Point/pointInfo')}',
+			type: 'POST',
+			dataType: 'json',
+			async : false,
+			data: {
+				goods_id : _goodsId,
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData.status == 200000) {
+				returnData['data']['productsPicture'] = "{$Think.lang._COMMON_PRODUCTS_PICTURE_}";
+				returnData['data']['productsName'] = "{$Think.lang._COMMON_PRODUCTS_NAME_}";
+				returnData['data']['byDelivery'] = "{$Think.lang._COMMON_BY_DELIVERY_}";
+				returnData['data']['collectFromMerchant'] = "{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}";
+				returnData['data']['goods_id'] = _goodsId;
+				var html = bt('pointInfo_tpl', returnData['data']);
+				$('#template').html(html);
+			} else {
+				alert(returnData['message']);
+			}
+			popupWin.hide();
+		});
+    }
+    loadData();
+
+    function loadRegion() {
+		$.ajax({
+			url: getZoneAddress,
+			type: 'POST',
+			dataType: 'json',
+			data: {pid: '1'}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				var html = bt('region_tpl', returnData['data']);
+				$('#JConsigneeProvince').html(html);
+
+				$(".province").each(function() {
+					if ( $(this).next('.city').length <= 0 ) {
+						var string = [];
+						string.push('&nbsp;&nbsp;<select class="city select-date" name="city" style="display:inline-block;">');
+						string.push('<option value="-1">--未选择--</option>');
+						string.push('</select>');
+						$(this).after(string.join(''));
+					}
+				});
+
+				$(".city").each(function() {
+					if ( $(this).next('.county').length <= 0 ) {
+						var string = [];
+						string.push('&nbsp;&nbsp;<select class="county select-date" name="county" style="display:inline-block;">');
+						string.push('<option value="-1">--未选择--</option>');
+						string.push('</select>');
+						$(this).after(string.join(''));
+					}
+				});
+			}
+		});
+	}
+	loadRegion();
+
+    function loadPoint() {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Point/index')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {}
+		})
+		.done(function(returnData) {
+			if ( returnData.status == 200000) {
+				var html = bt('point_tpl', returnData['data']);
+				$('#contentwrapper').prepend(html);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadPoint();
+
+    // 确认兑换
+    $("#template").on("click", "#sureChange", function(){
+    	var consignee = $("#consignee").val();
+    	var telephone = $("#telephone").val();
+    	var address = $("#address").val();
+    	
+    	if ( !consignee ) {
+			alert('收货人不能为空！');
+			return;
+		}
+		if ( !telephone ) {
+			alert('联系电话不能为空！');
+			return;
+		}
+		if ( !address ) {
+			alert('收货地址不能为空！');
+			return;
+		}
+		$.ajax({
+			url : "{:U("Point/agentCommitPointInfo")}",
+			type : "POST",
+			dataType : "json",
+			data : $('#template').serialize()
+		})
+		.done(function(data){
+			if(data.status == 200000){
+				alert(data.message);
+				$("#template").find(".it").hide();
+				$("#stp").text(ratxt);
+				$("#template").find('input[type="text"]').addClass('on');
+				$("#template").find('input[type="text"]').attr("readonly",true);
+				$("#sureChange").fadeOut(200);
+				// var order_sn = data.data.order_sn;
+                // window.location.href = "commitSuccess?order_sn="+that.order_sn;
+			}else{
+				alert(data.message);
+			}
+		})
+    })
+
+    // 选择收货方式
+    $("#template").on("change", "input[type='radio']",function(){
+    	express_type = $(this).attr("data-type");
+    	ratxt = $(this).siblings('i').text();
+    	(express_type == '0') ? $('.KregionBox').show() : $('.KregionBox').hide();
+    })
+</script>
+</block>

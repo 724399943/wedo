@@ -1,0 +1,226 @@
+<extend name="Common:base" />
+
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+	<style type="text/css">
+		.tspan{height:30px;display:inline-block;vertical-align:middle;}
+		.tspan i{display:block;width:20px;height:10px;background:url(__PUBLIC__/Admin/images/ico.png) center top no-repeat;background-size:50%;margin:4px 0;cursor: pointer;}
+		.tspan i.one{transform:rotate(180deg);--webkit-transform:rotate(180deg);margin-top:2px;}
+	</style>
+</block>
+<block name="title">商家信息管理</block>
+
+<block name="menu">
+	<include file="User:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">商家信息管理</h1>
+	    <span class="pagedesc"></span>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" action="{:U('User/agentList')}" class="menber" id="KsearchForm">
+			<p>
+				<label>账号：</label>
+				<input type="text" name="username" placeholder="输入搜索账号" value="{$return['username']}">
+				&nbsp;&nbsp;
+				<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+				&nbsp;&nbsp;
+				<label>真实姓名：</label>
+				<input type="text" name="manager" placeholder="输入搜索姓名" value="{$return['manager']}">
+				&nbsp;&nbsp;
+				<label>店铺状态：</label>
+				<select name="is_on_sale">
+				    <option value="-1">全部</option>
+					<option value="0" <if condition="$return['is_on_sale'] eq 0">selected</if>>正常</option>
+					<option value="1" <if condition="$return['is_on_sale'] eq 1">selected</if>>屏蔽</option>
+				</select>
+			</p>
+	        <p>
+				<label>注册时间：</label>
+				<input type="text" name="" id="staDatartTime" date-time="{$return['startTime']}" value="" style="margin-right: 0px">
+				<input type="hidden" name="start_time" id="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" name="" id="endDataTime" date-time="{$return['endTime']}" >
+				<input type="hidden" name="end_time" id="endTime" value="{$return['endTime']}">
+				&nbsp;&nbsp;
+				<label>店铺分类：</label>
+				<select name="category_id">   
+					<option value="">全部</option>
+					<volist name="categoryList" id="value">
+						 <option value="{$value['id']}" <if condition="$return['category_id'] eq $value['id']">selected</if>>{$value['category_name']}
+						 </option>
+				 	</volist>
+			    </select>
+			    &nbsp;&nbsp;
+			    <input type="hidden" name="goods_number" value="{$return['goods_number']}">
+			    <input type="hidden" name="order_number" value="{$return['order_number']}">
+				<input type="hidden" name="add_time" value="{$return['add_time']}">
+				<input type="hidden" name="last_login_time" value="{$return['last_login_time']}">
+				<input type="submit" value="筛选">
+			</p>
+		</form>
+
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th width="10%">序号</th>
+				<th>账号</th>
+				<th>店铺名称</th>
+				<th>店铺分类</th>
+				<th>店铺位置</th>
+				<th>真实姓名</th>
+				<th>
+					商品数量
+					<span class="tspan">
+						<i class="one KgoodsNumber" data-sort="0"></i>
+						<i class="two KgoodsNumber" data-sort="1"></i>
+					</span>
+				</th>
+				<th>
+					订单数量
+					<span class="tspan">
+						<i class="one KorderNumber" data-sort="0"></i>
+						<i class="two KorderNumber" data-sort="1"></i>
+					</span>
+				</th>
+				<th>店铺状态</th>
+				<th>
+					注册时间
+					<span class="tspan">
+						<i class="one KaddTime" data-sort="0"></i>
+						<i class="two KaddTime" data-sort="1"></i>
+					</span>
+				</th>
+				<th>
+					最近访问
+					<span class="tspan">
+						<i class="one KlastLoginTime" data-sort="0"></i>
+						<i class="two KlastLoginTime" data-sort="1"></i>
+					</span>
+				</th>
+				<th>操作</th>
+			</tr>
+
+			<if condition="empty($list)">
+				<tr>
+					<td colspan="12">暂无相关数据</td>
+				</tr>
+			<else />
+				<volist name="list" id="data">
+					<tr>
+						<td>{$data['id']}</td>
+						<td>{$data['username']}</td>
+						<td>{$data['agent_name']}</td>
+						<td>{$data['category_name']}</td>
+						<td>{$data['address']}</td>
+						<td>{$data['manager']}</td>
+						<td>{$data['goods_number']}</td>
+						<td>{$data['order_number']}</td>
+						<td>
+						    <if condition="$data['is_on_sale'] eq 1 ">
+	                            屏蔽 
+	                        <else/>
+                              	正常
+                            </if>
+                        </td>
+						<td>{$data['add_time']|time_format=###}</td>
+						<td>
+							<notempty name="agent['last_login_time']">
+								{:time_format($data['last_login_time'])}
+							<else/>
+								-
+							</notempty>
+						</td>
+						<td class="center">
+							<if condition="checkActionAuth('User-editAgent') || checkActionAuth('User-agentSetOnSale') ">
+								<if condition="checkActionAuth('User-editAgent')">
+									<a class="stdbtn btn_lime" href="{:U('User/editAgent', array('id'=>$data['id']))}">查看</a>&nbsp;&nbsp;
+								</if>
+								<if condition="checkActionAuth('User-agentSetOnSale')">
+									<if condition="$data['is_on_sale'] eq '0'">
+										<a class="stdbtn btn_lime" href="{:U('user/agentSetOnSale', array('id'=>$data['id'], 'is_on_sale'=> '1'))}">屏蔽</a>&nbsp;&nbsp;
+									<else />
+										<a class="stdbtn btn_lime" href="{:U('user/agentSetOnSale', array('id'=>$data['id'], 'is_on_sale'=> '0'))}">恢复</a>&nbsp;&nbsp;
+									</if>
+								</if>
+							<else />
+								无权限操作
+							</if>
+						</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="13">
+						<if condition = "$counting lt 25">
+						<else />
+						<div class="page-box">{$show}</div>
+					</if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+	$('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#staDatartTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('#startTime').val(moment($input.val()).unix().valueOf(-60));
+		}
+	});
+	$('#endDataTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('#endTime').val(moment($input.val()).unix().valueOf(-60));
+		}
+	});
+
+	// 商品数量排序
+	$('.KgoodsNumber').click(function(){
+		var sort = $(this).data('sort');
+		$('input[name="goods_number"]').val(sort);
+		$('input[name="order_number"]').val('-1');
+		$('input[name="add_time"]').val('-1');
+		$('input[name="last_login_time"]').val('-1');
+		$('#KsearchForm').submit();
+	});
+
+	// 订单量排序
+	$('.KorderNumber').click(function(){
+		var sort = $(this).data('sort');
+		$('input[name="order_number"]').val(sort);
+		$('input[name="goods_number"]').val('-1');
+		$('input[name="add_time"]').val('-1');
+		$('input[name="last_login_time"]').val('-1');
+		$('#KsearchForm').submit();
+	});
+
+	// 注册时间排序
+	$('.KaddTime').click(function(){
+		var sort = $(this).data('sort');
+		$('input[name="add_time"]').val(sort);
+		$('input[name="goods_number"]').val('-1');
+		$('input[name="order_number"]').val('-1');
+		$('input[name="last_login_time"]').val('-1');
+		$('#KsearchForm').submit();
+	});
+
+	// 最近访问排序
+	$('.KlastLoginTime').click(function(){
+		var sort = $(this).data('sort');
+		$('input[name="last_login_time"]').val(sort);
+		$('input[name="goods_number"]').val('-1');
+		$('input[name="order_number"]').val('-1');
+		$('input[name="add_time"]').val('-1');
+		$('#KsearchForm').submit();
+	});
+</script>
+</block>

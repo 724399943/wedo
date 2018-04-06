@@ -1,0 +1,57 @@
+<ul class="headermenu">
+	<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent', 'Goods')) && in_array(ACTION_NAME, array('agentGoodsCategory', 'agentGoods', 'agentGoodsComment', 'addGoods', 'editGoods', 'goodsDetail'))">current</if>">
+		<a href="{:U('Agent/agentGoodsCategory')}">
+			<span class="icon icon-message"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_GOODS_MANAGER_}</span>
+		</a>
+		<em></em>
+	</li>
+
+	<li class="<if condition="in_array(CONTROLLER_NAME, array('Order'))">current</if>">
+		<a href="{:U('Order/orderList')}">
+			<span class="icon icon-orders"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_ORDER_MANAGER_}</span>
+		</a>
+		<em></em>
+	</li>
+
+	<li class="<if condition="in_array(CONTROLLER_NAME, array('Message', 'MessageCheck'))">current</if>">
+		<a href="{:U('Message/index')}">
+			<span class="icon icon-pencil"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_MESSAGE_MANAGER_}</span>
+		</a>
+		<em></em>
+	</li>
+
+	<li class="<if condition="in_array(CONTROLLER_NAME, array('Point', 'Agent', 'PointOrder', 'Collect')) && in_array(ACTION_NAME, array('pointGoods', 'pointLog', 'myPointGoods', 'goodsDetail', 'orderDetail', 'pointOrder', 'pointInfo', 'pointOrderDetail', 'collectGoods'))">current</if>">
+		<a href="{:U('Point/pointGoods')}">
+			<span class="icon icon-point"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_MY_POINT_}</span>
+		</a>
+		<em></em>
+	</li>
+
+	<li class="<if condition="in_array(CONTROLLER_NAME, array('Bidding', 'Agent', 'User', 'GoodsCheck')) && in_array(ACTION_NAME, array('biddingBanner', 'settlementLog', 'withdraw', 'withdrawSuccess', 'goodsToAuth', 'goodsToTop', 'biddingRecord', 'biddingBanner', 'biddingIndexGoods', 'biddingFavorableGoods', 'biddingAgent', 'platformBiddingRecord', 'toBiddingIndexGoods', 'toBiddingFavorableGoods', 'toBiddingAgent', 'toBiddingBanner', 'payForBidding', 'basicData', 'editBasicData'))">current</if>">
+		<a href="{:U('Agent/basicData')}">
+			<span class="icon icon-admin"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_UESR_CENTER_}</span>
+		</a>
+		<em></em>
+	</li>
+	
+	<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent', 'User', 'Article')) && in_array(ACTION_NAME, array('chooseLanguage', 'changePassword', 'userFeedback', 'feedbackSuccess', 'articleDetail'))">current</if>">
+		<a href="{:U('Agent/changePassword')}">
+			<span class="icon icon-system"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_SETTING_}</span>
+		</a>
+		<em></em>
+	</li>
+
+	<li>
+		<a href="{:U('Login/logout')}">
+			<span class="icon icon-exit"></span>
+			<span class="tet">{$Think.lang._PC_TOP_MENU_LOGOUT_}</span>
+		</a>
+		<em></em>
+	</li>
+</ul>

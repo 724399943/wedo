@@ -1,0 +1,29 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">兑换成功</h1>
+		</header>
+		<div class="main">
+			<div class="exc_sussces">
+				<p class="ttt tl">订单号：{$_GET['order_sn']}</p>
+				<div class="imgbox">
+					<img src="__PUBLIC__/Wechat/images/exc_s_ico.png">
+				</div>
+				<p class="tips">订单支付成功！正在<br>安排发货...</p>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {},
+			created(){
+				$('#Jloading').fadeOut();
+			}
+		})
+	</script>
+</block>

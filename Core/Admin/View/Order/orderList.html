@@ -1,0 +1,455 @@
+<extend name="Common:base" />
+
+<block name="title">订单列表</block>
+<block name='cusStyle'>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+
+<block name="menu">
+	<include file="Order:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">订单列表</h1>
+	    <span class="pagedesc"></span>
+	    <p class="select-style1">
+			<if condition="checkActionAuth('Order-export')">
+			<span class="stdbtn btn_lime" style="cursor: pointer; float:right"; id="btn-export">订单导出</span>
+			</if>
+			
+		</p>	
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" action="{:U('Order/orderList')}" class="order-list">
+			<p class="select-style1">
+				<label style="margin-right:3px">订单号：</label>
+				<input type="text" name="order_sn" placeholder="输入搜索订单号" value="{$return['order_sn']}">
+				
+				<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+			
+			    <label>配送方式：</label>
+				<select name="express_type">
+					<option value="-1">请选择</option>
+					<option value="0" <if condition="$return['express_type'] eq '0' ">selected</if>>送货上门</option>
+					<option value="1" <if condition="$return['express_type'] eq '1' ">selected</if>>到店取货</option>
+				</select> 
+
+				<label>订单状态：</label>
+				<select name="status">
+					<option value="-1">请选择</option>
+					<option value="0" <if condition="$return['status'] eq '0' ">selected</if>>已取消</option>
+					<option value="1" <if condition="$return['status'] eq '1' ">selected</if>>待付款</option>
+					<option value="2" <if condition="$return['status'] eq '2' ">selected</if>>待发货</option>
+					<option value="3" <if condition="$return['status'] eq '3' ">selected</if>>待评价</option>
+					<option value="4" <if condition="$return['status'] eq '4' ">selected</if>>待收货</option>
+					<option value="5" <if condition="$return['status'] eq '5' ">selected</if>>已收货</option>
+					
+				</select>
+				
+			<p class="select-style1">
+				<label>下单日期：</label>
+				<input type="text" name="" id="staDatartTime" date-time="{$return['startTime']}" value="" style="margin-right: 0px">
+				<input type="hidden" name="startTime" id="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" name="" id="endDataTime" date-time="{$return['endTime']}" value="">
+				<input type="hidden" name="endTime" id="endTime" value="{$return['endTime']}">
+				
+				<input type="submit" value="搜索">
+			</p>
+		</form>
+		
+		<form action="" method="post">
+			<table cellpadding="0" cellspacing="0" border="0" class="stdtable order-table">
+
+				<thead>
+					<tr>
+						<th><input type="checkbox" id = "ids"/></th>
+						<th>序号</th>
+						<th>订单编号</th>
+						<th>商品名称</th>
+						<th>商品型号</th>
+						<th>数量</th>
+						<th>商品单价</th>
+						<th>实付金额</th>
+						<th>下单时间</th>
+						<th>用户昵称</th>
+						<th>配送方式</th>
+						<th>订单状态</th>
+						<th>店铺名称</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<if condition="empty($orderList)">
+					<tr>
+						<td colspan="13">没有商品列表~！</td>
+					</tr>
+				<else />
+				<tbody>
+				  <volist name="orderList" id="list">
+					<tr class="tr-th">
+						<td><input type="checkbox" class="ids" value="{$list['id']}"/></td>
+						<td><a href="javascript:;" class="open" date-id="{$list['order_sn']}">{$list['id']}</a></td>
+						<td>{$list['order_sn']}</td>
+						<td>{$list['goods_name']}</td>
+						<td>
+							<switch name="list['goods_type']" >
+						 		<case value="0">普通商品</case>
+						 		<case value="1">赠品</case>
+						 		<case value="2">套餐</case>
+							</switch>
+						</td>
+						<td>{$list['goods_number']}</td>
+						<td>{$list['unit_price']}</td>
+						<td>{$list['price']}</td>
+						<td>{$list['add_time']|time_format=###}</td>
+						<td>{$list['nickname']}</td>
+						<td><if condition="$list['express_type'] eq '1'">到店取货<else/>送货上门</if></td>
+						<td>
+							<if condition="$list['is_out_date'] eq 1" >
+								已取消
+								<elseif condition="$list['is_pay'] eq 0 AND $list['is_out_date'] eq 0" />
+									待付款
+								<elseif condition="$list['is_pay'] eq 1 AND $list['delivery_status'] eq 0  " />
+								 	待发货
+								<elseif condition="$list['is_pay'] eq 1 AND $list['delivery_status'] eq 1 AND $list['received'] eq 1 AND $list['is_comment'] eq 0 " />
+								 	待评价
+								<elseif condition="$list['is_pay'] eq 1  AND $list['delivery_status'] eq 1 AND $list['received'] eq 0" />
+									待收货
+								<else/>
+									已收货
+							</if>
+						</td>
+						<td>{$list['agent_name']}</td>
+						<td>
+						<if condition="checkActionAuth('Order-orderDetail')">
+								<a href="{:U('Order/orderDetail', array('id' => $list['id']))}">查看详情</a>
+							<else />
+								无权限操作
+							</if>
+						</td>
+					</tr>
+					<tr class="tr-tc1">
+						<td colspan="16">
+							<table style="background:rgba(0, 210, 255, 0.3);">
+								<tr>
+									<td>
+										<!-- 商品价格 -->
+										<table>
+											<tr>
+												<td>商品总额</td>
+												<td>RM{$list['goodsListPrice']}</td>
+											</tr>
+											<tr>
+												<td>配送费用</td>
+												<td>{$list['carriage']}</td>
+											</tr>
+											<tr>
+												<td>订单减免</td>
+												<td>{$list['order_discount_money']}</td>
+											</tr>
+											<tr>
+												<td>订单总额</td>
+												<td>RM{$list['total']}</td>
+											</tr>
+											<tr>
+												<td>已支付金额</td>
+												<td>RM{$list['pay_total']}</td>
+											</tr>
+											<tr>
+												<td>积分抵扣金额</td>
+												<td>(NULL)</td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										<!-- 订单其他信息 -->
+										<table>
+											<tr>
+												<td>配送方式</td>
+												<td><if condition="$list['express_type'] eq 1">顾客自提<else/>送货上门</if></td>
+											</tr>
+											<tr>
+												<td>配送保价</td>
+												<td>(NULL)</td>
+											</tr>
+											<tr>
+												<td>商品重量</td>
+												<td>(NULL)</td>
+											</tr>
+											<tr>
+												<td>支付方式</td>
+												<td><if condition="$list['is_pay'] eq 1"><if condition="$list['pay_type'] eq 1">在线支付<else/>货到付款</if><else/>未支付</if></td>
+											</tr>
+											<tr>
+												<td>可得积分</td>
+												<td>(NULL)</td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										<!-- 购买人信息 -->
+										<table>
+											<tr>
+												<td>用户名</td>
+												<td>{$list['unickname']}</td>
+											</tr>
+											<tr>
+												<td>姓名</td>
+												<td>{$list['uname']}</td>
+											</tr>
+											<tr>
+												<td>电话</td>
+												<td>{$list['uphone']}</td>
+											</tr>
+											<tr>
+												<td>地区</td>
+												<td>
+													{:getRegionName($list['uprovince'])}
+													{:getRegionName($list['ucity'])}
+													{:getRegionName($list['ucounty'])}
+												</td>
+											</tr>
+											<tr>
+												<td>email</td>
+												<td>{$list['uemail']}</td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										<!-- 收货人信息 -->
+										<table>
+											<tr>
+												<td>发货日期</td>
+												<td>
+												<if condition="$list['delivery_time']">
+													{:time_format($list['delivery_time'])}
+													<else/>
+													未发货
+												</if>
+												</td>
+											</tr>
+											<tr>
+												<td>姓名</td>
+												<td>{$list['consignee']}</td>
+											</tr>
+											<tr>
+												<td>手机</td>
+												<td>{$list['telephone']}</td>
+											</tr>
+											<tr>
+												<td>地区</td>
+												<td>
+													{:getRegionName($list['province'])}
+													{:getRegionName($list['city'])}
+													{:getRegionName($list['county'])}
+												</td>
+											</tr>
+											<tr>
+												<td>地址</td>
+												<td>{$list['address']}</td>
+											</tr>
+											<tr>
+												<td>邮编</td>
+												<td>{$list['zipcode']}</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr class="tr-tc2">
+						<td colspan="16">
+							<table style="background:rgba(0, 128, 255, 0.42);">
+								<tr id="goodsListTr-{$list['order_sn']}">
+									<td>商品货号</td>
+									<td>货品名称</td>
+									<td>商品类型</td>
+									<td>单价</td>
+									<td>合计金额</td>
+									<td>购买数量</td>
+									<td>说明</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					</volist>
+					<tr>
+						<td colspan="16" class="table-page">
+							<if condition = "$counting lt 25">
+						<else />
+						<div class="page-box">{$show}</div>
+					</if>
+						</td>
+					</tr>
+				</tbody>
+				</if>
+			</table>
+		</form>
+	</div>
+</block>
+
+<block name="script">
+
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+	<script type="text/javascript">
+
+		$('.btn').click(function() {
+			var val = $('.text').val();
+			var p = $('.text').attr('name');
+			var url = window.location.href;
+			var txt = $('.txt').html();
+			var num = txt.substring (1,txt.indexOf('，')-1);
+			var num = parseInt(num);
+			// alert(num)
+			// alert(isNaN(val));
+			if ( val=='' ) {
+				window.location.href = window.location.href;
+			} else if ( val > num) {
+				alert('查无此页');
+			} else if ( parseInt(val) == val && val > 0 ) {
+				if (val.indexOf('.') == true) {
+						var oL=val.lastIndexOf(".");
+						var val=val.substr(0,oL);
+					} 
+					var url = url.replace('.html','');
+					// alert(url.indexOf('/p/'))
+					if ( url.indexOf('/p/') != -1) {
+						var url = url.substring(0,url.indexOf('/p/'));
+						if (val == 1) {
+							window.location.href = url+'.html'
+						} else {
+							window.location.href = url+'/'+p+'/'+val+'.html'
+						}
+					} else {
+						if (val == 1) {
+							window.location.href = url+'.html'
+						} else {
+							window.location.href = url+'/'+p+'/'+val+'.html'
+						}
+					}
+
+			} else {
+				alert('查无此页');
+			}
+		});
+
+		$('.open').click(function() {
+			var order_sn = $(this).attr('date-id');
+			var goodsList = $('#goodsList-' + order_sn).html();
+			if (goodsList == undefined) {
+				$.ajax({
+					url: '{:U("Order/ajaxOrderDetail")}',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						order_sn: order_sn
+					},
+				})
+				.done(function(data) {
+					var str = '';
+			        // console.log(data);
+					if (data.length > 0) {
+	            		for (var i = 0; i < data.length; i ++) {
+	            			var goodsType,
+	            				unitPrice,
+	            				price;
+	            			if (data[i]['goods_type'] == 1) {
+	            				goodsType = '赠品';
+	            				unitPrice = '0.00';
+	            				price = '0.00';
+	            			} else {
+	            				goodsType = '普通';
+	            				unitPrice = data[i]['unit_price'];
+	            				price = data[i]['price'];
+	            			}
+	            			str += '<tr id="goodsList-' + order_sn + '"><td>' + data[i]['goods_id'] + '</td><td>' + data[i]['goods_name'] + '</td><td>' + goodsType + '</td><td>' + unitPrice + '</td><td>' + price + '</td><td>' + data[i]['goods_number'] + '</td><td>'+goodsType+'</td></tr>';
+	            		}
+			        }
+					$('#goodsListTr-' + order_sn).after(str);
+				});
+			}
+		});
+
+		var orderTable = $('.order-table');
+		orderTable.on('click','.open',function(){
+			$(this).parents('.tr-th').nextUntil('.tr-th').toggle();
+		})
+
+	    $('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#staDatartTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#startTime').val(moment($input.val()).unix().valueOf());
+			}
+		});
+		$('#endDataTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#endTime').val(moment($input.val()).unix().valueOf());
+			}
+		});
+
+		$('#ids').click(function(){
+	        if($(this).is(":checked"))
+	        {
+	            $('.ids').prop('checked',true);
+	        }else{
+	            $('.ids').prop('checked',false);
+	        }
+    	});
+
+	    $('#btnok').click(function(){
+	                var len = $('#Echeckbox .select-item');
+	                if($(len[0]).find('input').is(":checked"))
+	                {
+	                    var flag = true;
+	                }else{
+	                    var flag = false;
+	                }
+	                for(var i=0;i<len.length;i++)
+	                {
+	                    if(flag)
+	                    {
+	                        $(len[i]).find('input').prop('checked','');
+	                    }else{
+	                        $(len[i]).find('input').prop('checked','checked');
+	                    }
+	                }
+	    });
+	    $('#btn-export').click(function(){
+		
+			var objs = $('.ids');
+			var ids = '';
+			for(var j=0;j<objs.length;j++)
+			{   
+				if ($(objs[j]).is(':checked'))
+				{
+			    	ids += $(objs[j]).val()+',';
+				}
+			}
+			if (ids == '') {
+				alert('请选择导出的数据');
+				return false;
+			}
+			window.location.href="{:U('Order/export')}?&ids="+ids;
+		});
+		$('#JdeleteBtn').on('click', function(){
+    		var ids = $('.ids:checked'),
+    			idsTemp = '';
+    		if (ids.length <= 0) {
+    			alert('请选择要删除的商品！');
+    			return;
+    		}
+    		
+    		for (var i=0; i<ids.length; i++) {
+    			idsTemp += ids.eq(i).val() + ',';
+    		}
+    		window.location.href = "{:U('Order/delOrder')}" + '?ids=' + idsTemp;
+    	});
+	</script>
+</block>

@@ -1,0 +1,151 @@
+<extend name="Common:base" />
+
+<block name="title">商品列表</block>
+
+<block name="menu">
+	<include file="Goods:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	商品列表
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Goods/goodsList')}" method="get" id="searchForm">
+            <p>
+            	<label>店铺名称：</label>
+             	<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}" />
+             	&nbsp;&nbsp;
+             	<label>商品名称：</label>
+             	<input type="text" name="goods_name" placeholder="输入搜索商品名称" value="{$return['goods_name']}" />
+             	&nbsp;&nbsp;
+             	<label>平台分类：</label>
+				<select name="category_id">
+					<option value="">全部</option>
+					<volist name="categoryList" id="data">
+					<option value="{$data['id']}" <if condition="$data['id'] eq $return['category_id']">selected</if>>{$data['category_name']}</option>
+					</volist>
+				</select>
+				&nbsp;&nbsp;
+				<label>商品状态：</label>
+				<select name="is_on_sale">
+					<option value="-1" <if condition="$is_on_sale eq '-1'">selected</if>>全部</option>
+					<option value="1" <if condition="$is_on_sale eq '1'">selected</if>>已上架</option>
+					<option value="0" <if condition="$is_on_sale eq '0'">selected</if>>已下架</option>
+				</select>
+				&nbsp;&nbsp;
+             	<input type="submit" value="筛选">
+             	<input type="button" id="JsetOnSale" value="批量上架" />
+             	<input type="button" id="JsetOffSale" value="批量下架" />
+            </p>
+            <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+				<tr>
+					<th><input type="checkbox" id="ids"/></th>
+					<th>商品名称</th>
+					<th>平台分类</th>
+					<th>店铺名称</th>
+					<th>销量</th>
+					<th>库存</th>
+					<th>收藏</th>
+					<th>商品价格</th>
+					<th>状态</th>
+					<th>添加时间</th>
+					<th>操作</th>
+				</tr>
+
+				<if condition="empty($list)">
+					<tr>
+						<td colspan="11">暂无相关数据</td>
+					</tr>
+				<else />
+					<volist name="list" id="goods">
+						<tr>
+                            <td><input type="checkbox" class="ids" value="{$goods['id']}"/></td>
+							<td><img src="{$goods['goods_image']}" alt="" height="40px">&nbsp;&nbsp;&nbsp;{$goods['goods_name']|mySubstr=###,43}</td>
+							<td>{$goods['category_name']}</td>
+							<td>{$goods['agent_name']}</td>
+							<td>{$goods['sale_number']}</td>
+							<td>{$goods['goods_number']}</td>
+							<td>{$goods['collect_number']}</td>
+							<td>{$goods['goods_price']}</td>
+							<td>
+								<if condition="$goods['is_on_sale'] eq '1'">
+									已上架
+								<else />
+									下架
+								</if>
+							</td>
+							<td>{:time_format($goods['add_time'])}</td>
+							<td class="center">
+								<if condition="checkActionAuth('Goods-goodsDetail') || checkActionAuth('Goods-setOnSale')">
+									<a class="stdbtn btn_lime" href="{:U('Goods/goodsDetail', array('id'=>$goods['id']))}">查看</a>&nbsp;&nbsp;
+								</if>
+								<if condition="checkActionAuth('Goods-setOnSale')">
+									<if condition="$goods['is_on_sale'] eq '1'">
+										<a class="stdbtn btn_lime" href="{:U('Goods/setOnSale', array('ids'=>$goods['id'], 'is_on_sale'=> 0))}">下架</a>&nbsp;&nbsp;
+									<else />
+										<a class="stdbtn btn_lime" href="{:U('Goods/setOnSale', array('ids'=>$goods['id'], 'is_on_sale'=> 1))}">上架</a>&nbsp;&nbsp;
+									</if>
+								</if>
+							</td>
+						</tr>
+					</volist>
+					<tr>
+						<td colspan="11">
+							<div class="page-box">{$show}</div>
+						</td>
+					</tr>
+				</if>
+			</table>
+		</form>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+	$(function(){
+    	//全选
+        $('#ids').click(function(){
+            if($(this).is(":checked"))
+            {
+                $('.ids').prop('checked',true);
+            }else{
+                $('.ids').prop('checked',false);
+            }
+        }); 
+
+		// 批量上架
+		$("#JsetOnSale").click(function () {
+			var objs = $('.ids');
+			var ids = '';
+			for(var j=0;j<objs.length;j++)
+			{   
+				if ($(objs[j]).is(':checked'))
+				{
+			    	ids += $(objs[j]).val()+',';
+				}
+			}
+			var jumpUrl = "{:U('Goods/setOnSale')}?is_on_sale=1&ids=" + ids;
+			window.location.href = jumpUrl;
+		});
+
+		// 批量下架
+		$("#JsetOffSale").click(function () {
+			var objs = $('.ids');
+			var ids = '';
+			for(var j=0;j<objs.length;j++)
+			{   
+				if ($(objs[j]).is(':checked'))
+				{
+			    	ids += $(objs[j]).val()+',';
+				}
+			}
+			var jumpUrl = "{:U('Goods/setOnSale')}?is_on_sale=0&ids=" + ids;
+			window.location.href = jumpUrl;
+		});
+	});
+</script>
+</block>

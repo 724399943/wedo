@@ -1,0 +1,115 @@
+<extend name="Public:base" />
+<block name="title">{$Think.lang._PC_USER_APPLY_FOR_A_BID_}</block>
+<block name="style">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+	<style type="text/css">
+		.g_imgmain{position:absolute;top:75px;right:25%;}
+		.g_imgmain span{display:block;}
+		.g_imgmain .g_imgbox{width:200px;position:relative;}
+		.g_imgmain .g_imgbox:before{content:'';display:block;padding:50% 0;}
+		.g_imgmain .g_imgbox img{width:100%;height:100%;position:absolute;top:0;left:0;}
+		.pgbtn{display:block;width:180px;margin:20px 0 20px 80px;line-height:40px;text-align:center;color:#333;border-radius:5px;background:rgba(0,0,0,.3);color:#fff;}
+		.pgbtn:hover{background:#967bdc;}
+		.smallinput.on{border:none;box-shadow: none;-webkit-box-shadow: none;-moz-box-shadow: none;}
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_APPLY_FOR_A_BID_}
+	    	<a href="{:U('Bidding/biddingIndexGoods')}" class="btn btn_link" style="float: right">
+                <span style="font-size:14px">{$Think.lang._COMMON_RETURN_}</span>
+            </a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper" style="position:relative;padding-bottom:50px;">
+		<form class="stdform" id="template">
+			<div class="line-order">{$Think.lang._PC_USER_APPLY_FOR_HOME_PRODUCT_}</div>
+			<p style="width:50%;"><label style="font-size:18px;">{$Think.lang._PC_USER_BIDDING_GOODS_INFORMATION_}</label></p>
+			<p style="width:50%;">
+				<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+				<span class="field">{$goods['goods_name']}</span>
+			</p>
+			<p style="width:50%;">
+				<label>{$Think.lang._COMMON_GOODS_INTRODUCTION_}：</label>
+				<span class="field">{$goods['goods_name']}</span>
+			</p>
+			<p style="width:50%;">
+				<label>{$Think.lang._COMMON_PRODUCTS_PRICE_}：</label>
+				<span class="field">{$goods['goods_price']}</span>
+			</p>
+			<div class="g_imgmain">
+				<span>{$Think.lang._COMMON_PRODUCTS_PICTURE_}：</span>
+				<div class="g_imgbox">
+					<img src="{$goods['goods_image']}">
+				</div>
+			</div>
+			<div class="line-order">{$Think.lang._PC_USER_ENTER_BIDDING_INFORMATION_}</div>
+			<p>
+				<label>{$Think.lang._PC_USER_BIDDING_TIME_}：</label>
+				<span class="field">
+					<input type="text" name="start_time" class="smallinput" id="start_time" value="{:date('Y/m/d', strtotime('+1 days'))}"/>
+					<i style="color: #666">*{$Think.lang._PC_USER_BIDDING_EVENT_FAILURE_}</i>
+				</span>
+			</p>
+			<!-- <p>
+				<label>{$Think.lang._PC_USER_BIDDING_AMOUNT_}：</label>
+				<span class="field">
+					<input type="text" name="total" class="smallinput" id="total" placeholder="{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._PC_USER_BIDDING_AMOUNT_}"/>
+				</span>
+			</p> -->
+			<input type="hidden" name="goods_id" value="{$_GET['goods_id']}">
+			<a href="javascript:;" class="pgbtn" id="sureChange">{$Think.lang._PC_USER_APPLY_FOR_A_BID_}</a>
+		</form>
+	</div>
+
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+    // 申请竞价
+    $("#template").on("click", "#sureChange",function(){
+    	var start_time = $("#start_time").val();
+    	// var total = $("#total").val();
+    	if ( !start_time ) {
+			alert('{$Think.lang._COMMON_ALL_}{$Think.lang._PC_USER_BIDDING_TIME_}');
+			return;
+		}
+		// if ( !total ) {
+		// 	alert('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._PC_USER_BIDDING_AMOUNT_}');
+		// 	return;
+		// }
+		$.ajax({
+			url : "{:U("Bidding/toBiddingIndexGoods")}",
+			type : "POST",
+			dataType : "json",
+			data : $('#template').serialize()
+		})
+		.done(function(returnData){
+			if(returnData['status'] == 200000){
+				// var url = "{:U('Bidding/payForBidding')}?order_sn=" + returnData['data']['order_sn'] + "&tab=0";
+				var url = "{:U('Bidding/biddingRecord', array('bidding_type'=>'0'))}";
+				window.location.href = url;
+			}else{
+				alert(returnData['message']);
+			}
+		})
+    })
+
+    $('#start_time').datetimepicker({
+		format:"Y-m-d",
+		timepicker:false,
+		onChangeDateTime:function(dp, $input) {
+			$('#startTime').val($input.val());
+		}
+	});
+</script>
+</block>

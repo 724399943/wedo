@@ -1,0 +1,220 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_MESSAGE_PUBLISH_}</block>
+
+<block name="menu">
+	<include file="Message:menu" />
+</block>
+
+<block name="style">
+	<style type="text/css">
+		textarea{color:#666;font-size:14px;width:800px;height:150px;padding:15px;}
+		textarea:focus{border:1px solid #227bd6;}
+		.uploadImg{line-height:35px;border:1px solid #e4e4e4;width:77%;margin:20px 0;}
+		.uploadImg span{width:100px;text-align:right;display:inline-block;vertical-align:middle;background:#f5f5f5;}
+		.uploadImg input{width:65%;display:inline-block;vertical-align:middle;}
+		.fabu{display:block;line-height:40px;text-align:center;width:120px;border:1px solid #e4e4e4;border-radius:5px;margin-top:20px;font-size:16px;}
+		.fabu:hover{background:#967bdc;color:#fff;border-color:#967bdc;}
+	</style>
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_MESSAGE_PUBLISH_}</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+       	<div class="line-order" style="border:none;">{$Think.lang._PC_MESSAGE_ENTER_TEXT_PUBLISH_}</div>
+       	<textarea placeholder="{$Think.lang._PC_MESSAGE_ENTER_TEXT_BE_PUBLISH_}" class="Jtext"></textarea>	
+		<div class="uploadImg" id="upload_input">
+			<span>{$Think.lang._COMMON_UPLOAD_IMAGE_}：</span>
+			<input type="file" name="upload_input" id="upload_input">
+			<input type="hidden" name="image" id="hiddenImg">
+		</div>
+		<div class="line-dete" style="border:none;background:initial;">
+            <div class="line-order" style="border:none;">{$Think.lang._PC_MESSAGE_SELECT_PRODUCT_}</div>
+            <span class="field" style="display:block">
+	            <div class="line-dete dete-style2" id="JCombOper">
+	                <div class="itm Jadd-date-one">
+	                    <ul class="search-date" id="JSelGoods">
+                               
+	                    </ul>
+	                </div>
+	                <div class="combination-operation">
+	                    <div class="input-li"><a href="javascript:;" class="comb-operation-btn" id="JAddComb"> >> </a></div>
+	                    <div class="input-li"><a href="javascript:;" class="comb-operation-btn" id="JDelComb"> << </a></div>
+	                </div>
+	                <div class="itm Jadd-date-one" id="JSelComb">
+	                    <ul class="search-date" id="JAddCombination">
+	                                
+	                    </ul>
+	                </div>
+	                <input type="hidden" id="JagentList" name="agent_list" value="">
+	            </div>
+	        </span>
+        </div>
+        <a href="javascript:;" class="fabu">{$Think.lang._PC_MESSAGE_PUBLISH_BUTTON_}</a>
+	</div>
+</block>
+<block name="script">
+<script type="text/html" id="comment_tpl">
+<%for(var i = 0;i < list.length;i++){
+	var data = list[i];%>
+	<li ondblclick="k(this)">
+        <a href="javascript:;" data-id="<%=data['id']%>"><%=data['goods_name']%></a>
+    </li>  
+<%}%>
+</script>
+<script type="text/javascript" src="__PUBLIC__/Shop/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    var page = 1,
+    	imageUrl,
+    	goodsId,
+    	content;
+
+    function loadGoods(page) {
+		popupWin.show('{$Think.lang._COMMON_LOADING_}');
+		$.ajax({
+			url: '{:U('Agent/agentGoods')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				var html = bt('comment_tpl', returnData['data']);
+				$('#JSelGoods').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadGoods);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+	}
+	loadGoods(1);
+
+	function issuingMessage() {
+		content = $(".Jtext").val();
+		if ( !content ) {
+			alert('{$Think.lang._PC_MESSAGE_ENTER_TEXT_BE_PUBLISH_}');
+			return;
+		}
+		if ( !goodsId ) {
+			alert('{$Think.lang._PC_MESSAGE_SELECT_PRODUCT_}');
+			return;
+		}
+		if ( !imageUrl ) {
+			alert('{$Think.lang.module_bidding_advertisement_photo}');
+			return;
+		}
+		$.ajax({
+			url: '{:U('MessageCheck/issuingMessage')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				goods_id : goodsId,
+				image : imageUrl,
+				content : content
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['status'] == '200000' ) {
+				window.location.href = '{:U('MessageCheck/payForIssuing')}?order_sn=' + returnData['data']['order_sn'];
+			} else {
+				alert(returnData['message']);
+			}
+		});
+	}
+
+	// 发布消息
+	$(".fabu").click(function(){
+		issuingMessage();
+	})
+
+	/*选择店铺*/
+    $('.search-date').on('click','a',function(){
+        var thisLi = $(this).parent();
+        thisLi.addClass('list_on').siblings().removeClass('list_on');
+    })
+
+    $('#JCombOper').on('click', '#JAddComb', function() {
+        // var favourablePrice = $('.goods-price');
+        var onGoods = $('#JSelGoods').find('.list_on');
+        var strTemp = '';
+
+        onGoods.each(function() {
+            strTemp += "<li>";
+            strTemp += $(this)[0].innerHTML;
+            strTemp += "</li>";
+            $(this).remove();
+        });
+        $('#JAddCombination').append(strTemp);
+        goodsId = $("#JAddCombination").find("a").attr("data-id");
+        if($("#JAddCombination").length >= 1){
+        	$(this).hide();
+        }
+    });
+
+    $('#JCombOper').on('click', '#JDelComb', function() {
+    	$(this).parent().siblings().find("#JAddComb").show();
+        var onGoods = $('#JSelComb').find('.list_on');
+        onGoods.each(function() {
+            $(this).remove()
+        });
+        var strTemp = '';
+        onGoods.each(function() {
+            strTemp += "<li>";
+            strTemp += $(this)[0].innerHTML;
+            strTemp += "</li>";
+        });
+        $('#JSelGoods').append(strTemp);
+        goodsId = "";
+    });
+
+    $('input[name="last"]').click(function(event) {
+        console.log($(this).val());
+        if ($(this).val() == 0) {
+            $('#JlastTime').hide();
+        } else {
+            $('#JlastTime').show();
+        }
+    });
+
+    function k(Object){
+        var onGoods = $('#JSelGoods').find('.list_on');
+        var strTemp = '';
+        onGoods.each(function() {
+            strTemp += "<li>";
+            strTemp += $(this)[0].innerHTML;
+            strTemp += "</li>";
+            $(this).remove();
+        });
+        $('#JAddCombination').append(strTemp);
+    }
+
+    // 上传图片
+	$(document).on('change', '#upload_input', function() {
+	    $.ajaxFileUpload({
+	        url: "{:U('MessageCheck/photoUpload')}",
+	        secureuri: false,
+	        fileElementId: 'upload_input',
+	        dataType: 'json',
+	        success: function (data, status) {
+	            if(data.error != '') {
+	                alert(data.errorStr);
+	            } else {
+	                $("#hiddenImg").val(data.url);
+	                imageUrl = data.url;
+	            }
+	        },error: function (data, status, e) {
+	            alert(e);
+	        }
+	    });
+	});
+</script>
+</block>

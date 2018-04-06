@@ -1,0 +1,82 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_AGENT_QUALIFICATION_}</h1>
+		</header>
+		<div class="suppleData">
+			<form>
+				<ul>
+					<li>
+						<div class="sinput">
+							<span>{$Think.lang._PC_USER_COMPANY_NAME_}</span>
+							<input type="text" :value="aptitude['company_name']" readonly>
+						</div>
+					</li>
+					<li>
+						<div class="sinput">
+							<span>{$Think.lang._PC_USER_LICENSE_NUMBER_}</span>
+							<input type="text" :value="aptitude['registr_id']" readonly>
+						</div>
+					</li>
+					<li>
+						<div class="sinput">
+							<span>{$Think.lang._PC_USER_COMPANY_ADDRESS_}</span>
+							<input type="text" :value="aptitude['address']" readonly>
+						</div>
+					</li>
+					<li>
+						<div class="sinput">
+							<span>{$Think.lang._PC_USER_CONTACT_PERSON_NAME_}</span>
+							<input type="text" :value="aptitude['manager']" readonly>
+						</div>
+					</li>
+					<li>
+						<div class="sinput">
+							<span>{$Think.lang._PC_USER_CONTACT_PERSON_EMAIL_}</span>
+							<input type="text" :value="aptitude['email']" readonly>
+						</div>
+					</li>
+				</ul>
+			</form>
+			<div class="paper_wrap">
+				<div class="papers_box">
+					 <img :src="aptitude['license']" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {
+			aptitude : {}
+		},
+		created(){
+			this.loadAptitude();
+		},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			loadAptitude : function() {
+				var that = this;
+				$.ajax({
+					url: '{:U('Agent/aptitudeData')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {type:0}
+				})
+				.done(function(returnData) {
+					if( returnData['status'] == '200000' ){
+						that.aptitude = returnData['data']['list'];
+					}
+				});
+			}
+		}
+	})
+</script>
+</block>

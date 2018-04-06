@@ -1,0 +1,185 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_USER_PRODUCT_VERIFICATION_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_PRODUCT_VERIFICATION_}
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<p>
+				<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+				<input type="text" name="goods_name" value="{$return['goods_name']}" placeholder="{$Think.lang._COMMON_SEARCH_GOODS_NAME_}">
+				&nbsp;&nbsp;
+				<label>{$Think.lang._PC_USER_VERIFY_STATE_}：</label>
+				<select name="is_auth">
+					<option value="0" <if condition="$return['is_auth'] eq 0">selected</if>>{$Think.lang._PC_USER_NOT_VERIFIED_}</option>
+					<option value="1" <if condition="$return['is_auth'] eq 1">selected</if>>{$Think.lang._PC_USER_VERIFIED_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_PLATFORM_CATEGORY_}：</label>
+				<select name="category_id">
+					<option value="">{$Think.lang._COMMON_ALL_}</option>
+					<volist name="categoryList" id="data">
+						<option value="{$data['id']}" <if condition="$return['category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+					</volist>
+				</select>
+			</p>
+			<p>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_MERCHANT_CATEGORY_}：</label>
+				<select name="agent_category_id">
+					<option value="">{$Think.lang._COMMON_ALL_}</option>
+					<volist name="agentCategoryList" id="data">
+						<option value="{$data['id']}"  <if condition="$return['agent_category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+					</volist>
+				</select>
+				&nbsp;&nbsp;
+				<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+				<a href="javascript:;" class="btn btn_link" style="float:right;margin-right:15px;">
+					<span style="font-size:14px;">{$Think.lang._PC_USER_APPLY_FOR_VERIFICATION_}</span>
+				</a>
+			</p>
+		</form>
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template">
+             
+		</table>
+		<div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="goodsAuth_tpl" type="text/html">
+	<tr>
+		<th>{$Think.lang._COMMON_ALL_SELECTED_}<input type="checkbox" id="ids"></th>
+		<th>{$Think.lang._COMMON_NO_}</th>
+		<th>{$Think.lang._COMMON_PRODUCTS_NAME_}</th>
+		<th>{$Think.lang._COMMON_GOODS_INTRODUCTION_}</th>
+		<th>{$Think.lang._COMMON_PLATFORM_CATEGORY_}</th>
+		<th>{$Think.lang._COMMON_MERCHANT_CATEGORY_}</th>
+		<th>{$Think.lang._PC_USER_VERIFY_STATE_}</th>
+		<th>{$Think.lang._PC_USER_RELEASE_DATE_}</th>
+	</tr>
+	<%for(var i = 0;i < list.length;i++){
+		var data = list[i],
+			date = new Date(data['add_time'] * 1000);%>
+		<tr>
+			<td><input type="checkbox" name="checkbox" class="ids" value="<%=data['id']%>"/></td>
+			<td><%=data['id']%></td>
+			<td><%=data['goods_name']%></td>
+			<td><%=data['introduction']%></td>
+			<td><%=data['category_name']%></td>
+			<td><%=data['agent_category_name']%></td>
+			<td>
+				<%if ( data['is_auth'] == '0' ) {%>
+					<%=notVerified%>
+				<%}else{%>
+					<%=verified%>
+				<%}%>
+			</td>
+			<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		</tr>
+	<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+	var bt = baidu.template;
+	var is_auth = "{$return['is_auth']}",
+		keyword = "{$return['goods_name']}",
+		category_id = "{$return['category_id']}",
+		agent_category_id = "{$return['agent_category_id']}";
+	var ids = '',
+		idsData = [];
+	function loadData(page) {
+		popupWin.show('{$Think.lang._COMMON_LOADING_}');
+		$.ajax({
+			url : "{:U("Agent/agentGoods")}",
+			type : "POST",
+			dataType : "json",
+			data : {
+				page : page,
+				is_auth : is_auth,
+				keyword : keyword,
+				category_id : category_id,
+				agent_category_id : agent_category_id,
+			}
+		})
+		.done(function(returnData){
+			if ( returnData["data"]["list"].length ){
+				returnData['data']['notVerified'] = "{$Think.lang._PC_USER_NOT_VERIFIED_}";
+				returnData['data']['verified'] = "{$Think.lang._PC_USER_VERIFIED_}";
+				var html = bt('goodsAuth_tpl', returnData['data']);
+				$("#template").html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}	
+			popupWin.hide();
+		});
+	}
+	loadData(1);
+
+	// 全部勾选
+	$("#template").on("change", "#ids", function(){
+		if( !$(this).attr("checked") ){
+			$("input[type='checkbox']").attr("checked",false);
+			ids = "";
+			idsData = [];
+		} else {
+			$("input[type='checkbox']").attr("checked",true);
+			$('#template .ids').each(function(){
+				idsData.push($(this).val());
+			});
+			ids = idsData.join(',');
+		}
+	});
+
+	// 单独勾选
+	$("#template").on("change", ".ids", function(){
+		var id = $(this).val();
+		if( !$(this).attr("checked") ){
+			for(var i=0; i<idsData.length; i++){
+				if( id == idsData[i] ){
+					idsData.splice(i,1);
+				}
+			}
+		} else {
+			idsData.push(id);
+		}
+		ids = idsData.join(',');
+	});
+
+	// 申请认证
+	$('.btn_link').click(function(){
+		if ( !ids ) {
+			alert('{$Think.lang._COMMON_ALL_}{$Think.lang._PC_MESSAGE_RELATED_PRODUCTS_}');
+			return;
+		}
+		var start_time = new Date();
+		start_time.setTime(start_time.getTime() + 24*60*60*1000);
+		start_time = start_time.getFullYear()+"-" + (start_time.getMonth()+1) + "-" + start_time.getDate();
+		$.ajax({
+			url : "{:U("GoodsCheck/goodsToAuth")}",
+			type : "POST",
+			dataType : "json",
+			data : {goods_id:ids,start_time:start_time,check_type:0}
+		})
+		.done(function(returnData){
+			if ( returnData['status'] == '200000' ){
+				var url = "{:U('GoodsCheck/payForCheck')}?tab=0&order_sn=" + returnData['data']['order_sn'];
+                window.location.href = url;
+			} else {
+				alert(returnData['message']);
+			}	
+		});
+	});
+</script>
+</block>

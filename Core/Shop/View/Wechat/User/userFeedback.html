@@ -1,0 +1,56 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._PC_SETTING_CUSTOMER_FEEDBACK_}</h1>
+		</header>
+		<div class="main">
+			<div class="releaseNews">
+				<ul>
+					<li>
+						<div class="rel_text">
+							<textarea placeholder="{$Think.lang._PC_SETTING_SUGGESTION_PLACEHOLDER_}" id="Jtext" class="fkui"></textarea>
+						</div>
+					</li>
+				</ul>
+				<a href="javascript:;" class="releaseNews" @click="submitFeedback">{$Think.lang._COMMON_SUBMIT_}</a>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+<script type="text/javascript">
+	var vm = new Vue({
+		el : "#content",
+		data : {},
+		mounted(){
+		   $('#Jloading').fadeOut();
+		},
+		methods : {
+			submitFeedback() {
+				var text = $('#Jtext').val();
+				if ( !text ) {
+					automsgbox('{$Think.lang._COMMON_PLEASE_ENTER_}{$Think.lang._PC_SETTING_YOUR_SUGGESTION_}');
+					return;
+				}
+				$.ajax({
+					url: '{:U('User/userFeedback')}',
+					type: 'POST',
+					dataType: 'json',
+					data: {text:text}
+				})
+				.done(function(returnData) {
+					if ( returnData['status'] == '200000' ) {
+						automsgbox('{$Think.lang._PC_SETTING_THANK_FOR_FEEDBACK_}', function(){
+							window.location.href = window.location.href;
+						});
+					} else {
+						automsgbox(returnData['message']);
+					}
+				});
+			}
+		}
+	})
+</script>
+</block>

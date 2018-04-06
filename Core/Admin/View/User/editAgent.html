@@ -1,0 +1,280 @@
+<extend name="Common:base" />
+
+<block name="menu">
+	<include file="User/menu" />
+</block>
+
+<block name="main">
+<div class="pageheader">
+    <h1 class="pagetitle">商家详情</h1>
+    <span class="pagedesc"></span>
+</div>
+
+<div id="contentwrapper" class="contentwrapper">
+	<form action="{:U('User/agentList')}" method="post" class="stdform stdform2"  id="JgoodsForm">
+		<input type="hidden" name="id" id="id" value="{:remove_xss(I('get.id'))}" /> 
+		<div class="contenttitle2">
+        	<h3>基本信息</h3>
+        </div>
+		<div class="line-dete">
+			<label>登陆账号</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['username']}" disabled/>
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>注册时间</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['add_time']|time_format=###}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>访问时间</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{:time_format($agentInfo['last_login_time'])}" readOnly="true" />
+			</span>
+		</div>
+
+		<div class="contenttitle2">
+        	<h3>资质资料</h3>
+        </div>
+
+		<div class="line-dete">
+			<label>企业营业证件</label>
+			<span class="field">
+				<img src="{$agentInfo['license']}" width="150" height="150" />
+			</span>
+		</div>
+		 
+		<div class="line-dete">
+			<label>企业名称</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['company_name']}" readOnly="true" />
+			</span>
+		</div>
+
+		<div class="line-dete">
+			<label>注册号</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['registr_id']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>公司地址</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['address']}" readOnly="true" />
+			</span>
+		</div>
+
+		<div class="contenttitle2">
+        	<h3>基本资料</h3>
+        </div>
+		
+		<div class="line-dete">
+			<label>商家名称</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['agent_name']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>商家地址</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['address']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>商家分类</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['category_name']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>商家信用值</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['credit']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>商家关键词</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['agent_keyword']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>商家照片</label>
+			<span class="field">
+				<img src="{$agentInfo['logo']}" width="150" height="150" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>商家二维码</label>
+			<span class="field">
+				<img src="{$agentInfo['headimgurl']}" width="150" height="150" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>联系人姓名</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['manager']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>联系人电话</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['telephone']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>联系人邮箱</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['email']}" readOnly="true" />
+			</span>
+		</div>
+
+		<div class="line-dete">
+			<label>商家简介</label>
+			<span class="field">
+				<input type="submit" value="查看" class="stdbtn Jagentfirm" />
+			</span>
+		</div>
+
+		<div class="contenttitle2">
+        	<h3>店铺情况</h3>
+        </div>
+		
+		<div class="line-dete">
+			<label>商品总数</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['sum']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>上架基础商品</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['is']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>下架基础商品</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['sale']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>上架积分商品</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['is_point']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>总销售数</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['numberTotal']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>基础商品销售数</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['goods']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>积分商品销售数</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="{$agentInfo['point']}" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label>修改支付密码</label>
+			<span class="field">
+				<input type="password" id="JwithdrawPassword" class="smallinput" value=""/>
+			</span>
+		</div>
+		<div class="line-dete">
+			<label></label>
+			<span class="field">
+				<if condition="checkActionAuth('User-editAgentPassword')">
+					<a class="stdbtn btn_lime" id="JeditPasswordBtn">修改密码</a>
+				</if>
+			</span>
+		</div> 
+		
+		<div class="line-dete">
+			<label>用户状态</label>
+			<span class="field">
+				<input type="text" name="username" id="username" class="smallinput" value="<if condition="$agentInfo['is_on_sale'] eq '0'">屏蔽<else/>正常</if>" readOnly="true" />
+			</span>
+		</div>
+		
+		<div class="line-dete">
+			<label></label>
+			<span class="field">
+				<if condition="checkActionAuth('User-agentSetOnSale')">
+					<if condition="$agentInfo['is_on_sale'] eq '0'">
+						<a class="stdbtn btn_lime" href="{:U('User/agentSetOnSale', array('id'=>$agentInfo['id'], 'is_on_sale'=> 1))}">恢复</a>&nbsp;&nbsp;
+					<else />
+						<a class="stdbtn btn_lime" href="{:U('User/agentSetOnSale', array('id'=>$agentInfo['id'], 'is_on_sale'=> 0))}">屏蔽</a>&nbsp;&nbsp;
+					</if>
+				</if>
+			</span>
+		</div> 
+		
+		<div class="line-dete">
+			<label></label>
+			<span class="field">
+				<input type="submit" value="保存" class="stdbtn Jagentfirm" />
+				<input type="button" value="返回" class="stdbtn" onclick="window.history.go(-1);" />
+			</span>
+		</div>
+	</form>
+</div>
+</block>
+<block name="script">
+<script type="text/javascript">
+	  	$('.Jagentfirm').click(function() {
+    		$('#JgoodsForm').submit();
+    	});
+
+		$('#JeditPasswordBtn').click(function(){
+		var id = "{$agentInfo['user_id']}",
+			withdrawPassword = $('#JwithdrawPassword').val();
+		if ( !withdrawPassword ) {
+			alert('请输入提现密码');
+		}
+		$.ajax({
+			url: '{:U('User/editAgentPassword')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				id : id,
+				withdraw_password : withdrawPassword
+			}
+		})
+		.done(function(returnData) {
+			alert(returnData['message']);
+			if ( returnData['status'] == '200000' ) {
+				window.location.href = window.location.href;
+			}
+		});
+	});
+</script>
+</block>

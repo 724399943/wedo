@@ -1,0 +1,182 @@
+<extend name="Public:base" />
+<block name="main">
+	<div class="content" id="content">
+		<header class="head">
+			<span class="back"></span>
+			<h1 class="y-confirm-order-h1">{$Think.lang._WAP_BIDDING_WEDOBIDDINGRECORD_}</h1>
+		</header>
+		<div class="main">
+			<div class="bidd_wrap">
+				<div class="bind_nav" id="Tab">
+					<span class="on" @click="ontab(0)">{$Think.lang._WAP_BIDDING_HIGHLIGHTEDPRODUCTS_}</span>
+					<span @click="ontab(1)">{$Think.lang._WAP_BIDDING_PROMOTIONALPRODUCTS_}</span>
+					<span @click="ontab(2)">{$Think.lang._WAP_BIDDING_HIGHLIGHTEDMERCHANT_}</span>
+					<span @click="ontab(3)">{$Think.lang._WAP_BIDDING_PROMOTIONALSPACE_}</span>
+				</div>
+				<!-- 首页平台竞价记录 -->
+				<div class="integral_goods" v-if="tab == 0">
+					<div class="is_hgoods">
+						<div class="sel_goodsm">
+							<ul>
+								<li v-for="(item,index) in goodsList">
+									<div class="is_hhh">
+										<div class="imgbox">
+											<img :src="item.goods_image">
+										</div>
+										<div class="se_ggg">
+											<h1>{{item.goods_name}}</h1>
+											<p class="db-overflow">{{item.introduction}}</p>
+											<span>RM{{item.goods_price}}</span>
+										</div>
+									</div>
+									<div class="istxt">
+										<span class="time">{{item.start_time|time("yyyy-MM-dd")}}</span>
+										<span class="price">{$Think.lang._WAP_BIDDING_BIDDINGAMOUNT_}：{{item.total}}</span>
+									</div>
+									<b class="db">{$Think.lang._WAP_BIDDING_MERCHANTS_}：{{item.agent_name}}</b>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- 优惠商品平台竞价记录 -->
+				<div class="integral_goods" v-else-if="tab == 1">
+					<div class="is_hgoods">
+						<div class="sel_goodsm">
+							<ul>
+								<li v-for="(item,index) in goodsList">
+									<div class="is_hhh">
+										<div class="imgbox">
+											<img :src="item.goods_image">
+										</div>
+										<div class="se_ggg">
+											<h1>{{item.goods_name}}</h1>
+											<p class="db-overflow">{{item.introduction}}</p>
+											<span>RM{{item.goods_price}}</span>
+										</div>
+									</div>
+									<div class="istxt">
+										<span class="time">{{item.start_time|time("yyyy-MM-dd")}}</span>
+										<span class="price">{$Think.lang._WAP_BIDDING_BIDDINGAMOUNT_}：{{item.total}}</span>
+									</div>
+									<b class="db">{$Think.lang._WAP_BIDDING_MERCHANTS_}：{{item.agent_name}}</b>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- 商家平台竞价记录 -->
+				<div class="integral_goods" v-else-if="tab == 2">
+					<div class="is_hgoods">
+						<div class="sel_goodsm">
+							<ul>
+								<li v-for="(item,index) in goodsList">
+									<div class="istxt nos">
+										<span class="time">{{item.start_time|time("yyyy-MM-dd")}}</span>
+										<span class="price">{$Think.lang._WAP_BIDDING_BIDDINGAMOUNT_}：{{item.total}}</span>
+									</div>
+									<b class="db">{$Think.lang._WAP_BIDDING_MERCHANTS_}：{{item.agent_name}}</b>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- 广告位平台竞价记录 -->
+				<div class="integral_goods" v-else>
+					<div class="is_hgoods">
+						<div class="sel_goodsm">
+							<ul>
+								<li v-for="(item,index) in goodsList">
+									<div class="istxt nos">
+										<span class="time">{{item.start_time|time("yyyy-MM-dd")}}</span>
+										<span class="price">{$Think.lang._WAP_BIDDING_BIDDINGAMOUNT_}：{{item.total}}</span>
+									</div>
+									<b class="db">{$Think.lang._WAP_BIDDING_MERCHANTS_}：{{item.agent_name}}</b>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block name="curScript">
+	<script type="text/javascript">
+		var vm = new Vue({
+			el : "#content",
+			data : {
+				goodsList : [],
+				page : 1,
+				goscroll : 1,
+				biddingType : {$_GET['bidding_type']},
+				tab : {$_GET['tab']},
+			},
+			created(){
+				this.loadTab();
+			},
+			mounted(){
+			   $('#Jloading').fadeOut();
+			},
+			methods : {
+				getGoods : function(){
+					var that = this;
+					$.ajax({
+						url : "{:U("Bidding/platformBiddingRecord")}",
+						type : "POST",
+						dataType : "json",
+						data : {
+							page : that.page,
+							biddingType : that.biddingType
+						}
+					})
+					.done(function(data){
+						if(data.data.list.length>0){
+				        	if(that.goodsList.length == 0){
+				        		that.goodsList = data.data.list;
+				        	}else{
+				        		that.goodsList = that.goodsList.concat(data.data.list);
+				        	}
+			        		vm.goscroll = 1;
+			        	}else{
+			        		vm.goscroll = 0;
+			        	}
+					})
+				},
+				ontab : function(index){
+					var that = this;
+					$(event.target).siblings().removeClass('on');
+					$(event.target).addClass('on');
+					that.goodsList = [];
+					that.tab = index;
+					that.biddingType = index;
+					that.getGoods();
+				},
+				loadTab : function(){
+					var that = this;
+					var index = that.tab;
+					$('#Tab').find('span').removeClass('on');
+					$('#Tab').find('span').eq(index).addClass('on');
+					that.goodsList = [];
+					that.biddingType = index;
+					that.getGoods();
+				},
+				loadMore(){
+			        document.addEventListener('scroll', function() {	
+				        var scrollTop = window.pageYOffset 
+							|| document.documentElement.scrollTop 
+							|| document.body.scrollTop 
+							|| 0;
+						if(scrollTop + window.innerHeight >= document.body.clientHeight){      
+							if(vm.goscroll){
+								vm.page++;
+								vm.goscroll=0;
+								vm.getGoods();
+							}
+						}
+			        })
+			    }
+			}
+		})
+	</script>
+</block>

@@ -1,0 +1,40 @@
+<extend name="Common:base" />
+
+<block name="menu">
+	<include file="System:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">认证/置顶审核期限设置</h1>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+        <form class="stdform stdform2" action="{:U(System/checkSetting)}" method="post">
+        	<div id="updates" class="subcontent" style="display: block;">
+				<volist name="configList" id="vo">
+					<if condition="in_array($vo['config_sign'], array('authAuditTime','topAuditTime'))">
+						<div class="line-dete">
+							<label>{$vo['config_name']}</label>
+			                <span class="field">
+			                	<input type="hidden" name="config[{$key}][config_sign]" value="{$vo['config_sign']}">
+			                	<input type="hidden" name="config[{$key}][config_name]" value="{$vo['config_name']}">
+			                	<input type="text" name="config[{$key}][config_value]"  class="smallinput" value="{$vo['config_value']}">&nbsp;&nbsp;小时
+			                	<input type="hidden" name="config[{$key}][explain]" value="{$vo['explain']}">
+			                	<small class="desc">{$vo['explain']}</small>
+			                </span>
+			            </div>
+		            </if>
+	        	</volist>
+	        	<input type="submit" class="big-btn stdbtn" value="保存	">
+            </div>
+        </form>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</block>

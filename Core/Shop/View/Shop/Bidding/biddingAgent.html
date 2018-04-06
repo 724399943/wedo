@@ -1,0 +1,92 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_USER_HOME_MERCHANT_BIDDING_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_HOME_MERCHANT_BIDDING_}
+	    	<a href="{:U('Bidding/toBiddingAgent')}" class="btn btn_link" style="float:right;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_APPLY_FOR_A_BID_}</span>
+	    	</a>
+	    	<a href="{:U('Bidding/platformBiddingRecord', array('bidding_type'=> '2'))}" class="btn btn_link" style="float:right;margin-right:15px;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_WEDO_BIDDING_RECORD_}</span>
+	    	</a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template">
+                 
+		</table>
+		<div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="biddingAgent_tpl" type="text/html">
+	<tr>
+		<th>{$Think.lang._COMMON_NO_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_MERCHANTS_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_DATE_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_AMOUNT_}</th>
+		<th>{$Think.lang._PC_USER_BIDDING_STATUS_}</th>
+	</tr>
+	<%for(var i = 0;i < list.length;i++){
+		var data = list[i],
+			date = new Date(data['start_time'] * 1000);%>
+		<tr>
+			<td><%=data['id']%></td>
+			<td><%=data['agent_name']%></td>
+			<td><%=date.pattern('yyyy-MM-dd')%></td>
+			<td><%=data['total']%></td>
+			<td>
+				<%switch ( data['status'] ) {
+					case '0' :%>
+						<%=pending%>
+					<%break;
+					case '1' :%>
+						{$Think.lang._COMMON_PENDING_SUCCESS_}
+					<%break;
+					case '2' :%>
+						{$Think.lang._COMMON_PENDING_FAILED_}
+					<%break;
+				}%>
+			</td>
+		</tr>
+	<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+	var bt = baidu.template;
+	function loadData(page) {
+		popupWin.show('{$Think.lang._COMMON_LOADING_}');
+		$.ajax({
+			url : "{:U("Bidding/biddingRecord")}",
+			type : "POST",
+			dataType : "json",
+			data : {
+				page : page,
+				bidding_type : 2,
+				type : 1
+			}
+		})
+		.done(function(returnData){
+			if ( returnData["data"]["list"].length ){
+				returnData['data']['pending'] = "{$Think.lang._COMMON_PENDING_}";
+				var html = bt('biddingAgent_tpl', returnData['data']);
+				$("#template").html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert("{$Think.lang._COMMON_NO_DATA_}");
+			}	
+			popupWin.hide();
+		});
+	}
+	loadData(1);
+</script>
+</block>

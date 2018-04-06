@@ -1,0 +1,188 @@
+<extend name="Common:base" />
+
+<block name="title">商品管理列表</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">
+	    	商品管理列表
+	    </h1>
+	    <span class="pagedesc">
+	    	<em style="padding-left: 10px;">共{$goodsCount}件商品</em>
+		    <em style="padding-left: 10px;">上架商品：{$onSaleCount}</em>
+		    <em style="padding-left: 10px;">下架商品：{$offSaleCount}</em>
+		    <em style="padding-left: 10px;">店铺商品分类：{$categoryCount}</em>
+	    </span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form action="{:U('Agent/agentGoods')}" method="get" id="searchForm">
+			<input type="hidden" name="id" value="{$return['id']}">
+            <p>
+              	<label>商品名称：</label>
+              	<input type="text" name="goods_name"  placeholder="输入搜索商品名称" value="{$return['goods_name']}" />
+              	&nbsp;&nbsp;
+              	
+             	<label>商品类型：</label>
+				<select name="goods_type">
+				    <option value="-1">全部</option>
+					<option value="0" <if condition="$return['goods_type'] eq 0">selected</if>>基础商品</option>
+					<option value="1" <if condition="$return['goods_type'] eq 1">selected</if>>积分商品</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>平台分类：</label>
+				<select name="category_id">
+				    <option value="-1">全部</option>
+				    <volist name="goodsCategoryList" id="data">
+						<option value="{$data['id']}" <if condition="$return['category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+				    </volist>
+				</select>
+				&nbsp;&nbsp;
+				<label>店铺商品分类：</label>
+				<select name="agent_category_id">
+				    <option value="-1">全部</option>
+				    <volist name="agentGoodsCategoryList" id="data">
+				    	<option value="{$data['id']}" <if condition="$return['agent_category_id'] eq $data['id']">selected</if>>{$data['category_name']}</option>
+				    </volist>
+				</select>
+				&nbsp;&nbsp;
+				<label>商品状态：</label>
+				<select name="is_on_sale">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['is_on_sale'] eq 0">selected</if>>已下架</option>
+					<option value="1" <if condition="$return['is_on_sale'] eq 1">selected</if>>已上架</option>
+				</select>
+				&nbsp;&nbsp;
+            	<input type="submit" value="筛选"/>
+            </p>
+            <p>
+             	<input type="button" id="JsetOnSale" value="批量上架" />
+             	<input type="button" id="JsetOffSale" value="批量下架" />
+            </p>
+            <br>
+            <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+               
+                 <tr>
+                    <th><input type="checkbox" id = "ids" /></th>
+					<th>商品名称</th>
+					<th>商品类型</th>
+					<th>平台分类</th>
+					<th>店铺商品分类</th>
+					<th>销量</th>
+					<th>库存</th>
+					<th>收藏</th>
+					<th>商品价格</th>
+					<th>状态</th>
+					<th>添加时间</th>
+					<th>操作</th>
+				</tr>
+				
+				<if condition="empty($goodsList)">
+					<tr>
+						<td colspan="12">暂无相关数据</td>
+					</tr>
+				<else />
+					<volist name="goodsList" id="goods">
+						<tr>
+                            <td><input type="checkbox" class="ids" value="{$goods['id']}"/></td>
+							<td><img src="{$goods['goods_image']}" alt="" height="40px">&nbsp;&nbsp;&nbsp;{$goods['goods_name']|mySubstr=###,43}</td>
+							<td>
+								<if condition="$goods['goods_type'] eq '0'">
+									基础商品
+								<else/>
+									积分商品
+								</if>
+							</td>
+							<td>{$goods['category_name']}</td>
+							<td>{$goods['agent_category_name']}</td>
+							<td>{$goods['sale_number']}</td>
+							<td>{$goods['goods_number']}</td>
+							<td>{$goods['collect_number']}</td>
+							<td>
+								<if condition="$goods['goods_type'] eq '0'">RM</if>{$goods['goods_price']}
+							</td>
+							<td>
+								<if condition="$goods['is_on_sale'] eq '1' ">
+									已上架
+								<else/>
+									已下架
+								</if>
+							</td>
+							<td>{:time_format($goods['add_time'])}</td>
+							<td class="center">
+								<if condition="checkActionAuth('Goods-goodsDetail') || checkActionAuth('Goods-setOnSale')">
+									<if condition="checkActionAuth('Goods-goodsDetail')">
+										<a class="stdbtn btn_lime" href="{:U('Goods/goodsDetail', array('id'=>$goods['id']))}">查看</a>&nbsp;&nbsp;
+									</if>
+									<if condition="checkActionAuth('Goods-setOnSale')">
+										<if condition="$goods['is_on_sale'] eq '1'">
+											<a class="stdbtn btn_lime" href="{:U('Goods/setOnSale', array('id'=>$goods['id'], 'is_on_sale'=> 0))}">下架</a>&nbsp;&nbsp;
+										<else />
+											<a class="stdbtn btn_lime" href="{:U('Goods/setOnSale', array('id'=>$goods['id'], 'is_on_sale'=> 1))}">上架</a>&nbsp;&nbsp;
+										</if>
+									</if>
+								<else />
+									无权限操作
+								</if>
+							</td>
+						</tr>
+					</volist>
+					<tr>
+						<td colspan="12">
+							<div class="page-box">{$show}</div>
+						</td>
+					</tr>
+				</if>
+			</table>
+		</form>
+	</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+	$(function(){
+		//全选
+	    $('#ids').click(function(){
+	        if($(this).is(":checked"))
+	        {
+	            $('.ids').prop('checked',true);
+	        }else{
+	            $('.ids').prop('checked',false);
+	        }
+	    });
+
+		// 批量下架
+		$("#JsetOffSale").click(function() {
+			var objs = $('.ids');
+			var ids = '';
+			for(var j=0;j<objs.length;j++)
+			{   
+				if ($(objs[j]).is(':checked'))
+				{
+			    	ids += $(objs[j]).val()+',';
+				}
+			}
+			var jumpUrl = "{:U('Goods/setOnSale')}" + '?ids=' + ids + '&is_on_sale=0';
+			window.location.href = jumpUrl;
+		});
+
+		// 批量上架
+		$("#JsetOnSale").click(function() {
+			var objs = $('.ids');
+			var ids = '';
+			for(var j=0;j<objs.length;j++)
+			{   
+				if ($(objs[j]).is(':checked'))
+				{
+			    	ids += $(objs[j]).val()+',';
+				}
+			}
+			var jumpUrl = "{:U('Goods/setOnSale')}" + '?ids=' + ids + '&is_on_sale=1';
+			window.location.href = jumpUrl;
+		});
+	});
+</script>
+</block>

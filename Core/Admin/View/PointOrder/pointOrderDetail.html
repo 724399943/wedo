@@ -1,0 +1,295 @@
+<extend name="Common:base" />
+
+<block name="title">订单详情</block>
+<block name='cusStyle'>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+	<style type="text/css">
+		.givepop-box{ width: 400px; min-height: 180px; background: #fff; overflow: hidden; }
+		.givepop-box .g-line{ line-height: 32px; margin-top: 10px; padding-left: 40px; }
+		.g-line input{ width: 200px; }
+		.g-btn{ overflow: hidden; margin-top: 20px; padding-left: 90px;}
+		input.fall{ margin-left: 20px; }
+		.givepop-box .stdbtn{ margin-left: 100px; }
+		.caiji-box{ max-height: 500px; overflow: auto; }
+	</style>
+</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">订单详情</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+	<form action="{:U('User/editUser')}" method="post" class="stdform">
+	    <div class="line-order">订单信息
+	    
+			<if condition="$pointOrder['is_out_date'] eq 1 AND $pointOrder['is_delete'] eq 0">
+				<span class="state-btn">已作废</span>
+			<elseif condition="$pointOrder['pay_type'] eq 1 AND $pointOrder['is_pay'] eq 0" />
+			<span class="state-btn">待付款</span>
+			<elseif condition="$pointOrder['is_pay'] eq 1 AND $pointOrder['delivery_status'] eq 0" />
+				<if condition="$pointOrder['supplier_id'] eq 1">
+					<span class="state-btn fix-btn Jdelivery">发货</span>
+			   	    <else/>
+			   	    <span class="state-btn">待发货</span>
+				</if>
+			<elseif condition="$pointOrder['is_pay'] eq 1 AND $pointOrder['received'] eq 0" />
+			<span class="state-btn">待收货</span>
+			<else/>
+			<span class="state-btn">已收货</span>
+			</if>
+		
+	    </div>
+		<p>
+			<label>订单号</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['order_sn']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>订单时间</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{:date('Y-m-d H:i:s',$pointOrder['add_time'])}" readOnly="true" />
+
+			</span>
+		</p>
+		<p>
+			<label>订单所需金币</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['total']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>实际支付金币</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['real_pay']}" readOnly="true" />
+			</span>
+		</p>
+		<if condition="$pointOrder['delivery_status'] eq 1">
+			<p>
+				<label>运费</label>
+				<span class="field">
+					<input type="text" name="username" class="smallinput" value="{$pointOrder['carriage']}" readOnly="true" />
+				</span>
+			</p>
+			<p>
+				<label>物流公司</label>
+				<span class="field">
+					<input type="text" name="username" class="smallinput" value="{$pointOrder['back_express']}" readOnly="true" />
+				</span>
+			</p>
+			<p>
+				<label>物流单号</label>
+				<span class="field">
+					<input type="text" name="username" class="smallinput" value="{$pointOrder['back_express_sn']}" readOnly="true" />
+				</span>
+			</p>
+		</if>
+		<div class="line-order">购买人信息</div>
+		<p>
+			<label>用户人头像</label>
+			<span class="field">
+			<img src="{$user['headimgurl']}" style="width: 40px; height: 40px; border-radius: 50%;" alt="">
+			</span>
+		</p>
+		<p>
+			<label>用户昵称</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$user['nickname']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>用户账号</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$user['phone']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>绑定手机</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$user['phone']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>用户备注</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['buyer_message']}" readOnly="true" />
+			</span>
+		</p>
+		<div class="line-order">收货人信息</div>
+		<p>
+			<label>收货人信息</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['consignee']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>收货人手机</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['telephone']}" readOnly="true" />
+			</span>
+		</p>
+		<p>
+			<label>收货人地址</label>
+			<span class="field">
+				<input type="text" name="username" class="smallinput" value="{$pointOrder['province']}{$pointOrder['city']}{$pointOrder['county']}-{$pointOrder['address']}" readOnly="true" />
+			</span>
+		</p>
+
+		<div class="line-order">商品信息</div>
+		<div class="par" id="Jdetection">
+			<table>
+			<tr>
+				<th>商品id</th>
+				<th>商品名称</th>
+				<!-- <th>所属分类</th> -->
+				<th>数量</th>
+				<th>价格</th>
+				<th>合计</th>
+				<!-- <th>卖家</th>
+				<th>供应商</th>
+				<th>采样器</th> -->
+			</tr>
+			
+			<volist name="returnData" id="rd">
+			<tr>
+				<td>{$rd['goods_id']}</td>
+				<td>{$rd['goods_name']}</td>
+				<!-- <td>{$rd['goods_id']}</td> -->
+				<td>{$rd['goods_number']}</td>
+				<td>{$rd['unit_price']}积分</td>
+				<td>{$rd['price']}积分</td>
+				<!-- <td>{$rd['agent_id']}</td>
+				<td>{$rd['supplier_id']}</td>
+				<td>
+					<if condition ="$pointOrder['supplier_id'] eq 1">
+							<if condition="$rd['detection_type'] eq 1">
+								<a href="javascript:;" class="JbindBarcode stdbtn btn_lime" data-num="{$rd['goods_number']}" data-id="{$rd['id']}">绑定条形码</a>
+							<elseif condition="$rd['detection_type'] eq 2" />
+								<a href="javascript:;" class="JbindBarcode stdbtn btn_lime" data-num="{$rd['goods_number']}" data-id="{$rd['id']}">重新绑定</a>
+							<else/>
+							无需绑定
+							</if>
+						<else/>
+							供货商操作
+					</if>
+				</td> -->
+			</tr>
+			</volist>
+			
+			</table>
+		</div>
+	</form>
+	</div>
+
+</block>
+
+<block name="script">
+<script type="text/javascript">
+	$('.Jdelivery').click(function(event) {
+		var caiji = "{$pointOrder['detection_status']}";
+		if(caiji=='1'){
+			alert('请先检测绑定产品');
+			var caijiapi = $('#Jdetection').offset().top;
+			$('html,body').animate({scrollTop: caijiapi}, 100);
+		}else{
+		// 发货
+		var delivery = '<div class="givepop-box"> <div class="g-line">快递公司：<input type="text" name="express" id="Jexpress"></div> <div class="g-line">快递编号：<input type="text" name="" id="Jexpress_num"></div> <div class="g-line"><span class="stdbtn Jdelivery-commit" >确定</span></div></div>'
+		popwin('代理商发货',delivery);
+
+		}
+	});
+	$(document).on('click','.Jdelivery-commit',function(){
+		var id = '{$pointOrder['id']}';
+		$.ajax({
+			url: '{:U('Order/PointDelivery')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {id: id,express:$('#Jexpress').val(),express_sn:$('#Jexpress_num').val()}
+		})
+		.done(function(data) {
+			// 关闭弹窗
+			popclose();
+			window.location.href="{:U('Order/pointpointOrder',array('id'=>$pointOrder['id']))}";
+
+
+		})	
+	});
+
+	// 判断输入长度
+    function OnInput (event){
+        if(event.target.value.length >=12){
+        	$(event.target).parent('.g-line').next().find('.Jcode_sn').focus();
+        } 
+    }
+
+    // 只能输入数字
+    function onlyNum() {
+	    if(!(event.keyCode==46)&&!(event.keyCode==8)&&!(event.keyCode==37)&&!(event.keyCode==39))
+	    if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)))
+	    event.returnValue=false;
+    }
+	$('.JbindBarcode').click(function() {
+		var id = $(this).data('id');
+		var tote = $(this).data('num');
+		var html ='<div class="givepop-box caiji-box">';
+		for (var i = 1; i <= tote; i++) {
+			html += '<div class="g-line">商品'+i+'条形码：<input type="text" maxlength="12" onkeydown="onlyNum()" oninput="OnInput(event)" name="code_sn" class="Jcode_sn"></div>';
+		    if(i == tote ){
+		    	html += '<div class="g-line"><span data-id="'+id+'" class="stdbtn JbindConfirm-commit" >确定</span></div></div>';
+		    }
+		}
+		popwin('绑定条形码', html);
+	});
+
+	$(document).on('click', '.JbindConfirm-commit', function() {
+		var codeall ='';
+		var return_status=1;
+		$('.Jcode_sn').each(function(index, el) {
+			if($(this).val()==''){
+				var intnum =parseInt(index)+1;
+				alert('第'+intnum+'商品条形码不能为空！');
+				return_status = 0;
+			}else{
+				if($(this).val().length == 12){
+					codeall+=$(this).val()+',';
+				}else{
+					alert('商品条形码不正确');
+					return_status = 0;
+				}
+				
+			}
+
+		});
+		var id = $(this).data('id');
+		if(return_status){
+			$.ajax({
+				url: "{:U('Order/pointBindBarcode')}",
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					id: id,
+					barcode: codeall,
+					order_sn:'{$pointOrder['order_sn']}'
+				}
+			})
+			.done(function(data) {
+				// 关闭弹窗
+			    popclose();
+				if (data.error == 1) {
+					alert(data.msg);
+				} else {
+					alert('绑定成功！');
+					window.location.href="{:U('Order/pointpointOrder',array('id'=>$pointOrder['id']))}";
+				}
+			});
+		}
+
+	});
+
+</script>
+</block>

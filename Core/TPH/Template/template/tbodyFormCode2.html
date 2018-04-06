@@ -1,0 +1,35 @@
+<volist name="tableInfoArray" id="tableInfo">
+    <tr>
+        <td title="中文描述，编辑页为对应label标签内容，首页对应表头内容">
+            <input type="text" class="form-control" placeholder="中文描述" name="joinForm[{$key}][title]">
+        </td>
+        <td title="一般为对应数据库字段的名称">
+            <input type="text" class="form-control" placeholder="字段，字母" name="joinForm[{$key}][name]" value="{$tableInfo[$columnNameKey]}" readonly="readonly">
+        </td>
+        <td title="字段输出别名">
+            <input type="text" class="form-control" placeholder="别名" name="joinForm[{$key}][asname]">
+        </td>
+        <td title="只针对select,radio,checkbox控件,支持变量和配置值，例如 1:值一#2:值二#3:值三 （-1:请选择#0:否#1:是）">
+            <input type="text" class="form-control" placeholder="变量或以#隔开" name="joinForm[{$key}][option]">
+        </td>
+        <td class="text-c" title="勾选后在首页表单中显示">
+            <div class="radio-box">
+                <div class="icheckbox-blue"><input type="checkbox" name="joinForm[{$key}][index_view]" value="1"></div>
+            </div>
+        </td>
+        <td class="text-c" title="勾选后自动生成控制器筛选项和前端搜索框">
+            <div class="radio-box">
+                <div class="icheckbox-blue"><input type="checkbox" name="joinForm[{$key}][search]" value="1"></div>
+            </div>
+        </td>
+        <td title="select的取值为字段中的选项值">
+            <div class="select-box">
+                <select class="form-control" name="joinForm[{$key}][search_type]">
+                    <option value="text">text</option>
+                    <option value="select">select</option>
+                    <option value="date">date</option>
+                </select>
+            </div>
+        </td>
+    </tr>
+</volist>

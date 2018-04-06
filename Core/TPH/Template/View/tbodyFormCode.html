@@ -1,0 +1,47 @@
+<volist name="tableInfoArray" id="tableInfo">
+<tr>
+    <td title="删除后不可恢复，谨慎操作">
+        <a href="javascript:;" class="label label-danger radius op-delete red-del">删除</a>
+    </td>
+    <td title="中文描述，编辑页为对应label标签内容，首页对应表头内容">
+        <input type="text" class="form-control" placeholder="中文描述" name="form[{$key}][title]">
+    </td>
+    <td title="一般为对应数据库字段的名称">
+        <input type="text" class="form-control" placeholder="字段，字母" name="form[{$key}][name]" value="{$tableInfo[$columnNameKey]}">
+    </td>
+    <td title="自动生成编辑页相应的表单控件">
+        <div class="select-box">
+            <select class="form-control" name="form[{$key}][type]">
+                <option value="text">text</option>
+                <option value="select">select</option>
+                <option value="radio">radio</option>
+                <option value="textarea">textarea</option>
+                <option value="checkbox">checkbox</option>
+                <option value="password">password</option>
+                <option value="number">number</option>
+                <option value="date">date</option>
+            </select>
+        </div>
+    </td>
+    <td title="只针对select,radio,checkbox控件,支持变量和配置值，例如 {foo}-对应conf.foo对应的配置项，生成foreach循环 | 1:值一#2:值二#3:值三 | 空值的默认标签名">
+        <input type="text" class="form-control" placeholder="变量或以#隔开" name="form[{$key}][option]">
+    </td>
+    <td title="字段编辑页默认值">
+        <input type="text" class="form-control" placeholder="表单默认值" name="form[{$key}][default]">
+    </td>
+    <td class="text-c" title="勾选后自动生成控制器筛选项和前端搜索框">
+        <div class="radio-box">
+            <div class="icheckbox-blue"><input type="checkbox" name="form[{$key}][search]" value="1"></div>
+        </div>
+    </td>
+    <td title="select的取值为字段中的选项值">
+        <div class="select-box">
+            <select class="form-control" name="form[{$key}][search_type]">
+                <option value="text">text</option>
+                <option value="select">select</option>
+                <option value="date">date</option>
+            </select>
+        </div>
+    </td>
+</tr>
+</volist>

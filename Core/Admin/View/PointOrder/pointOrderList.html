@@ -1,0 +1,195 @@
+<extend name="Common:base" />
+
+<block name="title">积分订单</block>
+<block name='cusStyle'>
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">积分订单</h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" action="{:U('PointOrder/pointOrderList')}" class="order-list">
+			<p>
+				<label style="margin-right:3px">订单号：</label>
+				<input type="text" name="order_sn"  placeholder="输入搜索订单" value="{$return['order_sn']}">
+				&nbsp;&nbsp;
+				<label>配送方式：</label>
+				<select name="express_type">
+					<option value="-1">全部</option>
+					<option value="0" <if condition="$return['express_type'] eq 0">selected</if>>送货上门</option>
+					<option value="1" <if condition="$return['express_type'] eq 1">selected</if>>门店自提</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>订单类型：</label>
+				<select name="pay_state">
+					<option value="-1">请选择</option>
+					<option value="0" <if condition="$return['pay_state'] eq 0">selected</if>>已收货</option>
+					<option value="1" <if condition="$return['pay_state'] eq 1">selected</if>>待发货</option>
+					<option value="2" <if condition="$return['pay_state'] eq 2">selected</if>>待收货</option>
+					<option value="2" <if condition="$return['pay_state'] eq 2">selected</if>>待支付</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>下单时间：</label>
+				<input type="text" name="" id="staDatartTime" date-time="{$return['startTime']}" value="" style="margin-right: 0px">
+				<input type="hidden" name="startTime" id="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" name="" id="endDataTime" date-time="{$return['endTime']}" value="">
+				<input type="hidden" name="endTime" id="endTime" value="{$return['endTime']}">
+			</p>
+			<p>
+				<label>商品名称：</label>
+				<input type="text" name="goods_name"  placeholder="输入搜索商品名称" value="{$return['goods_name']}">
+				&nbsp;&nbsp;
+				<input type="submit" value="筛选">
+			</p>
+		</form>
+		<form action="" method="post">
+			<table cellpadding="0" cellspacing="0" border="0" class="stdtable order-table">
+			    <thead>
+					<tr>
+					    <th>序号</th>
+						<th>订单编号</th>
+						<th>商品名称</th>
+						<th>兑换积分</th>
+						<th>下单时间</th>
+						<th>用户名称</th>
+						<th>配送方式</th>
+						<th>订单状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				
+				<if condition="empty($orderList)">
+					<tr>
+						<td colspan="13">没有商品列表~！</td>
+					</tr>
+				<else />
+					
+					<volist name="orderList" id="list">
+					<tr class="tr-th">
+					    <td>{$list['id']}</td>
+						<td>{$list['order_sn']}</td>
+						<td>{$list['g']}</td>
+						<td>{$list['total']}</td>
+						<td>{$list['add_time']|time_format=###}</td>
+						<td>{$list['consignee']}</td>
+						<td>
+					        <if condition="$list['express_type'] eq 0 ">
+                               送货上门
+                             <else condition="$list['express_type'] eq 1 ">
+                             <else/>
+                               门店自提
+                            </if>
+					    </td>
+
+						<td>
+							<if condition="$list['pay_type'] eq 1 AND $list['is_pay'] eq 0 ">
+								待付款
+							<elseif condition="$list['is_pay'] eq 1 AND $list['delivery_status'] eq 0" />
+								待发货
+							<elseif condition="$list['is_pay'] eq 1 AND $list['received'] eq 0" />
+								待收货
+							<else/>
+								已收货
+							</if>
+							<!-- <switch name="goods['status']">
+						 		<case value="0">待支付</case>
+						 		<case value="1">待发货</case>
+						 		<case value="2">待收货</case>
+						 		<case value="3">待评价</case>
+						 		<case value="4">已收货</case>
+							</switch> -->
+						</td>
+						<td>
+							<if condition="checkActionAuth('PointOrder-pointOrderDetail')">
+								<a class="stdbtn btn_lime" href="{:U('PointOrder/pointOrderDetail', array('id'=> $list['id']))}">查看详情</a>
+							<else />
+								无权限操作
+							</if>
+						</td>
+					</tr>
+					</volist>
+					<tr>
+						<td colspan="12"
+							<if condition = "$counting lt 25">
+							<else />
+								<div class="page-box">{$show}</div>
+							</if>
+						</td>
+					</tr>
+				</if>
+			</table>
+		</form>
+	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+	<script type="text/javascript">
+
+		$('.btn').click(function(){
+			var val = $('.text').val();
+			var p = $('.text').attr('name');
+			var url = window.location.href;
+			var txt = $('.txt').html();
+			var num = txt.substring (1,txt.indexOf('，')-1);
+			var num = parseInt(num);
+			// alert(num)
+			// alert(isNaN(val));
+			if ( val=='' ) {
+				window.location.href = window.location.href;
+			} else if ( val > num) {
+				alert('查无此页');
+			} else if ( parseInt(val) == val && val > 0 ) {
+				if (val.indexOf('.') == true) {
+						var oL=val.lastIndexOf(".");
+						var val=val.substr(0,oL);
+					} 
+					var url = url.replace('.html','');
+					// alert(url.indexOf('/p/'))
+					if ( url.indexOf('/p/') != -1) {
+						var url = url.substring(0,url.indexOf('/p/'));
+						if (val == 1) {
+							window.location.href = url+'.html'
+						} else {
+							window.location.href = url+'/'+p+'/'+val+'.html'
+						}
+					} else {
+						if (val == 1) {
+							window.location.href = url+'.html'
+						} else {
+							window.location.href = url+'/'+p+'/'+val+'.html'
+						}
+					}
+
+			} else {
+				alert('查无此页');
+			}
+			
+		})
+	    $('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#staDatartTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#startTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+		$('#endDataTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#endTime').val(moment($input.val()).unix().valueOf(-60));
+			}
+		});
+
+
+	</script>
+</block>

@@ -1,0 +1,24 @@
+<ul>
+	<if condition="checkControllerAuth(array('Agent'))">
+		<li <if condition="in_array(ACTION_NAME, array('checkAgentList', 'agentList'))">{:chr(32)}class="current"</if>>
+			<a class="date-tit sys-tj" href="{:getAuthUrl(array('Agent-checkAgentList'))}" class="addons">商家管理</a>
+			<ul class="Jcon-ctr">
+				<if condition="checkActionAuth('Agent-checkAgentList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('checkAgentList', 'agentDetail'))">on</if>">
+						<a href="{:U('Agent/checkAgentList')}">商家审核</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Agent-agentList')">
+					<li class="<if condition="in_array(ACTION_NAME, array('agentList', 'agentGoods'))">on</if>">
+						<a href="{:U('Agent/agentList')}">商家商品管理</a>
+					</li>
+				</if>
+				<if condition="checkActionAuth('Agent-salesStatistics')">
+					<li class="<if condition="in_array(ACTION_NAME, array('salesStatistics'))">on</if>">
+						<a href="{:U('Agent/salesStatistics')}">商家销售统计</a>
+					</li>
+				</if>
+			</ul>
+		</li>
+	</if>
+</ul>

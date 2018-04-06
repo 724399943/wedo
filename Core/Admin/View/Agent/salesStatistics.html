@@ -1,0 +1,98 @@
+<extend name="Common:base" />
+
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+	<style type="text/css">
+		/*隐藏日的显示div*/
+		.xdsoft_calendar {display: none; }
+	</style>
+</block>
+<block name="title">商家销售统计</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">商家销售统计</h1>
+	    <span class="pagedesc"></span>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" class="menber">
+			<p>
+				<label>店铺分类：</label>
+				<select name="category_id">   
+					<option value="">全部</option>
+					<volist name="categoryList" id="value">
+						 <option value="{$value['id']}" <if condition="$return['category_id'] eq $value['id']">selected</if>>{$value['category_name']}
+						 </option>
+				    </volist>
+			    </select>
+			    &nbsp;&nbsp;
+			    <label>查看月份：</label>
+				<input type="text" id="JselectTime" date-time="{$return['select_time']}">
+				<input type="hidden" name="select_time" value="{$return['select_time']}">
+				<input type="submit" value="筛选">
+			</p>
+		</form>
+
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th>排名</th>
+				<th>店铺名称</th>
+				<th>店铺分类</th>
+				<th>总销售量</th>
+				<th>{$selectMonth}月销售量</th>
+				<th>总收入</th>
+				<th>{$selectMonth}月总收入</th>
+				<th>上架商品数</th>
+			</tr>
+			<if condition="empty($list)">
+				<tr>
+					<td colspan="8">暂无相关数据</td>
+				</tr>
+			<else />
+				<volist name="list" id="data">
+					<tr>
+						<td>{$data['ranking']}</td>
+						<td>{$data['agent_name']}</td>
+						<td>{$data['category_name']}</td>
+						<td>{$data['all_sales']}</td>
+						<td>{$data['month_sales']}</td>
+						<td>{$data['all_income']}</td>
+						<td>{$data['month_income']}</td>
+						<td>{$data['goods_total']}</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="8">
+						<if condition="$counting lt 25">
+						<else />
+							<div class="page-box">{$show}</div>
+						</if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+	$('#JselectTime').val(moment.unix($('#JselectTime').attr('date-time')).format("YYYY-MM"));
+	$('#JselectTime').datetimepicker({
+		format:"Y-m", 
+		timepicker:false,
+		onChangeMonth:function(dp, $input) {
+			var month = $(".xdsoft_month .xdsoft_current").data('value');//得到选中的月份值
+			var year = $(".xdsoft_year .xdsoft_current").data('value');//得到选中的年份值
+			$('#JselectTime').val(year+'-'+(parseInt(month)+1));
+			$('#JselectTime').attr('date-time', moment(year+'-'+(parseInt(month)+1)).unix().valueOf(-60));
+			$('input[name="select_time"]').val(moment(year+'-'+(parseInt(month)+1)).unix().valueOf(-60));
+		}
+	});
+</script>
+</block>

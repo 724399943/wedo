@@ -1,0 +1,153 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_POINT_COLLECT_GOODS_}</block>
+
+<block name="menu">
+	<include file="Point:menu" />
+</block>
+
+<block name="style">
+	<style type="text/css">
+		.point_goods_main{}
+		.point_goods_main ul{overflow:hidden;}
+		.point_goods_main ul li{float:left;border:1px solid #e4e4e4;padding:10px 20px;width:277px;margin:0 40px 30px 0;cursor:pointer;position:relative;}
+		.point_goods_main ul li .imgbox{width:85%;position:relative;margin:5px auto 10px;}
+		.point_goods_main ul li .imgbox:before{content:'';display:block;padding:50% 0;}
+		.point_goods_main ul li .imgbox img{width:100%;height:100%;position:absolute;top:0;left:0;}
+		.point_goods_main ul li .nm{margin:0;height:35px;line-height:35px;font-size:15px;color:#333;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+		.point_goods_main ul li .gd{font-size:14px;color:#999;overflow: hidden; text-overflow: ellipsis;-webkit-line-clamp: 2;-webkit-box-orient: vertical; display: -webkit-box;margin:0;height:42px;}
+		.point_goods_main ul li .dt{line-height:35px;overflow:hidden;}
+		.point_goods_main ul li .dt .fen{float:left;color:#f34949;}
+		.point_goods_main ul li .dt .num{float:right;color:#666;}
+		.point_goods_main ul li .pgbtn{display:block;width:60%;margin:0 auto;line-height:40px;text-align:center;color:#333;border-radius:5px;background:rgba(0,0,0,.3);color:#fff;}
+		.point_goods_main ul li .pgbtn:hover{background:#967bdc;}
+		.point_goods_main ul li .collect{display:block;width:35px;height:35px;position:absolute;top:10px;right:10px;background:url(__PUBLIC__/Shop/images/heart_ico.png) center center no-repeat;background-size:35px;display:none;z-index:6;}
+		.point_goods_main ul li .collect.on{background:url(__PUBLIC__/Shop/images/heart_on_ico.png) center center no-repeat;background-size:35px;}
+		.point_goods_main ul li:hover{border:1px solid #967bdc;}
+		.point_goods_main ul li:hover .collect{display:block;}
+	</style>
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_POINT_COLLECT_GOODS_}
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<p>
+				<label>{$Think.lang._COMMON_PRODUCTS_NAME_}：</label>
+				<input type="text" name="goods_name" value="{$return['goods_name']}" placeholder="{$Think.lang._COMMON_SEARCH_GOODS_NAME_}">
+				&nbsp;&nbsp;
+				<label>{$Think.lang._COMMON_DELIVERY_METHOD_}：</label>
+				<select name="express_type">
+					<option value="-1">{$Think.lang._COMMON_ALL_}</option>
+					<option value="0" <if condition="$return['express_type'] eq 0">selected</if>>{$Think.lang._COMMON_BY_DELIVERY_}</option>
+					<option value="1" <if condition="$return['express_type'] eq 1">selected</if>>{$Think.lang._COMMON_COLLECT_FROM_MERCHANT_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+			</p>
+		</form>
+        <div class="point_goods_main">
+        	<ul id="template">
+        		
+        	</ul>
+        </div>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="pointGoods_tpl" type="text/html">
+<%for(var i = 0;i < list.length;i++){
+	var data = list[i],
+		temp = ( data['is_collect'] == '1' ) ? 'on' : '';%>
+	<a href="{:U('Point/goodsDetail')}?goods_id=<%=data['id']%>">
+		<li>
+			<div class="imgbox">
+				<img src="<%=data['goods_image']%>">
+			</div>
+			<p class="nm"><%=data['goods_name']%></p>
+			<p class="gd"><%=data['introduction']%></p>
+			<div class="dt">
+				<span class="fen">{$Think.lang._COMMON_REDEEM_WEDO_POINTS_}：<%=data['goods_price']%>分</span>
+				<span class="num">{$Think.lang._COMMON_SALES_NUMBER_}：<%=data['sale_number']%></span>
+			</div>
+			<a class="pgbtn" href="<%=jumpUrl%>?goods_id=<%=data['id']%>">{$Think.lang._PC_POINT_REDEEM_}</a>
+			<em class="collect <%=temp%>" data-id="<%=data['id']%>" data-iscollect="<%=data['is_collect']%>" data-collectid="<%=data['collect_id']%>"></em>
+		</li>
+	</a>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    var goods_name = "{$return['goods_name']}",
+    	express_type = "{$return['express_type']}";
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Collect/collectGoods')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				goods_name : goods_name,
+				express_type : express_type,
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['jumpUrl'] = "{:U('Point/pointInfo')}";
+				var html = bt('pointGoods_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+    // 收藏
+    $('#template').on('click','.collect',function(){
+    	var that = $(this),
+    		id = that.data('id'),
+    		is_collect = that.data('iscollect'),
+    		collect_id = that.data('collectid');
+    	if ( is_collect == '1' ) {
+    		$.ajax({
+    			url: '{:U('Collect/delCollect')}',
+    			type: 'POST',
+    			dataType: 'json',
+    			data: {ids: collect_id}
+    		})
+    		.done(function(returnData) {
+    			if ( returnData['status'] == '200000' ) {
+    				window.location.href = window.location.href;
+    			} else {
+    				alert(returnData['message']);
+    			}
+    		});
+    	} else {
+    		$.ajax({
+    			url: '{:U('Collect/toCollect')}',
+    			type: 'POST',
+    			dataType: 'json',
+    			data: {id: id, type: '0'}
+    		})
+    		.done(function(returnData) {
+    			if ( returnData['status'] == '200000' ) {
+    				window.location.href = window.location.href;
+    			} else {
+    				alert(returnData['message']);
+    			}
+    		});
+    	}
+    })
+</script>
+</block>

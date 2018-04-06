@@ -1,0 +1,207 @@
+<extend name="Public:base" />
+
+<block name="style">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+	<style type="text/css">
+		.givepop-box{ width: 400px; min-height: 180px; background: #fff; overflow: hidden; }
+		.givepop-box .g-line{ line-height: 32px; margin-top: 10px; padding-left: 40px; }
+		.g-line input{ width: 200px; }
+		.g-btn{ overflow: hidden; margin-top: 20px; padding-left: 90px;}
+		input.fall{ margin-left: 20px; }
+		.givepop-box .stdbtn{ margin-left: 100px; }
+		.caiji-box{ max-height: 500px; overflow: auto; }
+	</style>
+</block>
+
+<block name="title">{$Think.lang._PC_USER_SETTLEMENT_MANAGEMENT_}</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">
+	    	{$Think.lang._PC_USER_SETTLEMENT_MANAGEMENT_}
+	    	<a href="{:U('User/withdrawLog')}" class="btn" style="float:right;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_WITHDRAW_HISTORY_}</span>
+	    	</a>
+	    	<a href="{:U('User/withdraw')}" class="btn" style="float:right;margin-right:15px;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_WITHDRAW_}</span>
+	    	</a>
+	    	<a href="javascript:;" class="btn" id="changingPassword" style="float:right;margin-right:15px;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_USER_MODIFY_WITHDRAW_PASSWORD_}</span>
+	    	</a>
+	    </h1>
+	    <span class="pagedesc"></span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+		<form class="order-list">
+			<p>
+				<label>{$Think.lang._PC_USER_SETTLEMENT_CONTENT_}：</label>
+				<select name="event_type"> 
+				<option value="-1">{$Think.lang._COMMON_ALL_}</option>
+					<option value="0" <if condition="$return['event_type'] eq 0">selected</if>>购物</option>
+					<option value="1" <if condition="$return['event_type'] eq 1">selected</if>>扫码支付</option>
+					<option value="2" <if condition="$return['event_type'] eq 2">selected</if>>增益</option>
+					<option value="3" <if condition="$return['event_type'] eq 3">selected</if>>充值</option>
+					<option value="4" <if condition="$return['event_type'] eq 4">selected</if>>提现</option>
+					<option value="5" <if condition="$return['event_type'] eq 5">selected</if>>{$Think.lang._PC_USER_PRODUCT_VERIFICATION_}</option>
+					<option value="6" <if condition="$return['event_type'] eq 6">selected</if>>{$Think.lang._PC_USER_PRODUCT_BUMP_TO_TOP_}</option>
+					<option value="7" <if condition="$return['event_type'] eq 7">selected</if>>{$Think.lang._PC_MESSAGE_PUBLISH_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._PC_USER_SETTLEMENT_STATUS_}：</label>
+				<select name="type">
+					<option value="-1">{$Think.lang._COMMON_ALL_}</option>
+					<option value="0" <if condition="$return['type'] eq 0">selected</if>>{$Think.lang._PC_USER_DUE_PAYMENT_}</option>
+					<option value="1" <if condition="$return['type'] eq 1">selected</if>>{$Think.lang._PC_USER_HAS_BEEN_SETTLED_}</option>
+				</select>
+				&nbsp;&nbsp;
+				<label>{$Think.lang._PC_USER_SETTLEMENT_TIME_}：</label>
+				<input type="text" name="" id="staDatartTime" date-time="{$return['startTime']}">
+				<input type="hidden" name="startTime" id="startTime" value="{$return['startTime']}" >
+				-
+				<input type="text" name="" id="endDataTime" date-time="{$return['endTime']}">
+				<input type="hidden" name="endTime" id="endTime" value="{$return['endTime']}">
+				&nbsp;&nbsp;
+				<input type="submit" value="{$Think.lang._COMMON_FILTER_}">
+			</p>
+		</form>
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script id="moneylog_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._PC_USER_SETTLEMENT_CONTENT_}</th>
+	<th>{$Think.lang._PC_COMMENT_TIME_}</th>
+	<th>{$Think.lang._PC_USER_AMOUNT_SHOULD_PAY_}</th>
+	<th>{$Think.lang._PC_USER_SETTLEMENT_STATUS_}</th>
+	<th>{$Think.lang._PC_USER_PAYMENT_DATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			date = new Date(data['add_time'] * 1000);
+	%>
+	<tr>
+		<td><%=data['id']%></td>
+		<td><%=data['event']%></td> 
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td><%=data['money']%></td>
+		<td><%=hasBeenSettled%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+	</tr>
+<%}%>
+</script>
+<script id="password_tpl" type="text/html">
+	<div class="givepop-box"> 
+		<div class="g-line">
+			{$Think.lang._PC_USER_WITHDRAWAL_PASSWORD_}：<input type="password" id="JchangingPassword">
+		</div>
+		<div class="g-line">
+			{$Think.lang._PC_USER_REENTER_WITHDRAWAL_PASSWORD_}：<input type="password" id="JreChangingPassword">
+		</div>
+		<div class="g-line">
+			<span class="stdbtn JchangingPassword-commit">{$Think.lang._COMMON_CONFIRM_}</span>
+		</div>
+	</div>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    event_type = "{$return['event_type']}",
+    type = "{$return['type']}",
+    startTime = "{$return['startTime']}",
+    endTime = "{$return['endTime']}";
+    
+    var page = 1;
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('Agent/settlementLog')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				event_type : event_type,
+				type : type,
+				startTime : startTime,
+				endTime : endTime,
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['hasBeenSettled'] = "{$Think.lang._PC_USER_HAS_BEEN_SETTLED_}";
+				var html = bt('moneylog_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+
+    $(function(){
+    	$('#changingPassword').click(function() {
+			var changingPassword = bt('password_tpl', []);
+			popwin('{$Think.lang._PC_USER_MODIFY_WITHDRAW_PASSWORD_}', changingPassword);
+		});
+
+		$(document).on('click','.JchangingPassword-commit',function(){
+			var password = $('#JchangingPassword').val(),
+				repassword = $('#JreChangingPassword').val(),
+				match = !!password.match(/^\d+$/);
+			if ( match == false ) {
+				alert('密码只能是数字');
+				return;
+			}
+			if ( password != repassword ) {
+				alert('两次输入的密码不一样');
+				return;
+			}
+			$.ajax({
+				url: '{:U('User/editWithdrawPassword')}',
+				type: 'POST',
+				dataType: 'json',
+				data: {password:password}
+			})
+			.done(function(returnData) {
+				if ( returnData['status'] == '200000' ) {
+					alert(returnData['message']);
+					window.location.href = window.location.href;
+				} else {
+					alert(returnData['message']);
+				}
+			});
+		});
+
+		$('.fall').click(function() {
+			popclose();
+		});
+
+		$('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+		$('#staDatartTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#startTime').val(moment($input.val()).unix().valueOf());
+			}
+		});
+		$('#endDataTime').datetimepicker({
+			format:"Y-m-d H:i:s", 
+			onChangeDateTime:function(dp, $input) {
+				$('#endTime').val(moment($input.val()).unix().valueOf());
+			}
+		});
+    })
+</script>
+</block>

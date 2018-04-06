@@ -1,0 +1,63 @@
+<extend name="Common:base" />
+
+<block name="title"></block>
+
+<block name="menu">
+    <include file="Article:menu" />
+</block>
+
+<block name="main">
+    <div class="pageheader">
+        <h1 class="pagetitle">文章管理</h1>
+    </div>
+    <div class="contentwrapper">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+            <tr>
+                <th width="">ID</th>
+                <th width="">文章标识</th>
+                <th width="">文章标题</th>
+                <th width="">上次修改时间</th>
+                <th width="13%">操作</th>
+            </tr>
+            <empty name="list">
+                <tr>
+                    <td colspan="6">目前没有数据~！</td>
+                </tr>
+            <else />
+                <volist name="list" id="vo">
+                    <tr>
+                        <td>{$vo['id']}</td>
+                        <td>
+                            <switch name="vo['sign']">
+                                <case value="share">推荐有奖</case>
+                                <case value="agreement">用户协议</case>
+                                <case value="aboutUs">关于我们</case>
+                            </switch>
+                        </td>
+                        <td>{$vo['title']}</td>
+                        <td>{:time_format($vo['update_time'])}</td>
+                        <td class="center">
+                            <if condition="checkActionAuth('Article-editArticle') || checkActionAuth('Article-articleDetail')">
+                                <if condition="checkActionAuth('Article-articleDetail')">
+                                    <a class="stdbtn btn_lime" href="{:U('Article/articleDetail', array('id' => $vo['id']))}">查看</a>&nbsp;&nbsp;
+                                </if>
+                                <if condition="checkActionAuth('Article-editArticle')">
+                                    <a class="stdbtn btn_lime" href="{:U('Article/editArticle', array('id' => $vo['id']))}">编辑</a>&nbsp;&nbsp;
+                                </if>
+                            <else/>
+                                无权限访问
+                            </if>
+                        </td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td colspan="6">
+                        <if condition="$counting gt 25">
+                            <div class="page-box">{$show}</div>
+                        </if>
+                    </td>
+                </tr>
+            </empty>
+        </table>
+    </div>
+</block>

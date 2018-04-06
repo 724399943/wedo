@@ -1,0 +1,97 @@
+<extend name="Public:base" />
+
+<block name="title">{$Think.lang._PC_MESSAGE_MY_POST_}</block>
+
+<block name="menu">
+	<include file="Message:menu" />
+</block>
+
+<block name="main">
+	 <div class="pageheader">
+	    <h1 class="pagetitle">{$Think.lang._PC_MESSAGE_MY_POST_}</h1>
+	    <span class="pagedesc">
+	    	<a href="{:U('MessageCheck/issuingMessage')}" class="btn" style="float:right;margin-right:15px;">
+	    		<span style="font-size:14px;">{$Think.lang._PC_MESSAGE_PUBLISH_}</span>
+	    	</a>
+	    </span>
+	</div>
+	<div id="contentwrapper" class="contentwrapper">
+        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick" id="template"></table>
+        <div class="page-box" id="pageBox"></div>
+	</div>
+</block>
+<block name="script">
+<script id="message_tpl" type="text/html">
+<tr>
+	<th>{$Think.lang._COMMON_NO_}</th>
+	<th>{$Think.lang._PC_MESSAGE_TITLE_}</th>
+	<th>{$Think.lang._PC_MESSAGE_MAIN_CONTENT_}</th>
+	<th>{$Think.lang._PC_MESSAGE_RELATED_PRODUCTS_}</th>
+	<th>{$Think.lang._PC_MESSAGE_PUBLISH_TIME_}</th>
+	<th>{$Think.lang._COMMON_STATUS_}</th>
+	<th width="10%">{$Think.lang._COMMON_OPERATE_}</th>
+</tr>
+<%for(var i = 0; i < list.length; i ++){%>
+	<%
+		var data = list[i],
+			date = new Date(data['add_time'] * 1000);
+	%>
+	<tr>
+		<td><%=data['id']%></td>
+		<td><%=data['title']%></td>
+		<td><%=data['content']%></td>
+		<td><%=data['goods_name']%></td>
+		<td><%=date.pattern('yyyy-MM-dd HH:mm:ss')%></td>
+		<td>
+			<%switch( data['status'] ) {
+				case '0' :%>
+					<%=pending%>
+				<%break;
+				case '1' :%>
+					<%=published%>
+				<%break;
+				case '2' :%>
+					<%=pendingFailed%>
+				<%break;%>
+			<%}%>
+		</td>
+		<td class="center">
+			<a class="stdbtn btn_lime" href="<%=jumpUrl%>?id=<%=data['id']%>"><%=view%></a>
+		</td>
+	</tr>
+<%}%>
+</script>
+<script type="text/javascript">
+	/*使用模板引擎*/
+    var bt = baidu.template;
+    function loadData(page) {
+    	popupWin.show('{$Think.lang._COMMON_LOADING_}');
+    	$.ajax({
+			url: '{:U('MessageCheck/issuedMessage')}',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				page : page,
+				type : '1'
+			}
+		})
+		.done(function(returnData) {
+			if ( returnData['data']['list'].length ) {
+				returnData['data']['pending'] = "{$Think.lang._COMMON_PENDING_}";
+				returnData['data']['published'] = "{$Think.lang._COMMON_PUBLISHED_}";
+				returnData['data']['pendingFailed'] = "{$Think.lang._COMMON_PENDING_FAILED_}";
+				returnData['data']['view'] = "{$Think.lang._COMMON_VIEW_}";
+				returnData['data']['jumpUrl'] = "{:U('MessageCheck/issuingDetail')}";
+				var html = bt('message_tpl', returnData['data']);
+				$('#template').html(html);
+				createPageTags(returnData['data']['page'], returnData['data']['count'], 0);
+				listenPageEvent(loadData);
+			} else {
+				alert('{$Think.lang._COMMON_NO_DATA_}');
+			}
+			popupWin.hide();
+		});
+    }
+    loadData(1);
+</script>
+</block>

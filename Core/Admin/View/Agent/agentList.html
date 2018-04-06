@@ -1,0 +1,110 @@
+<extend name="Common:base" />
+
+<block name="cusStyle">
+	<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.datetimepicker.css" type="text/css" />
+</block>
+<block name="title">商家商品管理</block>
+
+<block name="menu">
+	<include file="Agent:menu" />
+</block>
+
+<block name="main">
+	<div class="pageheader">
+	    <h1 class="pagetitle">商家商品管理</h1>
+	    <span class="pagedesc"></span>
+	</div>
+
+	<div id="contentwrapper" class="contentwrapper">
+		<form method="get" action="{:U('Agent/agentList')}" class="menber">
+			<p>
+				<label>账号：</label>
+				<input type="text" name="account" placeholder="输入搜索账号" value="{$return['account']}">
+				&nbsp;&nbsp;
+				<label>店铺名称：</label>
+				<input type="text" name="agent_name" placeholder="输入搜索店铺名称" value="{$return['agent_name']}">
+				&nbsp;&nbsp;
+				<label>真实姓名：</label>
+				<input type="text" name="manager" placeholder="输入搜索姓名" value="{$return['manager']}">
+				&nbsp;&nbsp;
+				<label>店铺分类：</label>
+				<select name="category_id">   
+					<option value="">全部</option>
+					<volist name="categoryList" id="value">
+						 <option value="{$value['id']}" <if condition="$return['category_id'] eq $value['id']">selected</if>>{$value['category_name']}
+						 </option>
+				    </volist>
+			    </select>
+			    &nbsp;&nbsp;
+				<input type="submit" value="搜索">
+			</p>
+		</form>
+
+		<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+			<tr>
+				<th>序号</th>
+				<th>账号</th>
+				<th>店铺名称</th>
+				<th>店铺分类</th>
+				<th>店铺位置</th>
+				<th>真实姓名</th>
+				<th>商品数量</th>
+				<th>订单数量</th>
+				<th>操作</th>
+			</tr>
+
+			<if condition="empty($list)">
+				<tr>
+					<td colspan="9">暂无相关数据</td>
+				</tr>
+			<else />
+				<volist name="list" id="data">
+					<tr>
+						<td>{$data['id']}</td>
+						<td>{$data['account']}</td>
+						<td>{$data['agent_name']}</td>
+						<td>{$data['category_name']}</td>
+						<td>{$data['address']}</td>
+						<td>{$data['manager']}</td>
+						<td>{$data['goods_number']}</td>
+						<td>{$data['order_number']}</td>
+						<td class="center">
+							<if condition="checkActionAuth('Agent-agentGoods')">
+								<a class="stdbtn btn_lime" href="{:U('Agent/agentGoods', array('id'=> $data['id']))}">查看店铺商品</a>
+							<else />
+								无权限操作
+							</if>
+						</td>
+					</tr>
+				</volist>
+				<tr>
+					<td colspan="9">
+						<if condition="$counting egt 25">
+							<div class="page-box">{$show}</div>
+						</if>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Admin/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/moment.min.js"></script>
+<script type="text/javascript">
+	$('#staDatartTime').val(moment.unix($('#staDatartTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#endDataTime').val(moment.unix($('#endDataTime').attr('date-time')).format("YYYY-MM-DD HH:mm:ss"));
+	$('#staDatartTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('#startTime').val(moment($input.val()).unix().valueOf(-60));
+		}
+	});
+	$('#endDataTime').datetimepicker({
+		format:"Y-m-d H:i:s", 
+		onChangeDateTime:function(dp, $input) {
+			$('#endTime').val(moment($input.val()).unix().valueOf(-60));
+		}
+	});
+</script>
+</block>

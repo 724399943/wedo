@@ -1,0 +1,21 @@
+<ul>
+	<li class="current">
+		<ul class="Jcon-ctr">
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('Agent')) && in_array(ACTION_NAME, array('changePassword'))">on</if>">
+				<a href="{:U('Agent/changePassword')}">{$Think.lang._PC_SETTING_CHANGE_PASSWORD_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('User')) && in_array(ACTION_NAME, array('chooseLanguage'))">on</if>">
+				<a href="{:U('User/chooseLanguage')}">{$Think.lang._PC_SETTING_CHOOSE_LANGUAGE_}</a>
+			</li>
+			<li class="<if condition="in_array(CONTROLLER_NAME, array('User')) && in_array(ACTION_NAME, array('userFeedback', 'feedbackSuccess'))">on</if>">
+				<a href="{:U('User/userFeedback')}">{$Think.lang._PC_SETTING_CUSTOMER_FEEDBACK_}</a>
+			</li>
+			<li class="<if condition="CONTROLLER_NAME eq 'Article' && $_GET['sign'] eq 'agreement'">on</if>">
+				<a href="{:U('Article/articleDetail', array('sign'=> 'agreement'))}">{$Think.lang._PC_SETTING_USER_AGREEMENT_}</a>
+			</li>
+			<li class="<if condition="CONTROLLER_NAME eq 'Article' && $_GET['sign'] eq 'aboutUs'">on</if>">
+				<a href="{:U('Article/articleDetail', array('sign'=> 'aboutUs'))}">{$Think.lang._PC_SETTING_ABOUT_US_}</a>
+			</li>
+		</ul>
+	</li>
+</ul>
