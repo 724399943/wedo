@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+*:not(input, textarea) {
+    -webkit-touch-callout: inherit;
+    -webkit-user-select: auto;
+}
+
+body {
+    width: 100%;
+    font-family: Hiragino Sans GB, Arial, Helvetica, "黑体", sans-serif;
+    font-size: 14px;
+    color: #878787;
+    -webkit-touch-callout: inherit;
+    -webkit-user-select: auto;
+    background-color: #fff;
+}
+
+a {
+    color: #878787;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+dt,
+dd {
+    display: inline-block;
+}
+
+textarea,
+input {
+    resize: none;
+    outline: none;
+}
+
+textarea {
+    resize: none;
+    -webkit-appearance: none;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+em {
+    font-style: normal;
+}
+
+html,
+body {
+    height: 100%;
+    background: url("../img/bg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+
+#download {
+    position: absolute;
+    width:40%;
+    top: 35%;
+    left: 50%;
+    margin-left: -20%;
+}
+
+.logo {
+    display: block;
+    width: 100%;
+    height: 46px;
+    margin: 0 auto 2px auto;
+}
+
+.Android {
+    display: block;
+    width: 100%;
+    height: 46px;
+    margin: 0 auto 2px auto;
+    background: url("../img/Android@2x.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.Appstore {
+    display: block;
+    width: 100%;
+    height: 46px;
+    margin: 0 auto 2px auto;
+    background: url("../img/Appstore@2x.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.slogan {
+    display: block;
+    width: 151px;
+    height: 17px;
+    margin: 0 auto;
+}
+
+.d_dot {
+    display: block;
+    width: 7px;
+    height: 130px;
+    margin: 45px auto;
+}
+
+.download_btn {
+    display: block;
+    width: 179px;
+    height: 43px;
+    margin: 0 auto;
+}
+
+.download_mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.closed_btn {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 16px;
+    height: 18px;
+}
+
+.lead_img {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    width: 49px;
+    height: 155px;
+}
+
+.download_txt {
+    display: block;
+    position: absolute;
+    top: 190px;
+    left: 50%;
+    width: 66%;
+    margin-left: -33%;
+}
+
+
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+}
+
+.pt-page-delay100 {
+    -webkit-animation-delay: .1s;
+    animation-delay: .1s;
+}
+
+.pt-page-delay300 {
+    -webkit-animation-delay: .3s;
+    animation-delay: .3s;
+}
+
+.pt-page-delay500 {
+    -webkit-animation-delay: .5s;
+    animation-delay: .5s;
+}
+
+.pt-page-delay700 {
+    -webkit-animation-delay: .7s;
+    animation-delay: .7s;
+}
